@@ -3,6 +3,8 @@
 用 ElementTree 解析：feedparser 会把重复的 ht:news_item 拍平只留最后一条，
 而 ET 的 {* } 通配命名空间能稳定取到每条热搜下的全部相关新闻标题。
 """
+import hashlib
+
 import requests
 import xml.etree.ElementTree as ET
 
@@ -42,7 +44,8 @@ def fetch(limit=15):
             if news_titles:
                 snippet_parts.append("相关报道：" + "；".join(news_titles[:3]))
             result["items"].append({
-                "id": "gt-" + (_text(item_el, "guid") or _text(item_el, "link"))[-48:],
+                # 该 RSS 所有条目的 link 都相同且无 guid，用标题哈希保证 id 唯一
+                "id": "gt-" + hashlib.sha1(title.encode("utf-8")).hexdigest()[:12],
                 "title": title,
                 "url": _text(item_el, "link"),
                 "snippet": "。".join(snippet_parts),
