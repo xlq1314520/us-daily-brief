@@ -6,8 +6,7 @@ jobs:
     steps:
       - name: probe endpoints
         run: |
-          probe() { echo "=== $1"; curl -s -m 45 -o /tmp/body -w "HTTP %{http_code}, %{size_download} bytes
-" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" "$1"; head -c 400 /tmp/body; echo; }
+          probe() { echo "=== $1"; curl -s -m 45 -o /tmp/body -w "HTTP %{http_code} %{size_download}B" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" "$1"; echo; head -c 400 /tmp/body; echo; }
           probe "https://r.jina.ai/https://www.reddit.com/r/news/top.json?t=day&limit=5"
           probe "https://r.jina.ai/https://truthsocial.com/api/v1/accounts/107780257626128497/statuses?limit=5"
           probe "https://r.jina.ai/https://truthsocial.com/@realDonaldTrump.rss"
