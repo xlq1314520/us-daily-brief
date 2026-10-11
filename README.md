@@ -9,9 +9,10 @@
 |---|---|---|
 | YouTube 美国热榜 | YouTube Data API v3（mostPopular, US） | ✅ `YOUTUBE_API_KEY` |
 | 美国新闻头条 | Google News RSS（美国版） | 否 |
+| Google 美国热搜 | trends.google.com 官方每日热搜 RSS（geo=US） | 否 |
 | Reddit 热帖 | r/news + r/worldnews 当日 top | 否 |
 | X 美国热搜 | trends24.in → getdaytrends.com 回退 | 否 |
-| 特朗普动态 | Truth Social 公开 API → RSSHub 实例回退 | 否 |
+| 特朗普动态 | trumpstruth.org 存档站 → r.jina.ai → Truth Social API → RSSHub 回退 | 否 |
 
 任一源抓取失败只影响对应板块（显示"本次更新失败"），页面照常生成。
 历史每期自动归档到 `site/archive/YYYY-MM-DD-{am,pm}.html`（按北京时间分上午/下午版）。
