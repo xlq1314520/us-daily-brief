@@ -53,13 +53,15 @@ def build(results, translations, run_dt=None):
     sections = []
     for source in SECTION_ORDER:
         r = next((x for x in results if x["source"] == source), None)
+        if r is None:
+            continue  # 该源未启用（不在 main.py 的 FETCHERS 中），不渲染板块
         meta = SECTION_META[source]
-        if r is None or not r.get("ok"):
+        if not r.get("ok"):
             sections.append({
                 "source": source,
                 "zh": meta["zh"], "en": meta["en"],
                 "ok": False,
-                "error": (r or {}).get("error") or "未知错误",
+                "error": r.get("error") or "未知错误",
                 "entries": [],
             })
             continue
