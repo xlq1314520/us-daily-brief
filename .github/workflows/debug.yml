@@ -6,6 +6,7 @@ jobs:
     steps:
       - name: probe endpoints
         run: |
-          echo "=== arctic-shift"; curl -sL -m 40 -o /tmp/as.json -w "HTTP %{http_code} %{size_download}B" "https://arctic-shift.com/api/posts/search?subreddit=news&sort_type=score&sort=desc&after=1d&limit=25" || true; echo; head -c 600 /tmp/as.json; echo
-          echo "=== allorigins retry json"; curl -sL -m 40 -o /tmp/ao.json -w "HTTP %{http_code} %{size_download}B" "https://api.allorigins.win/raw?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fnews%2Ftop.json%3Ft%3Dday%26limit%3D25" || true; echo; head -c 300 /tmp/ao.json; echo; grep -c shreddit-post /tmp/ao.json || true
-          echo "=== trumpstruth-fixture-begin"; curl -sL -m 40 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "https://trumpstruth.org/" | fold -w 200; echo "=== trumpstruth-fixture-end"
+          { echo "=== allorigins-json-1"; curl -sL -m 40 -o /tmp/ao1.out -w "HTTP %{http_code} %{size_download}B" "https://api.allorigins.win/raw?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fnews%2Ftop.json%3Ft%3Dday%26limit%3D25"; echo; head -c 200 /tmp/ao1.out; echo; echo "shreddit-count: $(grep -c shreddit-post /tmp/ao1.out)"; } || true
+          { echo "=== allorigins-json-2"; sleep 3; curl -sL -m 40 -o /tmp/ao2.out -w "HTTP %{http_code} %{size_download}B" "https://api.allorigins.win/raw?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fworldnews%2Ftop.json%3Ft%3Dday%26limit%3D25"; echo; head -c 200 /tmp/ao2.out; echo; echo "shreddit-count: $(grep -c shreddit-post /tmp/ao2.out)"; } || true
+          { echo "=== trumpstruth-fixture-begin"; curl -sL -m 40 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "https://trumpstruth.org/" | fold -w 200; echo "=== trumpstruth-fixture-end"; } || true
+          exit 0
