@@ -6,12 +6,9 @@ jobs:
     steps:
       - name: probe endpoints
         run: |
-          probe() { echo "=== $1"; curl -sL -m 30 -o /tmp/body -w "HTTP %{http_code} %{size_download}B" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$1" || true; echo; head -c 300 /tmp/body; echo; }
-          probe "https://safereddit.com/r/news/top.rss?t=day"
-          probe "https://redlib.privacyredirect.com/r/news/top.rss?t=day"
-          probe "https://redlib.privadency.com/r/news/top.rss?t=day"
-          probe "https://api.codetabs.com/v1/proxy?quest=https://www.reddit.com/r/news/top.json?t=day%26limit=5"
-          probe "https://corsproxy.io/?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fnews%2Ftop.json%3Ft%3Dday%26limit%3D5"
-          probe "https://trumpstruth.org/"
-          probe "https://factba.se/topic/trump-social"
-          probe "https://r.jina.ai/https://trumpstruth.org/"
+          probe() { echo "=== $1"; curl -sL -m 40 -o /tmp/body -w "HTTP %{http_code} %{size_download}B" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$1" || true; echo; head -c ${2:-300} /tmp/body; echo; }
+          probe "https://api.allorigins.win/raw?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fnews%2Ftop.json%3Ft%3Dday%26limit%3D5"
+          probe "https://corsproxy.org/?https%3A%2F%2Fwww.reddit.com%2Fr%2Fnews%2Ftop.json%3Ft%3Dday%26limit%3D5"
+          probe "https://r.jina.ai/https://old.reddit.com/r/news/top/"
+          probe "https://r.jina.ai/https://www.reddit.com/r/news/hot/"
+          probe "https://r.jina.ai/https://trumpstruth.org/" 3000
