@@ -1,0 +1,46 @@
+name: update-site
+
+on:
+  schedule:
+    # 北京时间 07:50 / 19:50 = UTC 23:50 / 11:50（前一天）
+    - cron: "50 23,11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch, translate and build
+        env:
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python main.py
+
+      # 把本次生成的 site/（含历史归档）与翻译缓存提交回仓库，下次运行可继承
+      - name: Commit site and translation cache back to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site data/translation_cache.json
+          git commit -m "chore: update site $(date -u +%Y-%m-%d-%H%M)" || echo "nothing to commit"
+          git push
+
+      - name: Deploy site/ to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          keep_files: true
