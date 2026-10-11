@@ -89,10 +89,13 @@ python main.py                  # 需要环境变量 MOONSHOT_API_KEY
 
 ## 常见问题
 
-- **某板块显示"本次更新失败"**：多为网络或目标站反爬。X 热搜和 Truth Social
-  自带回退渠道；GitHub Actions（美国机房）成功率远高于国内家庭网络。
+- **某板块显示"本次更新失败"**：多为网络或目标站反爬。Reddit 有
+  www → old.reddit.com → r.jina.ai 三级回退，Truth Social 有
+  官方 API → RSSHub 实例 → r.jina.ai 三级回退，X 热搜有
+  trends24.in → getdaytrends.com 回退；GitHub Actions（美国机房）成功率远高于国内家庭网络。
 - **翻译失败**：检查 `MOONSHOT_API_KEY` 是否有效、余额是否充足；
-  翻译失败的条目在页面上会标注"翻译失败"，不影响其他条目。
+  翻译按每批最多 10 条分批调用，单批失败只影响该批条目，
+  在页面上标注"翻译失败"，不影响其他条目。
 - **本地跑 news/reddit 超时**：国内网络对 Google/Reddit 的连通性问题，
   不是代码问题，云端运行不受影响。
 
