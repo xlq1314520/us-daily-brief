@@ -78,6 +78,9 @@
               {{ it.extra.source }} · {{ it.extra.published }}
             {% elif sec.source == "x_trends" %}
               {% if it.extra.tweet_count %}热度：{{ it.extra.tweet_count }} · {% endif %}{{ it.extra.via }}
+            {% elif sec.source == "google_trends" %}
+              {% if it.extra.traffic %}热度：{{ it.extra.traffic }}{% endif %}
+              {% if it.extra.news_titles %} · 相关：{{ it.extra.news_titles | join("；") }}{% endif %}
             {% elif sec.source == "trump" %}
               <span class="trump-time">{{ it.extra.published[:10] }}</span>
               {% if it.extra.replies_count is defined %}
