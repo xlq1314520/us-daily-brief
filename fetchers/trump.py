@@ -1,5 +1,7 @@
 """特朗普 Truth Social 动态。Truth Social 是 Mastodon 分支，公开 API 可用；
-直接 API 失败时回退 RSSHub 公共实例轮询。帖子限定为最近 3 天内。"""
+直接 API 失败时依次回退：RSSHub 公共实例轮询 → r.jina.ai 免费代理。
+帖子限定为最近 3 天内。"""
+import json
 import re
 from datetime import datetime, timedelta, timezone
 
@@ -44,6 +46,33 @@ def _recent_only(items):
     return kept
 
 
+def _statuses_to_items(posts, via):
+    """Mastodon Status 列表 → 统一条目结构（带 _dt 内部字段，供最近 3 天过滤）。"""
+    items = []
+    for p in posts:
+        if not isinstance(p, dict):
+            continue
+        content = _strip_html(p.get("content", ""))
+        if not content:
+            continue
+        dt = _parse_dt(p.get("created_at", ""))
+        items.append({
+            "id": "ts-" + str(p.get("id", "")),
+            "title": content[:120] + ("…" if len(content) > 120 else ""),
+            "url": p.get("url", ""),
+            "snippet": content,
+            "extra": {
+                "published": p.get("created_at", ""),
+                "replies_count": p.get("replies_count", 0),
+                "reblogs_count": p.get("reblogs_count", 0),
+                "favourites_count": p.get("favourites_count", 0),
+                "via": via,
+            },
+            "_dt": dt,
+        })
+    return items
+
+
 def _fetch_direct(limit):
     """Truth Social Mastodon 兼容 API。"""
     headers = {"User-Agent": UA}
@@ -68,27 +97,7 @@ def _fetch_direct(limit):
         posts = r.json()
         if not isinstance(posts, list):
             return None, "Truth Social API 返回非列表数据"
-        items = []
-        for p in posts:
-            content = _strip_html(p.get("content", ""))
-            if not content:
-                continue
-            dt = _parse_dt(p.get("created_at", ""))
-            items.append({
-                "id": "ts-" + str(p.get("id", "")),
-                "title": content[:120] + ("…" if len(content) > 120 else ""),
-                "url": p.get("url", ""),
-                "snippet": content,
-                "extra": {
-                    "published": p.get("created_at", ""),
-                    "replies_count": p.get("replies_count", 0),
-                    "reblogs_count": p.get("reblogs_count", 0),
-                    "favourites_count": p.get("favourites_count", 0),
-                    "via": "truthsocial.com API",
-                },
-                "_dt": dt,
-            })
-        kept = _recent_only(items)
+        kept = _recent_only(_statuses_to_items(posts, "truthsocial.com API"))
         if kept:
             return kept, None
         return None, f"Truth Social 最近 {MAX_AGE_DAYS} 天内无新帖"
@@ -142,6 +151,88 @@ def _fetch_rsshub(limit):
     return None, "RSSHub 全部实例失败：" + "；".join(errors)
 
 
+def _parse_jina_markdown(text, limit):
+    """jina 返回 markdown 渲染结果时的尽力提取：按帖子 URL 分段，
+    URL 上方的段落为正文，附近找 ISO 时间。"""
+    lines = text.splitlines()
+    items = []
+    url_re = re.compile(r"https://truthsocial\.com/@\w+/posts/(\d+)")
+    dt_re = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z?")
+    prev_end = 0
+    for i, line in enumerate(lines):
+        m = url_re.search(line)
+        if not m:
+            continue
+        seg = lines[prev_end:i]
+        prev_end = i + 1
+        # 段内最后一个 ISO 时间为该帖发布时间；正文为段内其余非空、
+        # 非标题、非时间戳、非 URL 的行（jina 渲染顺序不确定，统一过滤）
+        published, dt = "", None
+        for k in range(len(seg) - 1, -1, -1):
+            dm = dt_re.search(seg[k])
+            if dm:
+                published = dm.group(0)
+                dt = _parse_dt(published if published.endswith("Z") else published + "Z")
+                break
+        content_lines = [s.strip() for s in seg
+                         if s.strip() and not s.strip().startswith("#")
+                         and not dt_re.search(s) and not url_re.search(s)]
+        content = _strip_html(" ".join(content_lines))
+        if not content:
+            continue
+        items.append({
+            "id": "ts-" + m.group(1),
+            "title": content[:120] + ("…" if len(content) > 120 else ""),
+            "url": m.group(0),
+            "snippet": content[:500],
+            "extra": {"published": published, "via": "r.jina.ai (markdown)"},
+            "_dt": dt,
+        })
+        if len(items) >= limit:
+            break
+    return items
+
+
+def _fetch_jina(limit):
+    """经 r.jina.ai 免费代理拉 Truth Social API（对端 Cloudflare 只见 jina 的 IP）。
+
+    正常返回原始 JSON；被转成 markdown 时尽力提取帖子文本/时间/链接。
+    """
+    target = f"https://truthsocial.com/api/v1/accounts/{ACCOUNT_ID}/statuses?limit={limit}"
+    try:
+        r = requests.get("https://r.jina.ai/" + target, headers={"User-Agent": UA}, timeout=90)
+        r.raise_for_status()
+        text = r.text.strip()
+        # 尝试 1：整体或包裹中的 JSON
+        posts = None
+        try:
+            posts = json.loads(text)
+        except ValueError:
+            m = re.search(r"```(?:json)?\s*(.*?)```", text, re.S)
+            candidate = m.group(1) if m else text[text.find("["):text.rfind("]") + 1]
+            try:
+                posts = json.loads(candidate)
+            except ValueError:
+                posts = None
+        if isinstance(posts, list):
+            kept = _recent_only(_statuses_to_items(posts, "r.jina.ai (JSON)"))
+            if kept:
+                return kept, None
+            return None, f"r.jina.ai (JSON): 最近 {MAX_AGE_DAYS} 天内无新帖"
+        # 尝试 2：markdown 尽力提取（无可靠时间时 _dt 为 None，会保留条目）
+        items = _parse_jina_markdown(text, limit)
+        if items:
+            items = [it for it in items if it.get("_dt") is None or it["_dt"] >=
+                     datetime.now(timezone.utc) - timedelta(days=MAX_AGE_DAYS)]
+            for it in items:
+                it.pop("_dt", None)
+            if items:
+                return items, None
+        return None, "r.jina.ai: 未能从响应中提取帖子"
+    except Exception as e:
+        return None, f"r.jina.ai: {type(e).__name__}"
+
+
 def fetch(limit=20):
     result = {"ok": False, "source": SOURCE, "items": [], "error": None}
     items, err = _fetch_direct(limit)
@@ -155,5 +246,11 @@ def fetch(limit=20):
         result["ok"] = True
         result["items"] = items
         return result
-    result["error"] = f"{direct_err} | {err}"
+    rsshub_err = err
+    items, err = _fetch_jina(limit)
+    if items:
+        result["ok"] = True
+        result["items"] = items
+        return result
+    result["error"] = f"{direct_err} | {rsshub_err} | {err}"
     return result
