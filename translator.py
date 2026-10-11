@@ -72,9 +72,13 @@ def translate(entries):
     cache = _load_cache()
     pending = []
     for e in entries:
-        th, sh = _hash(e["title"]), _hash(e["snippet"] or "")
-        if th in cache and (not e["snippet"] or sh in cache):
-            result[e["key"]] = {"zh_title": cache[th], "zh_snippet": cache.get(sh)}
+        # 空 snippet 不查/不写缓存（否则所有空 snippet 共享 _hash("") 一个槽位，
+        # 某条目模型幻觉出的 zh_snippet 会串到所有空 snippet 条目上），也永远不求翻译
+        th = _hash(e["title"])
+        sh = _hash(e["snippet"]) if e["snippet"] else None
+        if th in cache and (sh is None or sh in cache):
+            result[e["key"]] = {"zh_title": cache[th],
+                                "zh_snippet": cache.get(sh) if sh else None}
         else:
             pending.append((e, th, sh))
     for e, _, _ in pending:
@@ -120,12 +124,13 @@ def translate(entries):
             except Exception:
                 continue
             zh_title = (item.get("zh_title") or "").strip() or None
-            zh_snippet = (item.get("zh_snippet") or "").strip() or None
+            # 空 snippet 的条目不接受模型"看图说话"编出的 zh_snippet
+            zh_snippet = (item.get("zh_snippet") or "").strip() or None if sh else None
             result[e["key"]]["zh_title"] = zh_title
             result[e["key"]]["zh_snippet"] = zh_snippet
             if zh_title:
                 cache[th] = zh_title
-            if zh_snippet:
+            if zh_snippet and sh:
                 cache[sh] = zh_snippet
 
     if failed_errs:
