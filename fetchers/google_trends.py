@@ -7,7 +7,7 @@ import requests
 import xml.etree.ElementTree as ET
 
 SOURCE = "google_trends"
-FEED_URL = "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US"
+FEED_URL = "https://trends.google.com/trending/rss?geo=US"
 
 
 def _text(el, tag):
