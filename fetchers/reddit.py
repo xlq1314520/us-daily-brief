@@ -57,6 +57,8 @@ def _parse_listing(text, sub, limit):
 
 def _fetch_subreddit(sub, limit):
     """单个版块：按回退链尝试，返回 (items, None) 或 (None, error)。"""
+    import time
+    from urllib.parse import quote
     target = f"https://www.reddit.com/r/{sub}/top.json?t=day&limit={limit}"
     candidates = [
         ("直连", target, 30),
@@ -75,6 +77,21 @@ def _fetch_subreddit(sub, limit):
             errors.append(f"{name}: 空列表")
         except Exception as e:
             errors.append(f"{name}: {type(e).__name__}")
+    # 最后兜底：allorigins 免费代理。它有时返回 HTML 外壳（无 data.children），
+    # 解析阶段会自动识别丢弃；已知不稳定（520/522 频发），重试 2 次间隔 3 秒。
+    proxy_url = "https://api.allorigins.win/raw?url=" + quote(target, safe="")
+    for attempt in range(2):
+        try:
+            resp = requests.get(proxy_url, headers=HEADERS, timeout=60)
+            resp.raise_for_status()
+            items = _parse_listing(resp.text, sub, limit)
+            if items:
+                return items, None
+            errors.append(f"allorigins(第{attempt + 1}次): 返回内容无可解析帖子数据")
+        except Exception as e:
+            errors.append(f"allorigins(第{attempt + 1}次): {type(e).__name__}")
+        if attempt == 0:
+            time.sleep(3)
     return None, "；".join(errors)
 
 
