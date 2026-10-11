@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#ffffff; --ink:#1f2328; --sub:#667; --line:#e5e8ec;
+          --accent:#1a73e8; --fail:#b3261e; --meta:#888; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font-family:-apple-system,"PingFang SC","Microsoft YaHei",Roboto,"Segoe UI",sans-serif;
+         line-height:1.65; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 14px 60px; }
+  header.top { padding:26px 0 8px; }
+  header.top h1 { font-size:1.45rem; margin:0 0 4px; }
+  header.top .meta { color:var(--meta); font-size:.85rem; }
+  .badge { display:inline-block; background:var(--accent); color:#fff; border-radius:4px;
+           font-size:.75rem; padding:1px 8px; margin-left:8px; vertical-align:2px; }
+  section.card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+                 margin:18px 0; padding:16px 16px 8px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+  section.card > h2 { font-size:1.1rem; margin:0 0 2px; }
+  section.card > h2 .en { font-weight:400; color:var(--meta); font-size:.82rem; margin-left:8px; }
+  .fail { color:var(--fail); font-size:.88rem; background:#fdf0ef; border-radius:8px;
+          padding:10px 12px; margin:10px 0; }
+  ul.items { list-style:none; margin:8px 0 0; padding:0; }
+  ul.items li { border-top:1px solid var(--line); padding:12px 0; }
+  ul.items li:first-child { border-top:none; }
+  .en-title { font-size:.95rem; font-weight:600; }
+  .en-title a { color:var(--ink); text-decoration:none; }
+  .en-title a:hover { color:var(--accent); text-decoration:underline; }
+  .zh-title { font-size:.95rem; margin-top:2px; }
+  .zh-title .zh-missing { color:var(--fail); font-size:.82rem; }
+  .snip { color:var(--sub); font-size:.85rem; margin-top:4px; }
+  .zh-snip { color:#445; font-size:.85rem; margin-top:2px; }
+  .item-meta { color:var(--meta); font-size:.75rem; margin-top:4px; }
+  .item-meta a { color:var(--meta); }
+  .trump-time { color:var(--meta); font-size:.78rem; }
+  footer.arch { margin-top:34px; }
+  footer.arch h2 { font-size:1rem; }
+  footer.arch ul { list-style:none; padding:0; columns:2; font-size:.85rem; }
+  footer.arch li { padding:2px 0; }
+  .home-link { font-size:.85rem; margin-bottom:10px; }
+  .home-link a { color:var(--accent); }
+  @media (max-width:520px) { footer.arch ul { columns:1; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>{{ title }}<span class="badge">{{ period_label }}</span></h1>
+    <div class="meta">更新于 {{ generated_at }} · 每天 07:50 / 19:50（北京时间）自动更新</div>
+  </header>
+
+  {% for sec in sections %}
+  <section class="card">
+    <h2>{{ sec.zh }}<span class="en">{{ sec.en }}</span></h2>
+    {% if not sec.ok %}
+      <div class="fail">本次更新失败：{{ sec.error[:160] }}{% if sec.error | length > 160 %}…{% endif %}</div>
+    {% else %}
+      <ul class="items">
+      {% for it in sec.entries %}
+        <li>
+          <div class="en-title"><a href="{{ it.url }}" target="_blank" rel="noopener">{{ it.title }}</a></div>
+          <div class="zh-title">
+            {% if it.zh_title %}{{ it.zh_title }}
+            {% else %}<span class="zh-missing">（翻译失败）</span>{% endif %}
+          </div>
+          {% if it.snippet %}<div class="snip">{{ it.snippet }}</div>{% endif %}
+          {% if it.zh_snippet %}<div class="zh-snip">{{ it.zh_snippet }}</div>{% endif %}
+          <div class="item-meta">
+            {% if sec.source == "reddit" %}
+              r/{{ it.extra.subreddit }} · ▲{{ it.extra.score }} · 💬{{ it.extra.num_comments }}
+              · <a href="{{ it.extra.permalink }}">Reddit 讨论</a>
+            {% elif sec.source == "youtube" %}
+              {{ it.extra.channel }} · {{ it.extra.publishedAt[:10] }}
+            {% elif sec.source == "news" %}
+              {{ it.extra.source }} · {{ it.extra.published }}
+            {% elif sec.source == "x_trends" %}
+              {% if it.extra.tweet_count %}热度：{{ it.extra.tweet_count }} · {% endif %}{{ it.extra.via }}
+            {% elif sec.source == "trump" %}
+              <span class="trump-time">{{ it.extra.published[:10] }}</span>
+              {% if it.extra.replies_count is defined %}
+                · 💬{{ it.extra.replies_count }} · 🔁{{ it.extra.reblogs_count }} · ❤{{ it.extra.favourites_count }}
+              {% endif %}
+              · {{ it.extra.via }}
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
+  {% endfor %}
+
+  {% if not is_archive %}
+  <footer class="arch">
+    <h2>📅 历史归档（最近 {{ archives | length }} 期）</h2>
+    {% if archives %}
+    <ul>
+      {% for a in archives %}
+      <li><a href="archive/{{ a.name }}">{{ a.label }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="meta">暂无历史归档</div>
+    {% endif %}
+  </footer>
+  {% else %}
+  <div class="home-link"><a href="../index.html">← 返回最新一期</a></div>
+  {% endif %}
+</div>
+</body>
+</html>
