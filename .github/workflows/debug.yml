@@ -1,0 +1,10 @@
+name: debug-net
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dump google trends rss
+        run: |
+          { echo "=== rss-begin"; curl -sL -m 30 -A "Mozilla/5.0" "https://trends.google.com/trending/rss?geo=US" | head -c 6000 | fold -w 200; echo "=== rss-end"; } || true
+          exit 0
