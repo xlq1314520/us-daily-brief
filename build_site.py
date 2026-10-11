@@ -16,11 +16,12 @@ SECTION_META = {
     "youtube": {"zh": "YouTube 美国热榜", "en": "YouTube US Trending"},
     "reddit": {"zh": "Reddit 热帖", "en": "Reddit Hot (r/news · r/worldnews)"},
     "news": {"zh": "美国新闻头条", "en": "US Headlines (Google News)"},
+    "google_trends": {"zh": "Google 美国热搜", "en": "Google US Trending Searches"},
     "x_trends": {"zh": "X 美国热搜", "en": "X US Trends"},
     "trump": {"zh": "特朗普动态", "en": "Trump on Truth Social"},
 }
 
-SECTION_ORDER = ["youtube", "news", "reddit", "x_trends", "trump"]
+SECTION_ORDER = ["youtube", "news", "google_trends", "reddit", "x_trends", "trump"]
 
 
 def beijing_now():
