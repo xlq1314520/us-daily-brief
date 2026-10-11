@@ -1,5 +1,5 @@
-"""Kimi API 批量翻译（moonshot）。所有条目的 title+snippet 合并成一次调用，
-要求模型返回严格 JSON 数组。带内容哈希缓存、失败重试一次、解析失败降级。"""
+"""Kimi API 批量翻译（moonshot）。所有条目的 title+snippet 分批调用（每批最多 10 条），
+要求模型返回严格 JSON 数组。带内容哈希缓存、失败重试一次、单批失败互不影响、解析失败降级。"""
 import hashlib
 import json
 import os
@@ -49,7 +49,7 @@ def _call_kimi(payload_texts, api_key):
         "messages": [{"role": "user", "content": user}],
     }
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-    resp = requests.post(API_URL, json=body, headers=headers, timeout=120)
+    resp = requests.post(API_URL, json=body, headers=headers, timeout=300)
     resp.raise_for_status()
     content = resp.json()["choices"][0]["message"]["content"].strip()
     # 容错：剥离可能的 markdown 代码块包裹
@@ -87,40 +87,48 @@ def translate(entries):
         _save_cache(cache)
         return result
 
-    texts = []
-    for e, _, _ in pending:
-        title = e["title"][:MAX_TEXT_LEN]
-        snippet = (e["snippet"] or "")[:MAX_TEXT_LEN]
-        texts.append(f"{title} || {snippet}" if snippet else title)
+    # 分批调用：kimi-k2.6 为推理模型，单批过大容易超时；每批最多 10 条。
+    # 某批失败只影响该批条目（保持 None，页面显示"翻译失败"），其余批次照常。
+    BATCH_SIZE = 10
+    failed_errs = []
+    for start in range(0, len(pending), BATCH_SIZE):
+        batch = pending[start:start + BATCH_SIZE]
+        texts = []
+        for e, _, _ in batch:
+            title = e["title"][:MAX_TEXT_LEN]
+            snippet = (e["snippet"] or "")[:MAX_TEXT_LEN]
+            texts.append(f"{title} || {snippet}" if snippet else title)
 
-    arr, err = None, None
-    for attempt in range(2):
-        try:
-            arr = _call_kimi(texts, api_key)
-            err = None
-            break
-        except Exception as ex:
-            err = f"{type(ex).__name__}: {ex}"
-            arr = None
+        arr, err = None, None
+        for attempt in range(2):
+            try:
+                arr = _call_kimi(texts, api_key)
+                err = None
+                break
+            except Exception as ex:
+                err = f"{type(ex).__name__}: {ex}"
+                arr = None
 
-    if arr is None:
-        print(f"[translator] Kimi 调用失败（已重试 1 次）: {err}")
-        _save_cache(cache)
-        return result
-
-    for item in arr:
-        try:
-            i = int(item.get("i"))
-            e, th, sh = pending[i]
-        except Exception:
+        if arr is None:
+            failed_errs.append(f"第 {start // BATCH_SIZE + 1} 批: {err}")
             continue
-        zh_title = (item.get("zh_title") or "").strip() or None
-        zh_snippet = (item.get("zh_snippet") or "").strip() or None
-        result[e["key"]]["zh_title"] = zh_title
-        result[e["key"]]["zh_snippet"] = zh_snippet
-        if zh_title:
-            cache[th] = zh_title
-        if zh_snippet:
-            cache[sh] = zh_snippet
+
+        for item in arr:
+            try:
+                i = int(item.get("i"))
+                e, th, sh = batch[i]
+            except Exception:
+                continue
+            zh_title = (item.get("zh_title") or "").strip() or None
+            zh_snippet = (item.get("zh_snippet") or "").strip() or None
+            result[e["key"]]["zh_title"] = zh_title
+            result[e["key"]]["zh_snippet"] = zh_snippet
+            if zh_title:
+                cache[th] = zh_title
+            if zh_snippet:
+                cache[sh] = zh_snippet
+
+    if failed_errs:
+        print("[translator] 以下批次失败（已重试 1 次）: " + "；".join(failed_errs))
     _save_cache(cache)
     return result
