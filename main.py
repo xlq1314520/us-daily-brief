@@ -12,15 +12,16 @@ from datetime import datetime
 
 import build_site
 import translator
-from fetchers import news, reddit, trump, x_trends, youtube
+from fetchers import google_trends, news, reddit, trump, x_trends, youtube
 
 # 用户暂不使用油管：重新启用时在列表中加回 youtube 即可
-FETCHERS = [news, reddit, x_trends, trump]
+FETCHERS = [news, google_trends, reddit, x_trends, trump]
 
 # 每板块最多翻译/展示的条数
 SECTION_LIMITS = {
     "youtube": 20,
     "news": 20,
+    "google_trends": 15,
     "reddit": 30,
     "x_trends": 20,
     "trump": 20,
