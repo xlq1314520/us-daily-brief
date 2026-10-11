@@ -6,11 +6,12 @@ jobs:
     steps:
       - name: probe endpoints
         run: |
-          probe() { echo "=== $1"; curl -s -m 45 -o /tmp/body -w "HTTP %{http_code} %{size_download}B" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" "$1"; echo; head -c 400 /tmp/body; echo; }
-          probe "https://r.jina.ai/https://www.reddit.com/r/news/top.json?t=day&limit=5"
-          probe "https://r.jina.ai/https://truthsocial.com/api/v1/accounts/107780257626128497/statuses?limit=5"
-          probe "https://r.jina.ai/https://truthsocial.com/@realDonaldTrump.rss"
-          probe "https://truthsocial.com/@realDonaldTrump.rss"
-          probe "https://api.allorigins.win/raw?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fnews%2Ftop.json%3Ft%3Dday%26limit%3D5"
-          probe "https://redlib.catsarch.com/r/news/top.rss?t=day"
-          probe "https://old.reddit.com/r/news/top.json?t=day&limit=5"
+          probe() { echo "=== $1"; curl -sL -m 45 -o /tmp/body -w "HTTP %{http_code} %{size_download}B" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$1"; echo; head -c 300 /tmp/body; echo; }
+          probe "https://redlib.perennialte.ch/r/news/top.rss?t=day"
+          probe "https://redlib.tux.pizza/r/news/top.rss?t=day"
+          probe "https://safereddit.com/r/news/top.rss?t=day"
+          probe "https://redlib.privacyredirect.com/r/news/top.rss?t=day"
+          probe "https://trumpstruth.org/"
+          probe "https://factba.se/topic/trump-social"
+          probe "https://r.jina.ai/https://trumpstruth.org/"
+          probe "https://www.presidency.ucsb.edu/"
