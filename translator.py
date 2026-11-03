@@ -50,7 +50,9 @@ def _call_kimi(payload_texts, api_key):
     }
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
     resp = requests.post(API_URL, json=body, headers=headers, timeout=300)
-    resp.raise_for_status()
+    if resp.status_code != 200:
+        raise requests.HTTPError(
+            f"HTTP {resp.status_code}: {resp.text[:200]}", response=resp)
     content = resp.json()["choices"][0]["message"]["content"].strip()
     # 容错：剥离可能的 markdown 代码块包裹
     m = re.search(r"```(?:json)?\s*(.*?)```", content, re.S)
