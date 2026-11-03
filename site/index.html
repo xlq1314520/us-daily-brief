@@ -13,8 +13,22 @@
          line-height:1.65; }
   .wrap { max-width:760px; margin:0 auto; padding:0 14px 60px; }
   header.top { padding:26px 0 8px; }
+  .top-row { display:flex; justify-content:space-between; align-items:flex-start;
+             gap:16px; flex-wrap:wrap; }
+  .top-left { flex:1 1 420px; min-width:0; }
   header.top h1 { font-size:1.45rem; margin:0 0 4px; }
   header.top .meta { color:var(--meta); font-size:.85rem; }
+  .enso-card { flex:0 1 280px; border:1px solid var(--line); border-radius:12px; background:var(--card);
+               padding:10px 16px; min-width:200px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+  .enso-card a { display:block; color:inherit; text-decoration:none; }
+  .enso-title { font-size:.75rem; color:var(--meta); }
+  .enso-value { font-size:1.8rem; font-weight:700; line-height:1.3; }
+  .enso-status { font-size:.9rem; font-weight:600; }
+  .enso-meta { font-size:.72rem; color:var(--meta); margin-top:2px; }
+  .enso-missing { font-size:.85rem; color:var(--meta); padding:6px 0; }
+  .kind-el_nino .enso-value, .kind-el_nino .enso-status { color:#c2410c; }
+  .kind-la_nina .enso-value, .kind-la_nina .enso-status { color:#1d4ed8; }
+  .kind-neutral .enso-value, .kind-neutral .enso-status { color:#6b7280; }
   .badge { display:inline-block; background:var(--accent); color:#fff; border-radius:4px;
            font-size:.75rem; padding:1px 8px; margin-left:8px; vertical-align:2px; }
   section.card { background:var(--card); border:1px solid var(--line); border-radius:12px;
@@ -43,468 +57,56 @@
   .home-link { font-size:.85rem; margin-bottom:10px; }
   .home-link a { color:var(--accent); }
   @media (max-width:520px) { footer.arch ul { columns:1; } }
+  @media (max-width:640px) { .enso-card { flex:0 0 100%; } .top-left { flex:1 1 100%; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>美国每日热榜 · 中英对照<span class="badge">上午版</span></h1>
-    <div class="meta">更新于 2026-11-03 08:22（北京） · 每天 07:50 / 19:50（北京时间）自动更新</div>
+    <div class="top-row">
+      <div class="top-left">
+        <h1>美国每日热榜 · 中英对照<span class="badge">下午版</span></h1>
+        <div class="meta">更新于 2026-11-03 18:11（北京） · 每天 07:50 / 19:50（北京时间）自动更新</div>
+      </div>
+      <div class="enso-card kind-el_nino">
+        
+        <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/" target="_blank" rel="noopener">
+          <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
+          <div class="enso-value">+3.4°C</div>
+          <div class="enso-status">超强厄尔尼诺</div>
+          <div class="enso-meta">SST 30.2°C · 截至 2026-10-28 当周 · NOAA CPC 周度更新</div>
+        </a>
+        
+      </div>
+    </div>
   </header>
 
   
   <section class="card">
     <h2>美国新闻头条<span class="en">US Headlines (Google News)</span></h2>
     
-      <ul class="items">
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxOeGpYSXBmU1d2cjdndE82UC0tSXRkbndHQWpmMVlrQm4wTkloN3JaV2VxcVhua0lMbnhXTmQxRER2M1B6c3BhWVF4UnlodXplMHdEcTdvdTBsekVZdHdBdXgtNnViaDhjNmg2U2RrSlpGSHdxZ0JVLXhFQUlMNldFTjIzZER2RUkwNVpOV2hhQmxzTGhlcEs3Q3FtRGxnY3FtUVlOdnpUbXlZenlzOE5acUN0X05vcmY1Qk93ck9EUmFuLWF6am9F?oc=5" target="_blank" rel="noopener">Supreme Court quickly rejects Trump effort to target alleged noncitizen voters in California - NBC News</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Supreme Court quickly rejects Trump effort to target alleged noncitizen voters in California NBC News Supreme Court Rejects Trump Administration Request to Intervene in California Ballot Case The New </div>
-          
-          <div class="item-meta">
-            
-              NBC News · Mon, 02 Nov 2026 22:52:20 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE0wbDR4dE1GX0xlQW94X3NZZWFKcUpwVWxIcllCdThrY2tYa1ZwNkplcGtRRkFrTm9CZUZlQlRoeUdiOWdZZXROUGxQZmU4X281a05qOE5pT0ZURkU?oc=5" target="_blank" rel="noopener">Who are the victims of the deadly Florida jet crash? - BBC</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Who are the victims of the deadly Florida jet crash? BBC 20-Year-Old Nathalia Filgueiras Was a Pilot on Learjet That Crashed in Florida The New York Times Austin tech entrepreneur, wife and young chil</div>
-          
-          <div class="item-meta">
-            
-              BBC · Mon, 02 Nov 2026 23:44:06 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxNREhSWk5vaWpSOGpfQVVmX2hsTHlRbFdCdWd1Tko4akgwUDIwbTJySUdSa1g1aV9fSU80ZzBiWHIzY1lfUUhfR0lFNlh5SlJLa2Fjd3BZZzRpcEJ6eV9NaWNIM3IzUjhDaVRORWdKWTVyaWV3QnV4aENqcnVCQU9Tcko0eU5qZ3NMXzVoNWgxWVJoaTNJZERETnNyd2pzS1FIeUtDQTZYaXVPeGlaSnpuMlltMlIwNGtvX3BPZ05CbzlkdGxsc25odFBhQQ?oc=5" target="_blank" rel="noopener">El-Sayed campaign reports $2.4 million fundraising day as Stevens endorses GOP rival - The Washington Post</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">El-Sayed campaign reports $2.4 million fundraising day as Stevens endorses GOP rival The Washington Post ‘He would wind her up’: Democratic anger at Haley Stevens’ fiancé boils over after her endorsem</div>
-          
-          <div class="item-meta">
-            
-              The Washington Post · Mon, 02 Nov 2026 21:28:36 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxQQ3RRTXBYcC1DZlFSU202ZE5yZy1hd21nandNOHRkc1ZpR3hCRFVUVUF5WTlOVmFFQU94NWpQeWpFbnpEaVVsWXBlcV95X0R4bHRkUkU4Y09laHZ3ekZ3azU1UWNILXQ1RXF3bWdNRHlCSnk3YTlRd21qc0hxVWdnMw?oc=5" target="_blank" rel="noopener">Trump talks DC renovations for more than 20 minutes of his midterms closing message - CNN</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Trump talks DC renovations for more than 20 minutes of his midterms closing message CNN Trump Delivers a Closing Midterm Message. Mostly About Landscaping. The New York Times On the Eve of the Midterm</div>
-          
-          <div class="item-meta">
-            
-              CNN · Mon, 02 Nov 2026 21:35:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxOYTlDa2hpZGlqX1p5WVJtY2ViQzl4XzlZQ1RkWEN2bW5WdXZTR1g2UEs0X0p0aWxaWXh0NzYxdEJwMVp2UXR3YnZ0clpLQmxXTkkyRGg2ejQyVmtoRlk2MHA4MU90NGJWd2V5ZW9zM1ZUVzc3bGJYWEJsR1JWa2hQQ1ZFTjk5eDNuUDM2Vw?oc=5" target="_blank" rel="noopener">Lindsay Clancy has &#34;horrible dreams,&#34; has been on suicide watch since allegedly killing her kids, attorneys say - CBS News</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Lindsay Clancy has &#34;horrible dreams,&#34; has been on suicide watch since allegedly killing her kids, attorneys say CBS News Prosecutors hint at plans to retry Lindsay Clancy on murder charges BBC A judge</div>
-          
-          <div class="item-meta">
-            
-              CBS News · Mon, 02 Nov 2026 12:55:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxNbzdKU1huRWQtMWhVQ0p3N2NLcVk2dmUwQ0I4bVVielVBYU5CSTluTDI2NG1DRUFtQ05JMkNuTDN5c0NSYTF4cU50VHgwTDREdk5NWlNkZzVEU0FlU1hUQTNGc2MyMEdsak5aUmxRYkhONHY2cDRTVnZESkNOZlRXWmhRVG96SlhsNDRPVWZCRUcydW9zN2F4N3RpQWNTYlNYNTZxQQ?oc=5" target="_blank" rel="noopener">Judge cites &#39;weaponization&#39; in tossing charges for ex-FBI agents accused of lying about Hunter Biden - AP News</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Judge cites &#39;weaponization&#39; in tossing charges for ex-FBI agents accused of lying about Hunter Biden AP News Judge Throws Out Charges Against Former F.B.I. Officials The New York Times Judge dismisses</div>
-          
-          <div class="item-meta">
-            
-              AP News · Mon, 02 Nov 2026 17:55:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPMlFBWHJaQ1NPNVVPMy1uRkpJSHpGTE03T1M1T3J3YW9aRXV3SmFXbnRscEEwQktkUXc5Z1ZjRW1iV1R5cTFfdTJuMlMwNjJ5cXN3ME5ZSkQ4ZWFFbTU4a1Y1cldMUmJrLVRnVVRrUlBZd2Z6MDB4Yl9iWndiT1o1RkJlR1ROR3hvSTRyU2RCZXMxT3FmbkxyVllUMjNNU1lrcXRKNVZLTHFrY0E?oc=5" target="_blank" rel="noopener">What the voter records of California’s billionaires reveal - Politico</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">What the voter records of California’s billionaires reveal Politico Two economists studied California&#39;s billionaire tax. They reached wildly different conclusions NPR Where does California&#39;s Prop. 40 </div>
-          
-          <div class="item-meta">
-            
-              Politico · Mon, 02 Nov 2026 20:55:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPQUU4YVpFS3lFSW1PVGU0STg0U2FfVzdMUkxzMG05MGp2TVZCUVU5bWtCZElmNUU3R0xCcmFDci1xRnZxYnBRQkZHTGVBSE9CQmxHWU16SWZTanFVMmp3aUdwRWlVa2luT0xiNFRZSXN3bC00NW9oSDFHUjVfenpjQTFBQ0Rpb0lq?oc=5" target="_blank" rel="noopener">Trump Is Playing Up Voter Fraud Prosecutions. Meet Some of the Accused. - The New York Times</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Trump Is Playing Up Voter Fraud Prosecutions. Meet Some of the Accused. The New York Times Trump’s DoJ charges six more people in ‘voter fraud’ crackdown in California The Guardian Trump’s Justice Dep</div>
-          
-          <div class="item-meta">
-            
-              The New York Times · Mon, 02 Nov 2026 20:23:17 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxQMUlwVFRDWUFFZThiMllHUW1MUF9fWEp5NGFCTUJYTDJIVHJOMElkem1fZVFtVGtvQ21JcjZiallmZjNfMTY4TkN0Tm1EUWRVOEdnLVZqdU1IeHNqRkZ1NzkzTGFueHhid29iS3ZuVndhZXJuSER0ZXRSMmYwb1E5UWdLSHU?oc=5" target="_blank" rel="noopener">The midterm races to watch as Americans deliver their verdict on Donald Trump - Financial Times</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">The midterm races to watch as Americans deliver their verdict on Donald Trump Financial Times The 2026 midterms are tomorrow and the final polls are here. Which party has a better chance of winning? Y</div>
-          
-          <div class="item-meta">
-            
-              Financial Times · Mon, 02 Nov 2026 20:12:26 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOSlZQOGFnNWxyTG91ZkxGMkdDdlNhd1RuRUZzblYtZGxfOGpReXI2cE5oazAzZkFQRW96Y3VrUkdfenVFWWtPS1BfaFBYYWQ1WVBMVmpuaTZuU3llOGZNMF85QnVGRHAwZlphVWVoaDFiZWhoMWVjalhyTE5na3BVWjVHcmIyWDFoU0FnU2ZBaFZyOE5GRGJqQzdR?oc=5" target="_blank" rel="noopener">Vance says US has had ‘good conversations’ with Iran on finding deal to end conflict - AP News</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Vance says US has had ‘good conversations’ with Iran on finding deal to end conflict AP News America’s Gulf Allies Prepare for New Round of Strikes on Iran—and the Blowback WSJ US-Iran war news: Israe</div>
-          
-          <div class="item-meta">
-            
-              AP News · Mon, 02 Nov 2026 20:37:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxNcnBxbUVVcU5fRmswTjJHQUFneGZENEVHUmdEamNKVno1blFHX1NHa2ZOUGxudUhhb0JFanFUa3hKM0Z2ay1XWlZVWjJqVVd3R0lIVDhYME52ZW9sNXl1RHFaUnJlMGVOTTlHX05FTGJ1dHRPWUlxQnJZRnZnMGE4b2ZCSUxCS2lTUXlubkJVUHd5NjRhcGRtLTRveEU5S3JsVVl1UFlMUTRya1FZMWhwZm4zTUNvU1HSAbwBQVVfeXFMTkVrWk1MWGVRWGZnVzV5SG9lWlhZZFlmTk5tekJUTXVCN0xoVFl5TWJ2XzFETDY4T3JSWGcxejBtNWExM1VIdHVPcGlOdnNBSUhDelBKcUpGMkppV3BBbXJZWDhqWTNxN3JmM0p5b202T3FTM0RKdGMzRHY1VWJuX3YwMnFpZzBEaGVyUUdlSFZyanFUYVVoZmZhTmdtaTFsWDlaa1RMcWIzMHVJZkxhRTM3RWN1UjhCblpRVHM?oc=5" target="_blank" rel="noopener">British adventurer Karl Bushby returns home after 28-year walk around world - Al Jazeera</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">British adventurer Karl Bushby returns home after 28-year walk around world Al Jazeera A 31,000-Mile Walk Ends in England, at Mom’s House The New York Times Karl Bushby embraces emotional mother as he</div>
-          
-          <div class="item-meta">
-            
-              Al Jazeera · Mon, 02 Nov 2026 17:44:41 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiuwFBVV95cUxOQ3Y2N21HYXFTVEhxMXpodFhHQ3dNemkzQ3dTVHpqXzhoQTA0dG1fdFg1QWw0X3REUW9CZUVoWEFYMXpoZWc5OFFmbmg0X2dSaGVVS3hfSlJVTHYySkZKa2Z3dG51S09zSlQ3d1o1enB2UmZ1QXdBSVp5cGt1Q2piLTlRNnAyek02NVpBTy1lYjBocTdlWGZ3R093bzlTZFROZDljWjV2LTViN1Bxb0Y3MG5XTFlFaWhaX1hR?oc=5" target="_blank" rel="noopener">Ukrainian and Russian emergency alert apps send false warnings after hacks - The Washington Post</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Ukrainian and Russian emergency alert apps send false warnings after hacks The Washington Post WATCH: Zelenskyy confirms Ukraine hacked back after Russia&#39;s cyberattack of its emergency alert system PB</div>
-          
-          <div class="item-meta">
-            
-              The Washington Post · Mon, 02 Nov 2026 21:45:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE0zZk9KaG96LXBQYy0yUTM0dmZOUXRxRUd2bG16blNsUGZjMGZVSHdrTU95VXFrbHh3WklITUtHdU5Vclh2TTZacWl5aVRibkcyekEzTG00cHVjS3c?oc=5" target="_blank" rel="noopener">King&#39;s role is not policy making, says Palace in slavery apology row - BBC</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">King&#39;s role is not policy making, says Palace in slavery apology row BBC King Charles Meets Both Joy and Criticism on Caribbean Tour The New York Times As reparations debate grows, Caribbean campaigne</div>
-          
-          <div class="item-meta">
-            
-              BBC · Mon, 02 Nov 2026 18:24:36 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQcjBrd3FTdWlWY1A1aU5LUERrSHlYdUFVcnBzZVZSSVV0cnlMcG5naTY2WW1rRkVtcnZHa2tqNkkzYmc1d2tLZDJ0WlRIZS1PdUpuMWlxYUJXRk1CWFZnSW5iLXN3WGlFUU4wVXJPUHBmaGswTzhjMTlTYkFCbjNPcU9vdS1BampBbGs0WFp6WmJOTVpBaERMbENpVnl2T3g0dWxVeW4zbF9JVTZWbXdlVTFaOUJQc1XSAbwBQVVfeXFMTnZOZFpGMVJqQUsyNUwzWnVjYl9laFkyNHpkcWVmNkstdlZ1VlNuZkx2T1pHVU1EdGQyT2p4NWZRTHpPeWNzZmJtZVNKdXppN1RMNlFUTThON3JNREdLTWVPLXlzTjRGM1pZU2tMVE9TT2lPMWVMVklUb1pjdjhvMVk0bFJLaE14dU5tT0g5WVQ5UExGVFViSWlWeWRRd1NNcHZ6MGNFV0hPcUlORXFaZmUtVkZDYXNDNjJ1QjY?oc=5" target="_blank" rel="noopener">Poland&#39;s constitutional crisis deepens as Prime Minister Tusk faces accusations of power grab - Fox News</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Poland&#39;s constitutional crisis deepens as Prime Minister Tusk faces accusations of power grab Fox News Russia Senses Opportunity in Polish Political Turmoil The New York Times Bitter spat between Pola</div>
-          
-          <div class="item-meta">
-            
-              Fox News · Mon, 02 Nov 2026 19:37:12 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMixgFBVV95cUxNTGFsc2NMYXRUbERoRkphY2hPVWNDM0ZRRmw3OHZzNnlfN0h1aEowUG9uaHZraTJPNlcyVFVYZGVjYmx2Ui01d09OTm9YejM3UGF1aUJKcHVUSUxxb0ZGNTktQmVuRVF0X0pKYTF2clJ6YnJpVmNmUEZESHc4ZWRqMkt1d0VyMEV2RVZlUkYtUE9EcW03ZXB5RzFmQk01endLRWtzNFpnVGd4el90TFUxLWhxaXRxYUsyT1lmbjIySjQ2NXcxdVE?oc=5" target="_blank" rel="noopener">Apple results beat Wall Street expectations on strong iPhone sales - Reuters</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Apple results beat Wall Street expectations on strong iPhone sales Reuters Apple earnings live updates: New CEO John Ternus faces first Wall Street test CNBC Apple Q4 earnings live: iPhone 18 sales in</div>
-          
-          <div class="item-meta">
-            
-              Reuters · Mon, 02 Nov 2026 22:06:34 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxPTDhmTmZkVWhzazBUYVdXNUx1OTRkRDFidXNnblM1R0lFNVQ2OS1zRFV2aTFtS2drOEhOVEVSSjZzZDN0Z053X3NrMnJEVTRGQm1EOHh6aDJYWC16bTVPdlpxVk10Vkh0ZkNrdkx1YzFodGc1WVQ4NkpPanN3TnZPZjcxYmcwS0xaSk1DelBQUzM4RFpNNVdubXR5WlRZZXA2b3paamIwdkcwVEpUTWFNSDBuWGQ?oc=5" target="_blank" rel="noopener">Anthropic Investors Push for Cautious Valuation Closer to $1.5 Trillion - WSJ</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Anthropic Investors Push for Cautious Valuation Closer to $1.5 Trillion WSJ Inside Anthropic’s Hunt for A.I. Computing Power The New York Times Anthropic reports $17 billion in Q3 revenue, purchase co</div>
-          
-          <div class="item-meta">
-            
-              WSJ · Mon, 02 Nov 2026 22:18:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxPNUVuZU1Ea0ZDdlp4bjVCbVV6MGRxcEo1TU5XR0gyRTg0VVVkaWU0WVdUVkpyWHlQcWQtcUJWTm5LVjZRNENGaXZ0eHVaN2tNdTJxbnZtSEdWWUlra0Q3U25yYXNGanM3VDFoWmU2S1dVUjB2QUJTelE0ZllZWUI0YlNHNA?oc=5" target="_blank" rel="noopener">Binance customers withdraw more than $4.6 billion after crypto heist - CBS News</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Binance customers withdraw more than $4.6 billion after crypto heist CBS News North Korea denies involvement in Binance hack and criticizes FBI probe as ‘a trite provocation’ The Hill Binance sees $3.</div>
-          
-          <div class="item-meta">
-            
-              CBS News · Mon, 02 Nov 2026 16:01:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBhcE44b2ZsOG9fMFFnNTY4Q3hZUDk5QW9Oa1JkUkRKLVJhcGJHellrUU5kdExKNVpGRnJhbHJSZjRhODJfa0xhN05iQ2czckM3TjJ4TU5WQ1Z0T00?oc=5" target="_blank" rel="noopener">Shop freezers in seven European countries hit by cyber-attack - BBC</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Shop freezers in seven European countries hit by cyber-attack BBC New cyberattack on supermarket fridges sweeps across Europe Reuters Supermarkets across Europe hit by new fridge cyberattacks NBC News</div>
-          
-          <div class="item-meta">
-            
-              BBC · Mon, 02 Nov 2026 17:38:11 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE1uOGNTaDVUNk1DcXB2NFUycU8yNlpmY3g3MGFYN092ZERVb1hILWcxUGRla01uOVRSaFB4OHFacFVrM1IzV0gtNWtTZGdwYy1FNXg1WHVYNmhqd1pUZTY1V3dOcmZKUEo0cjRIOGRiekEwbEE?oc=5" target="_blank" rel="noopener">Apple CEO Ternus Says iPhone Duo Shortages Have No End Date in Sight - MacRumors</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Apple CEO Ternus Says iPhone Duo Shortages Have No End Date in Sight MacRumors I tested Apple&#39;s $2,000 iPhone Duo. It&#39;s a fascinating experiment, but the price is hard to justify. Axios Apple says it’</div>
-          
-          <div class="item-meta">
-            
-              MacRumors · Mon, 02 Nov 2026 22:03:23 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE5LUlFVUG4xanJ5aUNBaEo0bzBoSmJxZXp5Q3RNS0NXYU1JUGpBTFk0RFJab3g0RWpQMUlsVEV6RW0wN0hiWVJMREJuRHNEaEZwWE94WUpJMG5vbGdRVTFkOXhDOWRxNVNwc1N2cg?oc=5" target="_blank" rel="noopener">Dell XPS Googlebook Review: Beautiful Hardware For A Useless Platform - Engadget</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">Dell XPS Googlebook Review: Beautiful Hardware For A Useless Platform Engadget I compared Googlebook and Samsung DeX; Galaxy users have little reason to switch Android Police Lenovo&#39;s Googlebook 15 is</div>
-          
-          <div class="item-meta">
-            
-              Engadget · Mon, 02 Nov 2026 12:30:00 GMT
-            
-          </div>
-        </li>
-      
-      </ul>
+      <div class="fail">本次更新失败：ConnectTimeout: HTTPSConnectionPool(host=&#39;news.google.com&#39;, port=443): Max retries exceeded with url: /rss?hl=en-US&amp;gl=US&amp;ceid=US:en (Caused by ConnectTimeoutEr…</div>
+    
+  </section>
+  
+  <section class="card">
+    <h2>厄尔尼诺动态<span class="en">El Niño / La Niña (ENSO)</span></h2>
+    
+      <div class="fail">本次更新失败：ENSO 新闻抓取失败（NOAA 指数单独获取，见页首卡片）</div>
     
   </section>
   
   <section class="card">
     <h2>Google 美国热搜<span class="en">Google US Trending Searches</span></h2>
     
-      <ul class="items">
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">bucks vs timberwolves</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：500+。相关报道：LaMelo Ball, TJ Shannon added to Wolves&#39; injury report before Bucks game；Terrence Shannon Jr. (hip) downgraded to out Mon.；Two Key Timberwolves Added to Injury Report</div>
-          
-          <div class="item-meta">
-            
-              热度：500+
-               · 相关：LaMelo Ball, TJ Shannon added to Wolves&#39; injury report before Bucks game；Terrence Shannon Jr. (hip) downgraded to out Mon.；Two Key Timberwolves Added to Injury Report
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">pelicans vs grizzlies</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：500+。相关报道：Pippen Jr. &amp; Post&#39;s status for Grizzlies-Pelicans: Injuries, Odds, How to Watch &amp; Starters；Grizzlies vs Pelicans score updates, Cam Boozer highlights, TV channel；How to watch Pelicans vs. Grizzlies: TV channel and streaming options for November 2</div>
-          
-          <div class="item-meta">
-            
-              热度：500+
-               · 相关：Pippen Jr. &amp; Post&#39;s status for Grizzlies-Pelicans: Injuries, Odds, How to Watch &amp; Starters；Grizzlies vs Pelicans score updates, Cam Boozer highlights, TV channel；How to watch Pelicans vs. Grizzlies: TV channel and streaming options for November 2
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">kings vs mavericks</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：500+。相关报道：Mavericks-Kings preview: It&#39;s a different challenge against winless Kings；Kings vs Mavericks Prediction, Pick, NBA Odds for Monday, November 2；Mavericks vs Kings Preview and Injury Report: Let’s see what Darius Acuff Jr. looks like</div>
-          
-          <div class="item-meta">
-            
-              热度：500+
-               · 相关：Mavericks-Kings preview: It&#39;s a different challenge against winless Kings；Kings vs Mavericks Prediction, Pick, NBA Odds for Monday, November 2；Mavericks vs Kings Preview and Injury Report: Let’s see what Darius Acuff Jr. looks like
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">martin short</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：200+。相关报道：A conversation with Steve Martin &amp; Martin Short ahead of Hard Rock Live show: ‘We love Florida’；In 1994, Martin Short made the worst movie of his career. It was inspired by the “most perverse” film he’d ever seen</div>
-          
-          <div class="item-meta">
-            
-              热度：200+
-               · 相关：A conversation with Steve Martin &amp; Martin Short ahead of Hard Rock Live show: ‘We love Florida’；In 1994, Martin Short made the worst movie of his career. It was inspired by the “most perverse” film he’d ever seen
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">joaquim boumtje boumtje</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：200+。相关报道：Why Duke&#39;s Joaquim Boumtje Boumtje, UCLA&#39;s Nikola Kusturica, Texas&#39; Marcus Spears can&#39;t enter 2027 NBA Draft；Duke&#39;s 17-Year-Old Freshman Could Become College Basketball&#39;s Most Fascinating Newcomer；Duke’s Joaquim Boumtje Boumtje Has To Stay In College For 2 Years — Here’s Why</div>
-          
-          <div class="item-meta">
-            
-              热度：200+
-               · 相关：Why Duke&#39;s Joaquim Boumtje Boumtje, UCLA&#39;s Nikola Kusturica, Texas&#39; Marcus Spears can&#39;t enter 2027 NBA Draft；Duke&#39;s 17-Year-Old Freshman Could Become College Basketball&#39;s Most Fascinating Newcomer；Duke’s Joaquim Boumtje Boumtje Has To Stay In College For 2 Years — Here’s Why
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">ethan page</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：200+。相关报道：Chad Gable takes on Ethan Page in an Intercontinental Title Match；Ethan Page Captures Intercontinental Championship On WWE Raw；Chad Gable Injured on WWE Raw — Here’s What Happened</div>
-          
-          <div class="item-meta">
-            
-              热度：200+
-               · 相关：Chad Gable takes on Ethan Page in an Intercontinental Title Match；Ethan Page Captures Intercontinental Championship On WWE Raw；Chad Gable Injured on WWE Raw — Here’s What Happened
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">tyler loop</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：200+。相关报道：Ravens kicker Tyler Loop could go on IR, opening door for Jake Moody；Minter: Tyler Loop ‘may go on injured reserve’；Tyler Loop Could land on IR</div>
-          
-          <div class="item-meta">
-            
-              热度：200+
-               · 相关：Ravens kicker Tyler Loop could go on IR, opening door for Jake Moody；Minter: Tyler Loop ‘may go on injured reserve’；Tyler Loop Could land on IR
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">barbara mandrell</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：200+。相关报道：Paul Anka, Andy Garcia, Barbara Mandrell will get Kennedy Center Honors；Paul Anka and David Mamet to Be Honored by a Kennedy Center in Turmoil；David Mamet, David Foster, More Named 2026 Kennedy Center Honorees</div>
-          
-          <div class="item-meta">
-            
-              热度：200+
-               · 相关：Paul Anka, Andy Garcia, Barbara Mandrell will get Kennedy Center Honors；Paul Anka and David Mamet to Be Honored by a Kennedy Center in Turmoil；David Mamet, David Foster, More Named 2026 Kennedy Center Honorees
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">mexico-united states border</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：500+。相关报道：U.S. citizen fined $5K after illegal border crossing；US citizen caught entering country illegally in Southern California, fined $5,000；US citizen fined $5K, arrested on warrant after alleged illegal border entry</div>
-          
-          <div class="item-meta">
-            
-              热度：500+
-               · 相关：U.S. citizen fined $5K after illegal border crossing；US citizen caught entering country illegally in Southern California, fined $5,000；US citizen fined $5K, arrested on warrant after alleged illegal border entry
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://trends.google.com/trending/rss?geo=US" target="_blank" rel="noopener">college basketball rankings</a></div>
-          <div class="zh-title">
-            <span class="zh-missing">（翻译失败）</span>
-          </div>
-          <div class="snip">热度：200+。相关报道：College basketball rankings: Florida begins 2026-27 season as No. 1 in Top 25 And 1；CJ Ingram, Alex Lloyd Ready to Grow Behind Florida’s Stacked Roster；Gators basketball preseason superlatives</div>
-          
-          <div class="item-meta">
-            
-              热度：200+
-               · 相关：College basketball rankings: Florida begins 2026-27 season as No. 1 in Top 25 And 1；CJ Ingram, Alex Lloyd Ready to Grow Behind Florida’s Stacked Roster；Gators basketball preseason superlatives
-            
-          </div>
-        </li>
-      
-      </ul>
+      <div class="fail">本次更新失败：ConnectTimeout: HTTPSConnectionPool(host=&#39;trends.google.com&#39;, port=443): Max retries exceeded with url: /trending/rss?geo=US (Caused by ConnectTimeoutError(&lt;HTT…</div>
     
   </section>
   
   <section class="card">
     <h2>Reddit 热帖<span class="en">Reddit Hot (r/news · r/worldnews)</span></h2>
     
-      <div class="fail">本次更新失败：Reddit 全部回退失败：r/news: 直连: HTTPError；old.reddit.com: HTTPError；r.jina.ai: ValueError；allorigins(第1次): JSONDecodeError；allorigins(第2次): JSONDecodeError；r/worldnew…</div>
+      <div class="fail">本次更新失败：Reddit 全部回退失败：r/news: 直连: ConnectTimeout；old.reddit.com: ConnectTimeout；r.jina.ai: ConnectTimeout；allorigins(第1次): HTTPError；allorigins(第2次): HTTPError；r/worldn…</div>
     
   </section>
   
@@ -514,22 +116,7 @@
       <ul class="items">
       
         <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23RaiseHail/" target="_blank" rel="noopener">#RaiseHail</a></div>
-          <div class="zh-title">
-            掀起风暴
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：467 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23Eagles/" target="_blank" rel="noopener">#Eagles</a></div>
+          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23DWTS/" target="_blank" rel="noopener">#DWTS</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
@@ -537,7 +124,21 @@
           
           <div class="item-meta">
             
-              热度：367 score · getdaytrends.com
+              热度：366 score · getdaytrends.com
+            
+          </div>
+        </li>
+      
+        <li>
+          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23WWERAW/" target="_blank" rel="noopener">#WWERAW</a></div>
+          <div class="zh-title">
+            <span class="zh-missing">（翻译失败）</span>
+          </div>
+          
+          
+          <div class="item-meta">
+            
+              热度：332 score · getdaytrends.com
             
           </div>
         </li>
@@ -545,8 +146,7 @@
         <li>
           <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23Fallout76Giveaway/" target="_blank" rel="noopener">#Fallout76Giveaway</a></div>
           <div class="zh-title">
-            #Fallout76Giveaway
-            
+            <span class="zh-missing">（翻译失败）</span>
           </div>
           
           
@@ -558,7 +158,7 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23BaddiesUsaChapterThree/" target="_blank" rel="noopener">#BaddiesUsaChapterThree</a></div>
+          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23BearDown/" target="_blank" rel="noopener">#BearDown</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
@@ -566,7 +166,7 @@
           
           <div class="item-meta">
             
-              热度：281 score · getdaytrends.com
+              热度：245 score · getdaytrends.com
             
           </div>
         </li>
@@ -588,21 +188,6 @@
         <li>
           <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23MondayMotivation/" target="_blank" rel="noopener">#MondayMotivation</a></div>
           <div class="zh-title">
-            #周一动力
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：233 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23LaGranjaEliminaci%C3%B3n/" target="_blank" rel="noopener">#LaGranjaEliminación</a></div>
-          <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
           
@@ -615,10 +200,23 @@
         </li>
       
         <li>
+          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23OlandriaxCFDAAwards/" target="_blank" rel="noopener">#OlandriaxCFDAAwards</a></div>
+          <div class="zh-title">
+            <span class="zh-missing">（翻译失败）</span>
+          </div>
+          
+          
+          <div class="item-meta">
+            
+              热度：228 score · getdaytrends.com
+            
+          </div>
+        </li>
+      
+        <li>
           <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23IDontWantToOverreactBUT/" target="_blank" rel="noopener">#IDontWantToOverreactBUT</a></div>
           <div class="zh-title">
-            #我不想反应过度但是
-            
+            <span class="zh-missing">（翻译失败）</span>
           </div>
           
           
@@ -658,7 +256,7 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23TheGildedAge/" target="_blank" rel="noopener">#TheGildedAge</a></div>
+          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23CHIvsSEA/" target="_blank" rel="noopener">#CHIvsSEA</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
@@ -681,11 +279,11 @@
       <ul class="items">
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43224" target="_blank" rel="noopener">TO THE GREAT PEOPLE OF TEXAS, I will be doing two TeleRallies, LIVE, at 6:15pm E…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43297" target="_blank" rel="noopener">FAKE ALASKA CANDIDATE DANIAL J. SULLIVAN, JR., IS MISSING IN ACTION! HE HAS TOTA…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">TO THE GREAT PEOPLE OF TEXAS, I will be doing two TeleRallies, LIVE, at 6:15pm ET, and again at 7:00pm ET — Answer your phones, and ENJOY! President DONALD J. TRUMPhttps://swampthevoteusa.com/states/texas/</div>
+          <div class="snip">FAKE ALASKA CANDIDATE DANIAL J. SULLIVAN, JR., IS MISSING IN ACTION! HE HAS TOTALLY DISAPPEARED, GONE! NOBODY HAS BEEN ABLE TO FIND HIM. MAYBE HE HAS BEEN “KIDNAPPED” BY THE CORRUPT DUMOCRAT LAWYERS??? THEY ARE SCARED STIFF OF BEING PROSECUTED FOR ELECTION FRAUD!!! PRESIDENT DJT</div>
           
           <div class="item-meta">
             
@@ -697,11 +295,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43225" target="_blank" rel="noopener">TO THE GREAT PEOPLE OF TEXAS, GET OUT AND VOTE FOR:– Ken Paxton for U.S. Senate–…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43296" target="_blank" rel="noopener">Abdul El-Sayed Hates Jews and Hates Blacks. Don’t feel bad, he also Hates Whites…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">TO THE GREAT PEOPLE OF TEXAS, GET OUT AND VOTE FOR:– Ken Paxton for U.S. Senate– Greg Abbott for Governor– Dan Patrick for Lieutenant Governor– Mayes Middleton for Attorney General– Don Huffines for Comptroller– Dawn Buckingham for Land Commissioner– Nathaniel Moran for U.S. Congress (TX-01)– Steve Toth for U.S. Congress (TX-02)– Keith Self for U.S. Congress (TX-03)– Pat Fallon for U.S. Congress (TX-04)– Lance Gooden for U.S. Congress (TX-05)– Jake Ellzey for U.S. Congress (TX-06)– Jessica Steinmann for U.S. Congress (TX-08)– Alex Mealer for U.S. Congress (TX-09)– Chris Gober for U.S. Congress (TX-10)– August Pfluger for U.S. Congress (TX-11)– Craig Goldman for U.S. Congress (TX-12)– Ronny Jackson for U.S. Congress (TX-13)– Randy Weber for U.S. Congress (TX-14)– Monica De La Cruz for U.S. Congress (TX-15)– Pete Sessions for U.S. Congress (TX-17)– Tom Sell for U.S. Congress (TX-19)– Mark Teixeira for U.S. Congress (TX-21)– Trever Nehls for U.S. Congress (TX-22)– Brandon Herrera for U.S. Congress (TX-23)– Beth Van Duyne for U.S. Congress (TX-24)– Roger Williams for U.S. Congress (TX-25)– Brandon Gill for U.S. Congress (TX-26)– Michael Cloud for U.S. Congress (TX-27)– Tano Tijerina for U.S. Congress (TX-28)– John Carter for U.S. Congress (TX-31)– Jace Yarbrough for U.S. Congress (TX-32)– Eric Flores for U.S. Congress (TX-34)– Carlos De La Cruz for U.S. Congress (TX-35)– Brian Babin for U.S. Congress (TX-36)– Jon Bonck for U.S. Congress (TX-38) These Great Patriots have my Complete and Total Endorsement — They will never let you down! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">Abdul El-Sayed Hates Jews and Hates Blacks. Don’t feel bad, he also Hates Whites. Only fools would vote for him in the Michigan race for the U.S. Senate! He will, 100%, do you in! VOTE FOR MIKE ROGERS. President DJT</div>
           
           <div class="item-meta">
             
@@ -713,11 +311,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43226" target="_blank" rel="noopener">It is my Great Honor to endorse the Highly Respected Attorney General of Texas, …</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43295" target="_blank" rel="noopener">https://truthsocial.com/@realDonaldTrump/117537191689163472</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">It is my Great Honor to endorse the Highly Respected Attorney General of Texas, Ken Paxton, an America First Patriot, and someone who has always been extremely loyal to me and our AMAZING MAGA MOVEMENT, who is running for the United States Senate, to represent a place I love and WON, BIG, three times, with 6.4 Million Votes in 2024 (The Most Votes in the History of the State, BY FAR)! I know Ken well, have seen him tested at the highest and most difficult levels, and he is a WINNER! Ken is a true MAGA Warrior who has ALWAYS delivered for Texas, and will continue to do so in the United States Senate. His opponent, James TalaFREAKO, is a Radical Left Dumocrat who is opposed to NO TAX ON TIPS, NO TAX ON OVERTIME, and NO TAX ON SOCIAL SECURITY and, if he and the Dumocrats ever got in, all of these things will be terminated. He wants massive Tax Increases, Open Borders, Men playing in Women&#39;s Sports, and Transgender Mutilization of your Children. James TalaFREAKO is Reckless, Radical, and Dangerous! On the other hand, as your next Senator, Ken will tirelessly fight to continue the Great Growth of our Economy, Cut Taxes and Regulations, Advance MADE IN THE U.S.A., Unleash American Energy DOMINANCE, Champion Texas Oil &amp;amp; Gas, Advocate for our Amazing Farmers and Ranchers, Promote School Choice, Keep our Border SECURE, Stop Migrant Crime, Support our Incredible Military/Veterans, Safeguard our Elections, and Protect our always under siege Second Amendment. Ken Paxton has my Complete and Total Endorsement to be the next United States Senator from the Great State of Texas. GET OUT AND VOTE FOR KEN — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">https://truthsocial.com/@realDonaldTrump/117537191689163472</div>
           
           <div class="item-meta">
             
@@ -729,11 +327,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43227" target="_blank" rel="noopener">Greg Abbott is the strong and highly respected Governor of Texas, a State I love…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43273" target="_blank" rel="noopener">Decline was a choice.President Donald J. Trump made D.C. beautiful again, restor…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">Greg Abbott is the strong and highly respected Governor of Texas, a State I love and WON BIG three times, including with 6.4 Million Votes in 2024 (The most Votes in History, BY FAR)! As Governor, Greg is also fighting tirelessly to Champion Texas Values, Grow the Economy, Cut Taxes and Regulations, Support our Amazing Farmers and Ranchers, Advance MADE IN THE U.S.A., Unleash American Energy Dominance, Promote School Choice, Keep our now very Secure Border, SECURE, Stop Migrant Crime, Murderers, and other Criminals from illegally entering our Country, Ensure LAW AND ORDER, Protect our Brave Military, Veterans, and Law Enforcement, and Defend our always under siege Second Amendment. Greg Abbott has my Complete and Total Endorsement for Re-Election. He is an exceptional Governor and man. GET OUT AND VOTE FOR GREG — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">Decline was a choice.President Donald J. Trump made D.C. beautiful again, restoring greatness in our nation&#39;s capital and a country we are proud to call home. 🇺🇸</div>
           
           <div class="item-meta">
             
@@ -745,11 +343,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43228" target="_blank" rel="noopener">I am proud to once again endorse Texas Lieutenant Governor, Dan Patrick, for Re-…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43268" target="_blank" rel="noopener">I am pleased to inform you that I will be doing the Great Sean Hannity Show toni…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">I am proud to once again endorse Texas Lieutenant Governor, Dan Patrick, for Re-Election! As Texas Chair of our Presidential Campaigns in 2016, 2020, and 2024, Dan has been an incredible friend to our Movement, helping us WIN BIG in the Primaries and General Elections. In his next Term, Dan will fight tirelessly alongside of us to Keep our Border SECURE, Stop Migrant Crime, Grow the Economy, Cut Taxes and Regulations, Champion School Choice, Support our Great Military/Vets, Restore American Energy DOMINANCE, and Strongly Protect our always under siege Second Amendment. Dan&#39;s opponent, Vikki Goodwin, is a Radical Left Dumocrat who is opposed to NO TAX ON TIPS, NO TAX ON OVERTIME, and NO TAX ON SOCIAL SECURITY and, if she and the Dumocrats ever got in, all of these things will be terminated. She wants massive Tax Increases, Open Borders, Men playing in Women&#39;s Sports, and Transgender Mutilization of your Children. Vikki Goodwin is Reckless, Radical, and Dangerous! Dan Patrick has my Complete and Total Endorsement for Re-Election as Lieutenant Governor of the Great State of Texas. GET OUT AND VOTE FOR DAN — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">I am pleased to inform you that I will be doing the Great Sean Hannity Show tonight at 9 PM ET. This is the Golden Age of America with 25 Trillion Dollars of Growth and Wealth being created just since my Election — A very short period of time. There has never been anything like it in World History, nor has there been anything close. Additionally, NO TAX ON TIPS, NO TAX ON OVERTIME, NO TAX ON SOCIAL SECURITY FOR OUR GREAT SENIORS! It has all been a BLESSING for our Country. It is my Great Honor to be your President during this Great Time in American History! President DONALD J. TRUMP</div>
           
           <div class="item-meta">
             
@@ -761,11 +359,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43229" target="_blank" rel="noopener">It is my Great Honor to endorse “MAGA” Mayes Middleton, who is running to be the…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43202" target="_blank" rel="noopener">Oil Prices are DROPPING LIKE A ROCK, down almost $10 a Barrel, A RECORD, because…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">It is my Great Honor to endorse “MAGA” Mayes Middleton, who is running to be the next Attorney General of the Wonderful State of Texas, a place I love and WON BIG three times, including with 6.4 Million Votes in 2024 (The most Votes in History, BY FAR)! As a 7th Generation Texan, dedicated Rancher, highly respected State Senator, and very successful President of Middleton Oil Company, Mayes has served the Lone Star State during a career “loaded up” with accolades and wins. Mayes has a great wife, Martha Ann, and four beautiful children. His opponent, Nathan Johnson, is a Radical Left Dumocrat who is opposed to NO TAX ON TIPS, NO TAX ON OVERTIME, and NO TAX ON SOCIAL SECURITY and, if he and the Dumocrats ever got in, all of these things will be terminated. He wants massive Tax Increases, Open Borders, Men playing in Women&#39;s Sports, and Transgender Mutilization of your Children. Nathan Johnson is Reckless, Radical, and Dangerous! On the other hand, as your next Attorney General, Mayes will continue working tirelessly to Ensure LAW AND ORDER, Champion our Brave Law Enforcement and First Responders, Support our Incredible Military/Veterans, Safeguard our Elections, Keep our Border SECURE, Stop Migrant Crime, Uphold our Constitution, Keep Men out of Women&#39;s Sports, and Protect our always under siege Second Amendment. “MAGA” Mayes Middleton has my Complete and Total Endorsement to be the next Attorney General of the Great State of Texas. GET OUT AND VOTE FOR MAYES — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">Oil Prices are DROPPING LIKE A ROCK, down almost $10 a Barrel, A RECORD, because people feel that there will not be a War with Iran. Iran wants a settlement, as soon as possible. It could happen! President DONALD J. TRUMP</div>
           
           <div class="item-meta">
             
@@ -777,11 +375,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43230" target="_blank" rel="noopener">Don Huffines is a MAGA Warrior — He has been with me from the very beginning, an…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43247" target="_blank" rel="noopener">Senator Dan S. Sullivan, the Best Senator in the History of Alaska, and one of t…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">Don Huffines is a MAGA Warrior — He has been with me from the very beginning, and is running for Comptroller of Public Accounts in Texas, which I love and WON BIG in 2016, 2020, and 2024, getting the highest vote in the State&#39;s History. As a successful Businessman, Don knows the America First Policies required to Grow our Economy, Create GREAT Jobs, Cut Taxes and Regulations, Promote MADE IN THE U.S.A., and Unleash American Energy DOMINANCE. As your next Comptroller, Don will fight tirelessly to Keep our Border SECURE, Ensure LAW AND ORDER, Strengthen our Military/Veterans, and Defend our always under siege Second Amendment. Don Huffines has my Complete and Total Endorsement to be the next Texas Comptroller of Public Accounts. GET OUT AND VOTE FOR DON — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">Senator Dan S. Sullivan, the Best Senator in the History of Alaska, and one of the Best in the Country, should be running his Senatorial Race in Alaska, “UNDER PROTEST,” for the FRAUD that has been committed against him in putting another Dan Sullivan on the Ballot. Dan Sullivan against Dan Sullivan — How ridiculous is that? Thank you for your attention to this matter! President DONALD J. TRUMP</div>
           
           <div class="item-meta">
             
@@ -793,11 +391,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43231" target="_blank" rel="noopener">Dr. Dawn Buckingham is the strong and highly popular Land Commissioner for Texas…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43203" target="_blank" rel="noopener">The reason nobody can find the FAKE Dan Sullivan is that the Lawyers have “scoop…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">Dr. Dawn Buckingham is the strong and highly popular Land Commissioner for Texas, a place I love and WON BIG three times, including with 6.4 Million Votes in 2024, the most in History (BY FAR)! Dawn is a Ninth Generation Texan, successful Surgeon, avid Hunter, former State Senator, and now, as Land Commissioner, has served the Lone Star State during a career “loaded up” with accolades and wins. A true America First Patriot, who has been with us from the very beginning, Dawn is an incredibly effective steward of Texas&#39; 13 Million Acres of Precious, Energy Rich, State Land — She is a Strong Supporter of Texas Oil &amp;amp; Gas! Dawn is fighting tirelessly to Grow our Economy, Cut Taxes and Regulations, Unleash American Energy DOMINANCE, Promote MADE IN THE U.S.A., Champion our Amazing Farmers and Ranchers, Keep our Border SECURE, Stop Migrant Crime, Murderers, and other Criminals from illegally entering our Country, and Protect our always under siege Second Amendment. Land Commissioner Dawn Buckingham, M.D., has my Complete and Total Endorsement for Re-Election. GET OUT AND VOTE FOR DAWN — SHE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">The reason nobody can find the FAKE Dan Sullivan is that the Lawyers have “scooped” him up, and are hiding him as they teach him, step by step, what to say in order to avoid one of the Greatest Fraud Prosecutions in American History! The lawyers involved in this case are Criminals, and should be treated as such. The Highest Levels of the Dumocrat Party are involved in this Criminal Endeavor. Peltola should be forced to resign, and charged, along with FAKE Candidate Daniel J. Sullivan, Jr., who is now, MISSING IN ACTION! President DONALD J. TRUMP</div>
           
           <div class="item-meta">
             
@@ -809,11 +407,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43232" target="_blank" rel="noopener">Congressman Nathaniel Moran is doing a fantastic job representing the Great Peop…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43278" target="_blank" rel="noopener">TO THE GREAT PEOPLE OF LOUISIANA, I will be doing a TeleRally, LIVE, at 8:15pm E…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">Congressman Nathaniel Moran is doing a fantastic job representing the Great People of Texas&#39; 1st Congressional District! Nathaniel has an incredible Record of Success, and strong support from his Community. In Congress, he is working tirelessly to Grow our Economy, Cut Taxes and Regulations, Promote MADE IN THE U.S.A., Support our Amazing Farmers and Ranchers, Ensure American Energy DOMINANCE, Keep our now very Secure Border, SECURE, Stop Migrant Crime, Champion our Brave Military/Veterans, and Protect our always under siege Second Amendment. Nathaniel Moran has my Complete and Total Endorsement for Re-Election. GET OUT AND VOTE FOR NATHANIEL — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">TO THE GREAT PEOPLE OF LOUISIANA, I will be doing a TeleRally, LIVE, at 8:15pm ET — Answer your phones, and ENJOY! President DONALD J. TRUMPhttps://swampthevoteusa.com/states/louisiana/</div>
           
           <div class="item-meta">
             
@@ -825,11 +423,11 @@
         </li>
       
         <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43233" target="_blank" rel="noopener">It is my Great Honor to endorse MAGA Warrior, Steve Toth, who is running to repr…</a></div>
+          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43279" target="_blank" rel="noopener">TO THE GREAT PEOPLE OF LOUISIANA, GET OUT AND VOTE FOR:– Julia Letlow for U.S. S…</a></div>
           <div class="zh-title">
             <span class="zh-missing">（翻译失败）</span>
           </div>
-          <div class="snip">It is my Great Honor to endorse MAGA Warrior, Steve Toth, who is running to represent the Tremendous People of Texas&#39; 2nd Congressional District! A Highly Respected State Legislator, and Very Successful Small Business Owner, Steve has been an incredible Voice for MAGA, and has been with me from the very beginning! As your next Congressman, he will fight tirelessly to Grow our Economy, Cut Taxes and Regulations, Champion School Choice, Unleash American Energy DOMINANCE, Keep our Border SECURE, Stop Migrant Crime, Support our Military/Veterans, Advance Election Integrity, and Protect our always under siege Second Amendment. Steve Toth has my Complete and Total Endorsement to be the next Representative from Texas&#39; 2nd Congressional District. GET OUT AND VOTE FOR STEVE — HE WILL NEVER LET YOU DOWN! President DONALD J. TRUMPhttps://swampthevoteusa.com/texas/</div>
+          <div class="snip">TO THE GREAT PEOPLE OF LOUISIANA, GET OUT AND VOTE FOR:– Julia Letlow for U.S. Senate– Steve Scalise for U.S. Congress (LA-01)– Clay Higgins for U.S. Congress (LA-03)– Mike Johnson for U.S. Congress (LA-04) These Great Patriots have my Complete and Total Endorsement — They will never let you down! President DONALD J. TRUMPhttps://swampthevoteusa.com/louisiana/</div>
           
           <div class="item-meta">
             
@@ -847,69 +445,19 @@
 
   
   <footer class="arch">
-    <h2>📅 历史归档（最近 30 期）</h2>
+    <h2>📅 历史归档（最近 5 期）</h2>
     
     <ul>
       
-      <li><a href="archive/2026-11-02-pm.html">2026 11 02 pm</a></li>
-      
-      <li><a href="archive/2026-11-02-am.html">2026 11 02 am</a></li>
-      
-      <li><a href="archive/2026-11-01-pm.html">2026 11 01 pm</a></li>
-      
-      <li><a href="archive/2026-11-01-am.html">2026 11 01 am</a></li>
-      
-      <li><a href="archive/2026-10-31-pm.html">2026 10 31 pm</a></li>
-      
-      <li><a href="archive/2026-10-31-am.html">2026 10 31 am</a></li>
-      
-      <li><a href="archive/2026-10-30-pm.html">2026 10 30 pm</a></li>
-      
-      <li><a href="archive/2026-10-30-am.html">2026 10 30 am</a></li>
-      
-      <li><a href="archive/2026-10-29-pm.html">2026 10 29 pm</a></li>
-      
-      <li><a href="archive/2026-10-29-am.html">2026 10 29 am</a></li>
-      
-      <li><a href="archive/2026-10-28-pm.html">2026 10 28 pm</a></li>
-      
-      <li><a href="archive/2026-10-28-am.html">2026 10 28 am</a></li>
-      
-      <li><a href="archive/2026-10-27-pm.html">2026 10 27 pm</a></li>
-      
-      <li><a href="archive/2026-10-27-am.html">2026 10 27 am</a></li>
-      
-      <li><a href="archive/2026-10-26-pm.html">2026 10 26 pm</a></li>
-      
-      <li><a href="archive/2026-10-26-am.html">2026 10 26 am</a></li>
-      
-      <li><a href="archive/2026-10-25-pm.html">2026 10 25 pm</a></li>
-      
-      <li><a href="archive/2026-10-25-am.html">2026 10 25 am</a></li>
-      
-      <li><a href="archive/2026-10-24-pm.html">2026 10 24 pm</a></li>
-      
-      <li><a href="archive/2026-10-24-am.html">2026 10 24 am</a></li>
-      
-      <li><a href="archive/2026-10-23-pm.html">2026 10 23 pm</a></li>
-      
-      <li><a href="archive/2026-10-23-am.html">2026 10 23 am</a></li>
-      
-      <li><a href="archive/2026-10-22-pm.html">2026 10 22 pm</a></li>
-      
-      <li><a href="archive/2026-10-22-am.html">2026 10 22 am</a></li>
-      
-      <li><a href="archive/2026-10-21-pm.html">2026 10 21 pm</a></li>
-      
-      <li><a href="archive/2026-10-21-am.html">2026 10 21 am</a></li>
-      
-      <li><a href="archive/2026-10-20-pm.html">2026 10 20 pm</a></li>
-      
-      <li><a href="archive/2026-10-20-am.html">2026 10 20 am</a></li>
+      <li><a href="archive/2026-11-03-pm.html">2026 11 03 pm</a></li>
       
       <li><a href="archive/2026-10-19-pm.html">2026 10 19 pm</a></li>
       
-      <li><a href="archive/2026-10-19-am.html">2026 10 19 am</a></li>
+      <li><a href="archive/2026-10-13-pm.html">2026 10 13 pm</a></li>
+      
+      <li><a href="archive/2026-10-11-pm.html">2026 10 11 pm</a></li>
+      
+      <li><a href="archive/2026-10-11-am.html">2026 10 11 am</a></li>
       
     </ul>
     
