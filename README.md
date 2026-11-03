@@ -9,6 +9,7 @@
 |---|---|---|
 | YouTube 美国热榜 | YouTube Data API v3（mostPopular, US） | ✅ `YOUTUBE_API_KEY` |
 | 美国新闻头条 | Google News RSS（美国版） | 否 |
+| 厄尔尼诺动态 | NOAA CPC 周度 Niño 3.4 指数 + Google News 近 14 天 ENSO 报道 | 否 |
 | Google 美国热搜 | trends.google.com 官方每日热搜 RSS（geo=US） | 否 |
 | Reddit 热帖 | r/news + r/worldnews 当日 top | 否 |
 | X 美国热搜 | trends24.in → getdaytrends.com 回退 | 否 |
@@ -16,6 +17,11 @@
 
 任一源抓取失败只影响对应板块（显示"本次更新失败"），页面照常生成。
 历史每期自动归档到 `site/archive/YYYY-MM-DD-{am,pm}.html`（按北京时间分上午/下午版）。
+
+页首右上角为 **Niño 3.4 指数卡片**（NOAA CPC 周度 OISST 数据，每周更新）：
+大号数字为海温距平 SSTA，按数值分级着色（暖橙红=厄尔尼诺、冷蓝=拉尼娜、灰=中性），
+强度分级：|SSTA| 0.5~0.9 弱、1.0~1.4 中等、1.5~1.9 强、≥2.0 超强；点击卡片跳转
+NOAA 官方 ENSO 监测页。数据周滞后或抓取失败时卡片显示"指数数据暂缺"。
 
 ## 1. 申请密钥
 
