@@ -13,8 +13,22 @@
          line-height:1.65; }
   .wrap { max-width:760px; margin:0 auto; padding:0 14px 60px; }
   header.top { padding:26px 0 8px; }
+  .top-row { display:flex; justify-content:space-between; align-items:flex-start;
+             gap:16px; flex-wrap:wrap; }
+  .top-left { flex:1 1 420px; min-width:0; }
   header.top h1 { font-size:1.45rem; margin:0 0 4px; }
   header.top .meta { color:var(--meta); font-size:.85rem; }
+  .enso-card { flex:0 1 280px; border:1px solid var(--line); border-radius:12px; background:var(--card);
+               padding:10px 16px; min-width:200px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+  .enso-card a { display:block; color:inherit; text-decoration:none; }
+  .enso-title { font-size:.75rem; color:var(--meta); }
+  .enso-value { font-size:1.8rem; font-weight:700; line-height:1.3; }
+  .enso-status { font-size:.9rem; font-weight:600; }
+  .enso-meta { font-size:.72rem; color:var(--meta); margin-top:2px; }
+  .enso-missing { font-size:.85rem; color:var(--meta); padding:6px 0; }
+  .kind-el_nino .enso-value, .kind-el_nino .enso-status { color:#c2410c; }
+  .kind-la_nina .enso-value, .kind-la_nina .enso-status { color:#1d4ed8; }
+  .kind-neutral .enso-value, .kind-neutral .enso-status { color:#6b7280; }
   .badge { display:inline-block; background:var(--accent); color:#fff; border-radius:4px;
            font-size:.75rem; padding:1px 8px; margin-left:8px; vertical-align:2px; }
   section.card { background:var(--card); border:1px solid var(--line); border-radius:12px;
@@ -43,13 +57,31 @@
   .home-link { font-size:.85rem; margin-bottom:10px; }
   .home-link a { color:var(--accent); }
   @media (max-width:520px) { footer.arch ul { columns:1; } }
+  @media (max-width:640px) { .enso-card { flex:0 0 100%; } .top-left { flex:1 1 100%; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>{{ title }}<span class="badge">{{ period_label }}</span></h1>
-    <div class="meta">更新于 {{ generated_at }} · 每天 07:50 / 19:50（北京时间）自动更新</div>
+    <div class="top-row">
+      <div class="top-left">
+        <h1>{{ title }}<span class="badge">{{ period_label }}</span></h1>
+        <div class="meta">更新于 {{ generated_at }} · 每天 07:50 / 19:50（北京时间）自动更新</div>
+      </div>
+      <div class="enso-card kind-{{ enso_index.kind if enso_index else 'none' }}">
+        {% if enso_index %}
+        <a href="{{ enso_index.url }}" target="_blank" rel="noopener">
+          <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
+          <div class="enso-value">{% if enso_index.ssta > 0 %}+{% endif %}{{ "%.1f" | format(enso_index.ssta) }}°C</div>
+          <div class="enso-status">{{ enso_index.status }}</div>
+          <div class="enso-meta">SST {{ "%.1f" | format(enso_index.sst) }}°C · 截至 {{ enso_index.week }} 当周 · NOAA CPC 周度更新</div>
+        </a>
+        {% else %}
+        <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
+        <div class="enso-missing">指数数据暂缺</div>
+        {% endif %}
+      </div>
+    </div>
   </header>
 
   {% for sec in sections %}
@@ -74,7 +106,7 @@
               · <a href="{{ it.extra.permalink }}">Reddit 讨论</a>
             {% elif sec.source == "youtube" %}
               {{ it.extra.channel }} · {{ it.extra.publishedAt[:10] }}
-            {% elif sec.source == "news" %}
+            {% elif sec.source == "news" or sec.source == "enso" %}
               {{ it.extra.source }} · {{ it.extra.published }}
             {% elif sec.source == "x_trends" %}
               {% if it.extra.tweet_count %}热度：{{ it.extra.tweet_count }} · {% endif %}{{ it.extra.via }}
