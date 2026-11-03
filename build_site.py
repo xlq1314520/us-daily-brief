@@ -16,12 +16,13 @@ SECTION_META = {
     "youtube": {"zh": "YouTube 美国热榜", "en": "YouTube US Trending"},
     "reddit": {"zh": "Reddit 热帖", "en": "Reddit Hot (r/news · r/worldnews)"},
     "news": {"zh": "美国新闻头条", "en": "US Headlines (Google News)"},
+    "enso": {"zh": "厄尔尼诺动态", "en": "El Niño / La Niña (ENSO)"},
     "google_trends": {"zh": "Google 美国热搜", "en": "Google US Trending Searches"},
     "x_trends": {"zh": "X 美国热搜", "en": "X US Trends"},
     "trump": {"zh": "特朗普动态", "en": "Trump on Truth Social"},
 }
 
-SECTION_ORDER = ["youtube", "news", "google_trends", "reddit", "x_trends", "trump"]
+SECTION_ORDER = ["youtube", "news", "enso", "google_trends", "reddit", "x_trends", "trump"]
 
 
 def beijing_now():
@@ -94,12 +95,16 @@ def build(results, translations, run_dt=None):
         archives = [{"name": n, "label": n.replace(".html", "").replace("-", " ")}
                     for n in names]
 
+    enso_index = next((r.get("index") for r in results
+                       if r.get("source") == "enso" and r.get("index")), None)
+
     context = {
         "title": "美国每日热榜 · 中英对照",
         "generated_at": _fmt_dt(run_dt),
         "period_label": "上午版" if period == "am" else "下午版",
         "sections": sections,
         "archives": archives,
+        "enso_index": enso_index,
         "is_archive": False,
     }
 
