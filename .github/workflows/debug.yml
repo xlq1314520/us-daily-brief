@@ -4,7 +4,7 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: find weekly data hrefs
+      - name: dump weekly files
         run: |
-          { curl -sL -m 40 "https://www.cpc.ncep.noaa.gov/data/indices/" -o /tmp/idx.html; echo "=== hrefs"; grep -oiE "href=\"[^\"]*\"" /tmp/idx.html | grep -iE "sst|nino|oisst|wk|week" ; echo "=== context"; grep -oiE ".{160}Weekly (Relative )?OISST.{120}" /tmp/idx.html | head -4; } || true
+          { echo "=== for-head"; curl -sL -m 40 "https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for" -o /tmp/w2.txt && head -6 /tmp/w2.txt; echo "=== for-tail"; tail -6 /tmp/w2.txt; echo "=== rel-head"; curl -sL -m 40 "https://www.cpc.ncep.noaa.gov/data/indices/rel_wksst9120.txt" -o /tmp/w3.txt && head -8 /tmp/w3.txt; echo "=== rel-tail"; tail -5 /tmp/w3.txt; } || true
           exit 0
