@@ -2,8 +2,8 @@ name: update-site
 
 on:
   schedule:
-    # 北京时间 07:50 / 19:50 = UTC 23:50 / 11:50（前一天）
-    - cron: "50 23,11 * * *"
+    # 北京时间每天 07:00 = UTC 前一天 23:00
+    - cron: "0 23 * * *"
   workflow_dispatch:
 
 permissions:
