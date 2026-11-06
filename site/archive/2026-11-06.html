@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>历史日报 · 2026-11-06</title>
+<style>
+  :root {
+    --bg:#f5f4f0; --card:#ffffff; --ink:#1a1a1a; --ink-soft:#333333;
+    --gray:#8a8a8a; --gray-mid:#555555; --line:#e5e2dc; --hair:#eceae4;
+    --mast:#101c2c; --accent:#e0457a; --gold:#f2b245;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",
+                     "Segoe UI",Roboto,sans-serif; line-height:1.6; }
+  a { color:inherit; }
+  .wrap { max-width:1180px; margin:0 auto; padding:26px 22px 60px; }
+
+  /* ---------- 深色报头 ---------- */
+  .masthead { background:var(--mast); border-radius:16px; padding:34px 38px;
+              display:flex; justify-content:space-between; align-items:center;
+              gap:28px; flex-wrap:wrap; }
+  .mast-left { flex:1 1 480px; min-width:0; }
+  .kicker { font-size:.75rem; letter-spacing:.22em; font-weight:700;
+            color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
+  .masthead h1 { font-size:3rem; font-weight:900; color:#fff; margin:0; line-height:1.15; }
+  .masthead .sub { color:#9fb0c3; font-size:.88rem; margin-top:8px; letter-spacing:.05em; }
+  .statusline { color:#8b9cb0; font-size:.8rem; margin:14px 0 0; }
+  .statusline b { color:var(--gold); }
+  .enso-card { flex:0 1 270px; min-width:230px; background:var(--card);
+               border-radius:12px; padding:14px 18px;
+               box-shadow:0 2px 10px rgba(0,0,0,.25); }
+  .enso-card a { text-decoration:none; display:block; }
+  .enso-title { font-size:.68rem; letter-spacing:.14em; color:var(--gray);
+                text-transform:uppercase; font-weight:600; }
+  .enso-value { font-size:2rem; font-weight:900; line-height:1.25; }
+  .enso-status { font-size:.88rem; font-weight:700; }
+  .enso-meta { font-size:.7rem; color:var(--gray); margin-top:3px; }
+  .enso-missing { font-size:.82rem; color:var(--gray); padding:6px 0; }
+  .kind-el_nino .enso-value, .kind-el_nino .enso-status { color:#c2410c; }
+  .kind-la_nina .enso-value, .kind-la_nina .enso-status { color:#1d4ed8; }
+  .kind-neutral .enso-value, .kind-neutral .enso-status { color:#6b7280; }
+
+  /* ---------- 双栏 ---------- */
+  .cols { display:grid; grid-template-columns:minmax(0,1fr) 340px;
+          gap:28px; margin-top:28px; align-items:start; }
+  .main-col, .side-col { display:flex; flex-direction:column; gap:28px; min-width:0; }
+
+  /* ---------- 模块卡片 ---------- */
+  .module { background:var(--card); border:1px solid var(--line); border-radius:12px;
+            box-shadow:0 1px 3px rgba(0,0,0,.05); padding:22px 26px; }
+  .mod-head { display:flex; align-items:center; gap:12px; margin-bottom:6px;
+              flex-wrap:wrap; }
+  .mod-bar { width:4px; height:22px; border-radius:2px; flex:0 0 auto; }
+  .mod-head h2 { font-size:1.3rem; font-weight:900; margin:0; flex:0 0 auto; }
+  .mod-head .en { font-size:.72rem; color:var(--gray); letter-spacing:.1em;
+                  text-transform:uppercase; font-weight:600; flex:1 1 140px;
+                  min-width:120px; }
+  .mod-count { margin-left:auto; font-size:.72rem; font-weight:700; color:var(--accent);
+               background:#fdf2f6; border-radius:20px; padding:2px 10px; flex:0 0 auto; }
+  .fail { font-size:.8rem; color:var(--gray); padding:10px 0 2px; }
+
+  /* ---------- 条目（新闻 / 厄尔尼诺） ---------- */
+  article.item { padding:16px 0 14px; border-bottom:1px solid var(--hair); }
+  article.item:last-child { border-bottom:none; }
+  .item-zh-title { font-size:19px; font-weight:800; color:var(--ink);
+                   margin:0; line-height:1.5; }
+  .item-zh-title .zh-missing { color:var(--gray); font-size:.82rem; font-weight:400; }
+  .item-en-title { font-size:15px; color:var(--gray-mid); margin:5px 0 0; line-height:1.55; }
+  .item-zh-snip { font-size:15px; color:var(--ink-soft); line-height:1.85; margin:9px 0 0; }
+  .item-en-snip { font-size:14px; color:var(--gray); margin:7px 0 0; line-height:1.7; }
+  .item-meta { font-size:.76rem; color:var(--gray); margin-top:10px; }
+  .item-meta a { color:var(--accent); text-decoration:none; font-weight:600; }
+  .item-meta a:hover { text-decoration:underline; }
+
+  /* ---------- 特朗普时间线 ---------- */
+  ul.timeline { list-style:none; margin:6px 0 0; padding:0 0 0 18px;
+                border-left:2px solid #c9d4f0; }
+  ul.timeline li { position:relative; padding:12px 0 12px 16px;
+                   border-bottom:1px solid var(--hair); }
+  ul.timeline li:last-child { border-bottom:none; }
+  ul.timeline li::before { content:""; position:absolute; left:-7px; top:22px;
+                          width:12px; height:12px; border-radius:50%;
+                          background:#1d4ed8; border:2.5px solid var(--card); }
+  .tl-top { font-size:.74rem; color:var(--gray); }
+  .tl-top b { color:var(--ink); letter-spacing:.04em; }
+  .tl-en { font-size:15px; line-height:1.8; margin:6px 0 0; word-break:break-word; }
+  .tl-zh { font-size:15px; color:var(--ink-soft); line-height:1.85; margin:6px 0 0;
+           word-break:break-word; }
+  .tl-zh .zh-missing { color:var(--gray); font-size:.82rem; }
+  .tl-link { display:inline-block; font-size:.74rem; color:var(--accent);
+             text-decoration:none; margin-top:8px; font-weight:600; }
+  .tl-link:hover { text-decoration:underline; }
+
+  /* ---------- X 热搜排行 ---------- */
+  ol.rank { list-style:none; margin:6px 0 0; padding:0; counter-reset:r; }
+  ol.rank li { counter-increment:r; }
+  ol.rank a { display:flex; align-items:baseline; gap:10px; text-decoration:none;
+              padding:8px 6px; border-radius:6px; border-bottom:1px solid var(--hair); }
+  ol.rank li:last-child a { border-bottom:none; }
+  ol.rank a:hover { background:#faf9f6; }
+  ol.rank li::before { content:counter(r,decimal-leading-zero); font-size:.8rem;
+                      font-weight:800; color:var(--accent); flex:0 0 24px;
+                      font-variant-numeric:tabular-nums; }
+  .rank-zh { font-weight:700; font-size:.92rem; white-space:nowrap;
+              overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .rank-en { color:var(--gray); font-size:.8rem; white-space:nowrap;
+              overflow:hidden; text-overflow:ellipsis; max-width:42%; flex:0 1 auto; }
+  .rank-heat { margin-left:auto; font-size:.72rem; color:var(--gray);
+               flex:0 0 auto; font-variant-numeric:tabular-nums; }
+
+  /* ---------- 归档模块 ---------- */
+  .arc-list a { display:block; font-size:.82rem; color:var(--gray-mid);
+                text-decoration:none; padding:5px 0; border-bottom:1px solid var(--hair); }
+  .arc-list a:last-child { border-bottom:none; }
+  .arc-list a:hover { color:var(--accent); }
+  .arc-list a.home { color:var(--ink); font-weight:700; }
+
+  .foot { margin-top:36px; padding-top:14px; border-top:1px solid var(--line);
+          font-size:.72rem; color:var(--gray); text-align:center; }
+  .backline { margin:0 0 14px; font-size:.82rem; }
+  .backline a { color:var(--accent); text-decoration:none; font-weight:600; }
+  .backline a:hover { text-decoration:underline; }
+
+  /* ---------- 移动端 ---------- */
+  @media (max-width:960px) {
+    .wrap { padding:16px 14px 44px; }
+    .masthead { padding:24px 20px; border-radius:14px; }
+    .masthead h1 { font-size:2.1rem; }
+    .enso-card { flex:1 1 100%; }
+    .cols { grid-template-columns:minmax(0,1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= 深色报头 ================= -->
+  <header class="masthead">
+    <div class="mast-left">
+      <div class="kicker">● DAILY BRIEF · 每日电讯</div>
+      
+      <div class="backline" style="margin:10px 0 0;"><a href="../index.html">← 返回最新一期</a></div>
+      <h1>历史日报 · <span style="white-space:nowrap;">2026-11-06</span></h1>
+      
+      <div class="sub">US DAILY BRIEF · 原文 + AI 中文对照</div>
+      <p class="statusline">更新于 2026-11-06 19:24（北京） · 每天 07:00 自动更新 · 本期共 <b>23</b> 条</p>
+    </div>
+    <div class="enso-card kind-el_nino">
+      
+      <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/" target="_blank" rel="noopener">
+        <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
+        <div class="enso-value">+3.4°C</div>
+        <div class="enso-status">超强厄尔尼诺</div>
+        <div class="enso-meta">SST 30.2°C · 截至 2026-10-28 当周 · NOAA CPC 周度更新</div>
+      </a>
+      
+    </div>
+  </header>
+
+  <!-- ================= 双栏内容 ================= -->
+  <div class="cols">
+
+    <!-- 主栏 -->
+    <div class="main-col">
+      
+      <section class="module" id="sec-news">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#e0457a;"></span>
+          <h2>美国新闻头条</h2>
+          <span class="en">TOP STORIES · Google News</span>
+          <span class="mod-count">0 条</span>
+        </div>
+
+        
+        <p class="fail">本次更新失败：ConnectTimeout: HTTPSConnectionPool(host=&#39;news.google.com&#39;, port=443): Max retries exceeded with url</p>
+
+        
+      </section>
+      
+      <section class="module" id="sec-enso">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#0e7c86;"></span>
+          <h2>厄尔尼诺动态</h2>
+          <span class="en">ENSO WATCH · NOAA + Google News</span>
+          <span class="mod-count">0 条</span>
+        </div>
+
+        
+        <p class="fail">本次更新失败：ENSO 新闻抓取失败（NOAA 指数单独获取，见页首卡片）</p>
+
+        
+      </section>
+      
+      <section class="module" id="sec-trump">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#1d4ed8;"></span>
+          <h2>特朗普动态</h2>
+          <span class="en">TRUMP LIVE · Truth Social</span>
+          <span class="mod-count">10 条</span>
+        </div>
+
+        
+        <ul class="timeline">
+          
+          <li>
+            <div class="tl-top"><b>2026-11-06</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">I JUST WASN’T ON THE BALLOT. IF I WERE, WE WOULD HAVE WON IN A LANDSLIDE! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              我根本没上选票。如果我在，我们会以压倒性优势获胜！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43493" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-06</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">The Stock Market crashed today because the Dumocrats had a big Tuesday — So sad to see, you only have yourselves to blame! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              股市今天崩盘了，因为民主党人周二大获全胜——看着真让人难过，你们只能怪自己！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43492" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-06</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">The Stock Market suffered one of the Worst Days in History based on the results of the Election. Such a sad thing to watch! It took so much work to get us to a level that no one has ever seen before, and then this. Your 401(k)s have, therefore, dropped. Remember, it wasn’t Republicans, it was Dumocrats. Do not fear, however, we will soon, one way or the other, be BIGGER AND STRONGER THAN EVER BEFORE. MAKE AMERICA GREAT AGAIN! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              基于选举结果，股市经历了历史上最糟糕的日子之一。看着真让人难过！我们付出了如此多的努力才达到了前所未有的水平，然后却发生了这种事。因此，你们的401(k)账户已经下跌。记住，这不是共和党人干的，是民主党人干的。然而，不要害怕，我们很快就会以某种方式变得比以往任何时候都更大更强。让美国再次伟大！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43491" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">The vote totals for the Fake Dan Sullivan, plus the other “slug” that the Dems put on the Ballot, should be immediately given to the REAL Dan Sullivan, and the Election is over - He easily wins. There is no other fair solution! President DJT</p>
+            <p class="tl-zh">
+              假丹·沙利文的得票总数，加上民主党人放上选票的另一个“废物”，应该立即归真正的丹·沙利文所有，这样选举就结束了——他会轻松获胜。没有其他公平的解决方案！DJT总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43490" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">https://truthsocial.com/@WhiteHouse/117550235500967429</p>
+            <p class="tl-zh">
+              https://truthsocial.com/@WhiteHouse/117550235500967429
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43489" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">[Image post]</p>
+            <p class="tl-zh">
+              [图片帖子]
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43488" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">Too bad the Senate has not yet approved the Sunshine Protection Act or, the I Don’t Want to Change My Clocks Anymore Act. It’s so dark outside, so early (Sunset was 5:06 P.M., and it was dark by 5:31 P.M. — Isn’t that ridiculous?). Just a few days ago it was so nice and sunny at this same time. In addition, everyone’s been running around changing their clocks all over the place. I didn’t want to make a big deal out of this prior to the Election because I didn’t want to have certain Senators lose their Race, in a landslide, but it is too bad they can’t get it done. The House sent it over to the Senate with great bipartisan support, numerous times (308-117), but the Senate didn’t take it up. We have far bigger priorities, but I will keep fighting for this! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              太遗憾了，参议院尚未批准《阳光保护法》，或者叫《我不想再调时钟法案》。外面天黑得太早了（日落是下午5:06，到5:31就全黑了——这难道不荒谬吗？）。就在几天前，同样的时间还阳光明媚。此外，每个人都到处跑来跑去调时钟。我本不想在选举前大张旗鼓地谈论此事，因为我不想让某些参议员以压倒性劣势输掉竞选，但太遗憾了他们就是办不成。众议院以巨大的两党支持多次将其送交参议院（308票对117票），但参议院没有受理。我们有更大的优先事项，但我会继续为此奋斗！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43487" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">Stock Market just hit another Record High — 91 Days in just a short period of time — Less than two years. Your 401(k)s are through the roof. Record Setting All! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              股市刚刚再创历史新高——在短短不到两年时间里就有91天。你们的401(k)账户涨到了天际。全面创纪录！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43486" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">[Image post]</p>
+            <p class="tl-zh">
+              [图片帖子]
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43485" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-04</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">Why does FoxNews have Bill de Blasio, the Worst Mayor in the History of New York City, on air, ranting and raving like a Lunatic? He left the City in disgrace, and the damage he caused was incalculable — It has never been the same, and now he’s telling us how to run America. FoxNews bears responsibility for these losses by constantly and consistently putting on the Dumocrat opposition, and worse. GOD BLESS AMERICA! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              为什么福克斯新闻要让比尔·德布拉西奥，纽约市历史上最糟糕的市长，上电视，像个疯子一样大喊大叫？他灰溜溜地离开了这座城市，他造成的损害无法估量——这座城市再也不是以前的样子了，而现在他竟然在告诉我们如何管理美国。福克斯新闻不断、持续地让民主党反对派，甚至更糟的人上节目，对这些损失负有责任。上帝保佑美国！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43484" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+        </ul>
+
+        
+      </section>
+      
+    </div>
+
+    <!-- 侧栏 -->
+    <div class="side-col">
+      
+      <section class="module" id="sec-x_trends">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#111111;"></span>
+          <h2>X 美国热搜</h2>
+          <span class="en">X TRENDS · getdaytrends</span>
+          <span class="mod-count">13</span>
+        </div>
+        
+        <ol class="rank">
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23DUUUVAL/" target="_blank" rel="noopener">
+              <span class="rank-zh">杜瓦尔</span>
+              <span class="rank-en">#DUUUVAL</span>
+              <span class="rank-heat">306 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23thursdayvibes/" target="_blank" rel="noopener">
+              <span class="rank-zh">周四氛围</span>
+              <span class="rank-en">#thursdayvibes</span>
+              <span class="rank-heat">292 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23LaGranjaSalvaci%C3%B3n/" target="_blank" rel="noopener">
+              <span class="rank-zh">拯救农场</span>
+              <span class="rank-en">#LaGranjaSalvación</span>
+              <span class="rank-heat">268 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23criticalrolespoilers/" target="_blank" rel="noopener">
+              <span class="rank-zh">Critical Role剧透</span>
+              <span class="rank-en">#criticalrolespoilers</span>
+              <span class="rank-heat">255 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23OlandriaxRichLittleBrokeGirls/" target="_blank" rel="noopener">
+              <span class="rank-zh">Olandria与RichLittleBrokeGirls联名</span>
+              <span class="rank-en">#OlandriaxRichLittleBrokeGirls</span>
+              <span class="rank-heat">237 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23JAXvsBAL/" target="_blank" rel="noopener">
+              <span class="rank-zh">美洲虎对阵乌鸦</span>
+              <span class="rank-en">#JAXvsBAL</span>
+              <span class="rank-heat">184 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23RHOSLC/" target="_blank" rel="noopener">
+              <span class="rank-zh">盐湖城娇妻</span>
+              <span class="rank-en">#RHOSLC</span>
+              <span class="rank-heat">182 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23911onABC/" target="_blank" rel="noopener">
+              <span class="rank-zh">ABC台《紧急呼救》</span>
+              <span class="rank-en">#911onABC</span>
+              <span class="rank-heat">178 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23iQIYIiJOYTH2027/" target="_blank" rel="noopener">
+              <span class="rank-zh">爱奇艺iJOY泰国2027</span>
+              <span class="rank-en">#iQIYIiJOYTH2027</span>
+              <span class="rank-heat">165 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23%E4%B8%8A%E6%B5%B7%E5%8F%A0%E7%BA%B8%E5%A7%9A%E6%B6%A6%E6%98%8A%E7%8E%AF%E7%90%83%E9%9C%B2%E5%87%BA/" target="_blank" rel="noopener">
+              <span class="rank-zh">#上海叠纸姚润昊环球露出</span>
+              <span class="rank-en">#上海叠纸姚润昊环球露出</span>
+              <span class="rank-heat">135 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23BLOW_UP/" target="_blank" rel="noopener">
+              <span class="rank-zh">#爆炸</span>
+              <span class="rank-en">#BLOW_UP</span>
+              <span class="rank-heat">4 hours</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23TNAiMPACT/" target="_blank" rel="noopener">
+              <span class="rank-zh">#TNAiMPACT</span>
+              <span class="rank-en">#TNAiMPACT</span>
+              <span class="rank-heat">4 hours</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23TNFonPrime/" target="_blank" rel="noopener">
+              <span class="rank-zh">#TNFonPrime</span>
+              <span class="rank-en">#TNFonPrime</span>
+              <span class="rank-heat">4 hours</span>
+            </a>
+          </li>
+          
+        </ol>
+        
+      </section>
+      
+
+      <section class="module">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#111111;"></span>
+          <h2>历史归档</h2>
+          <span class="en">ARCHIVE</span>
+        </div>
+        <div class="arc-list">
+          
+          <a class="home" href="../index.html">← 返回最新一期</a>
+          
+          
+          <a href="2026-11-06.html">2026-11-06</a>
+          
+          <a href="2026-11-03-pm.html">2026-11-03 下午</a>
+          
+          <a href="2026-10-19-pm.html">2026-10-19 下午</a>
+          
+          <a href="2026-10-13-pm.html">2026-10-13 下午</a>
+          
+          <a href="2026-10-11-pm.html">2026-10-11 下午</a>
+          
+          <a href="2026-10-11-am.html">2026-10-11 上午</a>
+          
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="foot">US DAILY BRIEF · 原文 + AI 中文对照 · 数据来自公开渠道（Google News / NOAA CPC / getdaytrends.com / trumpstruth.org）</div>
+</div>
+</body>
+</html>
