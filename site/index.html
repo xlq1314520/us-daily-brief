@@ -3,992 +3,483 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>美国每日热榜 · 中英对照</title>
+<title>美国每日热榜 · US DAILY BRIEF</title>
 <style>
-  :root { --bg:#f6f7f9; --card:#ffffff; --ink:#1f2328; --sub:#667; --line:#e5e8ec;
-          --accent:#1a73e8; --fail:#b3261e; --meta:#888; }
-  * { box-sizing: border-box; }
+  :root {
+    --bg:#f5f4f0; --card:#ffffff; --ink:#1a1a1a; --ink-soft:#333333;
+    --gray:#8a8a8a; --gray-mid:#555555; --line:#e5e2dc; --hair:#eceae4;
+    --mast:#101c2c; --accent:#e0457a; --gold:#f2b245;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
   body { margin:0; background:var(--bg); color:var(--ink);
-         font-family:-apple-system,"PingFang SC","Microsoft YaHei",Roboto,"Segoe UI",sans-serif;
-         line-height:1.65; }
-  .wrap { max-width:760px; margin:0 auto; padding:0 14px 60px; }
-  header.top { padding:26px 0 8px; }
-  .top-row { display:flex; justify-content:space-between; align-items:flex-start;
-             gap:16px; flex-wrap:wrap; }
-  .top-left { flex:1 1 420px; min-width:0; }
-  header.top h1 { font-size:1.45rem; margin:0 0 4px; }
-  header.top .meta { color:var(--meta); font-size:.85rem; }
-  .enso-card { flex:0 1 280px; border:1px solid var(--line); border-radius:12px; background:var(--card);
-               padding:10px 16px; min-width:200px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
-  .enso-card a { display:block; color:inherit; text-decoration:none; }
-  .enso-title { font-size:.75rem; color:var(--meta); }
-  .enso-value { font-size:1.8rem; font-weight:700; line-height:1.3; }
-  .enso-status { font-size:.9rem; font-weight:600; }
-  .enso-meta { font-size:.72rem; color:var(--meta); margin-top:2px; }
-  .enso-missing { font-size:.85rem; color:var(--meta); padding:6px 0; }
+         font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",
+                     "Segoe UI",Roboto,sans-serif; line-height:1.6; }
+  a { color:inherit; }
+  .wrap { max-width:1180px; margin:0 auto; padding:26px 22px 60px; }
+
+  /* ---------- 深色报头 ---------- */
+  .masthead { background:var(--mast); border-radius:16px; padding:34px 38px;
+              display:flex; justify-content:space-between; align-items:center;
+              gap:28px; flex-wrap:wrap; }
+  .mast-left { flex:1 1 480px; min-width:0; }
+  .kicker { font-size:.75rem; letter-spacing:.22em; font-weight:700;
+            color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
+  .masthead h1 { font-size:3rem; font-weight:900; color:#fff; margin:0; line-height:1.15; }
+  .masthead .sub { color:#9fb0c3; font-size:.88rem; margin-top:8px; letter-spacing:.05em; }
+  .statusline { color:#8b9cb0; font-size:.8rem; margin:14px 0 0; }
+  .statusline b { color:var(--gold); }
+  .enso-card { flex:0 1 270px; min-width:230px; background:var(--card);
+               border-radius:12px; padding:14px 18px;
+               box-shadow:0 2px 10px rgba(0,0,0,.25); }
+  .enso-card a { text-decoration:none; display:block; }
+  .enso-title { font-size:.68rem; letter-spacing:.14em; color:var(--gray);
+                text-transform:uppercase; font-weight:600; }
+  .enso-value { font-size:2rem; font-weight:900; line-height:1.25; }
+  .enso-status { font-size:.88rem; font-weight:700; }
+  .enso-meta { font-size:.7rem; color:var(--gray); margin-top:3px; }
+  .enso-missing { font-size:.82rem; color:var(--gray); padding:6px 0; }
   .kind-el_nino .enso-value, .kind-el_nino .enso-status { color:#c2410c; }
   .kind-la_nina .enso-value, .kind-la_nina .enso-status { color:#1d4ed8; }
   .kind-neutral .enso-value, .kind-neutral .enso-status { color:#6b7280; }
-  .badge { display:inline-block; background:var(--accent); color:#fff; border-radius:4px;
-           font-size:.75rem; padding:1px 8px; margin-left:8px; vertical-align:2px; }
-  section.card { background:var(--card); border:1px solid var(--line); border-radius:12px;
-                 margin:18px 0; padding:16px 16px 8px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
-  section.card > h2 { font-size:1.1rem; margin:0 0 2px; }
-  section.card > h2 .en { font-weight:400; color:var(--meta); font-size:.82rem; margin-left:8px; }
-  .fail { color:var(--fail); font-size:.88rem; background:#fdf0ef; border-radius:8px;
-          padding:10px 12px; margin:10px 0; }
-  ul.items { list-style:none; margin:8px 0 0; padding:0; }
-  ul.items li { border-top:1px solid var(--line); padding:12px 0; }
-  ul.items li:first-child { border-top:none; }
-  .en-title { font-size:.95rem; font-weight:600; }
-  .en-title a { color:var(--ink); text-decoration:none; }
-  .en-title a:hover { color:var(--accent); text-decoration:underline; }
-  .zh-title { font-size:.95rem; margin-top:2px; }
-  .zh-title .zh-missing { color:var(--fail); font-size:.82rem; }
-  .snip { color:var(--sub); font-size:.85rem; margin-top:4px; }
-  .zh-snip { color:#445; font-size:.85rem; margin-top:2px; }
-  .item-meta { color:var(--meta); font-size:.75rem; margin-top:4px; }
-  .item-meta a { color:var(--meta); }
-  .trump-time { color:var(--meta); font-size:.78rem; }
-  footer.arch { margin-top:34px; }
-  footer.arch h2 { font-size:1rem; }
-  footer.arch ul { list-style:none; padding:0; columns:2; font-size:.85rem; }
-  footer.arch li { padding:2px 0; }
-  .home-link { font-size:.85rem; margin-bottom:10px; }
-  .home-link a { color:var(--accent); }
-  @media (max-width:520px) { footer.arch ul { columns:1; } }
-  @media (max-width:640px) { .enso-card { flex:0 0 100%; } .top-left { flex:1 1 100%; } }
+
+  /* ---------- 双栏 ---------- */
+  .cols { display:grid; grid-template-columns:minmax(0,1fr) 340px;
+          gap:28px; margin-top:28px; align-items:start; }
+  .main-col, .side-col { display:flex; flex-direction:column; gap:28px; min-width:0; }
+
+  /* ---------- 模块卡片 ---------- */
+  .module { background:var(--card); border:1px solid var(--line); border-radius:12px;
+            box-shadow:0 1px 3px rgba(0,0,0,.05); padding:22px 26px; }
+  .mod-head { display:flex; align-items:center; gap:12px; margin-bottom:6px;
+              flex-wrap:wrap; }
+  .mod-bar { width:4px; height:22px; border-radius:2px; flex:0 0 auto; }
+  .mod-head h2 { font-size:1.3rem; font-weight:900; margin:0; flex:0 0 auto; }
+  .mod-head .en { font-size:.72rem; color:var(--gray); letter-spacing:.1em;
+                  text-transform:uppercase; font-weight:600; flex:1 1 140px;
+                  min-width:120px; }
+  .mod-count { margin-left:auto; font-size:.72rem; font-weight:700; color:var(--accent);
+               background:#fdf2f6; border-radius:20px; padding:2px 10px; flex:0 0 auto; }
+  .fail { font-size:.8rem; color:var(--gray); padding:10px 0 2px; }
+
+  /* ---------- 条目（新闻 / 厄尔尼诺） ---------- */
+  article.item { padding:16px 0 14px; border-bottom:1px solid var(--hair); }
+  article.item:last-child { border-bottom:none; }
+  .item-zh-title { font-size:19px; font-weight:800; color:var(--ink);
+                   margin:0; line-height:1.5; }
+  .item-zh-title .zh-missing { color:var(--gray); font-size:.82rem; font-weight:400; }
+  .item-en-title { font-size:15px; color:var(--gray-mid); margin:5px 0 0; line-height:1.55; }
+  .item-zh-snip { font-size:15px; color:var(--ink-soft); line-height:1.85; margin:9px 0 0; }
+  .item-en-snip { font-size:14px; color:var(--gray); margin:7px 0 0; line-height:1.7; }
+  .item-meta { font-size:.76rem; color:var(--gray); margin-top:10px; }
+  .item-meta a { color:var(--accent); text-decoration:none; font-weight:600; }
+  .item-meta a:hover { text-decoration:underline; }
+
+  /* ---------- 特朗普时间线 ---------- */
+  ul.timeline { list-style:none; margin:6px 0 0; padding:0 0 0 18px;
+                border-left:2px solid #c9d4f0; }
+  ul.timeline li { position:relative; padding:12px 0 12px 16px;
+                   border-bottom:1px solid var(--hair); }
+  ul.timeline li:last-child { border-bottom:none; }
+  ul.timeline li::before { content:""; position:absolute; left:-7px; top:22px;
+                          width:12px; height:12px; border-radius:50%;
+                          background:#1d4ed8; border:2.5px solid var(--card); }
+  .tl-top { font-size:.74rem; color:var(--gray); }
+  .tl-top b { color:var(--ink); letter-spacing:.04em; }
+  .tl-en { font-size:15px; line-height:1.8; margin:6px 0 0; word-break:break-word; }
+  .tl-zh { font-size:15px; color:var(--ink-soft); line-height:1.85; margin:6px 0 0;
+           word-break:break-word; }
+  .tl-zh .zh-missing { color:var(--gray); font-size:.82rem; }
+  .tl-link { display:inline-block; font-size:.74rem; color:var(--accent);
+             text-decoration:none; margin-top:8px; font-weight:600; }
+  .tl-link:hover { text-decoration:underline; }
+
+  /* ---------- X 热搜排行 ---------- */
+  ol.rank { list-style:none; margin:6px 0 0; padding:0; counter-reset:r; }
+  ol.rank li { counter-increment:r; }
+  ol.rank a { display:flex; align-items:baseline; gap:10px; text-decoration:none;
+              padding:8px 6px; border-radius:6px; border-bottom:1px solid var(--hair); }
+  ol.rank li:last-child a { border-bottom:none; }
+  ol.rank a:hover { background:#faf9f6; }
+  ol.rank li::before { content:counter(r,decimal-leading-zero); font-size:.8rem;
+                      font-weight:800; color:var(--accent); flex:0 0 24px;
+                      font-variant-numeric:tabular-nums; }
+  .rank-zh { font-weight:700; font-size:.92rem; white-space:nowrap;
+              overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .rank-en { color:var(--gray); font-size:.8rem; white-space:nowrap;
+              overflow:hidden; text-overflow:ellipsis; max-width:42%; flex:0 1 auto; }
+  .rank-heat { margin-left:auto; font-size:.72rem; color:var(--gray);
+               flex:0 0 auto; font-variant-numeric:tabular-nums; }
+
+  /* ---------- 归档模块 ---------- */
+  .arc-list a { display:block; font-size:.82rem; color:var(--gray-mid);
+                text-decoration:none; padding:5px 0; border-bottom:1px solid var(--hair); }
+  .arc-list a:last-child { border-bottom:none; }
+  .arc-list a:hover { color:var(--accent); }
+  .arc-list a.home { color:var(--ink); font-weight:700; }
+
+  .foot { margin-top:36px; padding-top:14px; border-top:1px solid var(--line);
+          font-size:.72rem; color:var(--gray); text-align:center; }
+  .backline { margin:0 0 14px; font-size:.82rem; }
+  .backline a { color:var(--accent); text-decoration:none; font-weight:600; }
+  .backline a:hover { text-decoration:underline; }
+
+  /* ---------- 移动端 ---------- */
+  @media (max-width:960px) {
+    .wrap { padding:16px 14px 44px; }
+    .masthead { padding:24px 20px; border-radius:14px; }
+    .masthead h1 { font-size:2.1rem; }
+    .enso-card { flex:1 1 100%; }
+    .cols { grid-template-columns:minmax(0,1fr); }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top">
-    <div class="top-row">
-      <div class="top-left">
-        <h1>美国每日热榜 · 中英对照<span class="badge">下午版</span></h1>
-        <div class="meta">更新于 2026-11-06 18:51（北京） · 每天 07:50 / 19:50（北京时间）自动更新</div>
-      </div>
-      <div class="enso-card kind-el_nino">
-        
-        <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/" target="_blank" rel="noopener">
-          <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
-          <div class="enso-value">+3.4°C</div>
-          <div class="enso-status">超强厄尔尼诺</div>
-          <div class="enso-meta">SST 30.2°C · 截至 2026-10-28 当周 · NOAA CPC 周度更新</div>
-        </a>
-        
-      </div>
+
+  <!-- ================= 深色报头 ================= -->
+  <header class="masthead">
+    <div class="mast-left">
+      <div class="kicker">● DAILY BRIEF · 每日电讯</div>
+      
+      <h1>美国每日热榜</h1>
+      
+      <div class="sub">US DAILY BRIEF · 原文 + AI 中文对照</div>
+      <p class="statusline">更新于 2026-11-06 19:24（北京） · 每天 07:00 自动更新 · 本期共 <b>23</b> 条</p>
+    </div>
+    <div class="enso-card kind-el_nino">
+      
+      <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/" target="_blank" rel="noopener">
+        <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
+        <div class="enso-value">+3.4°C</div>
+        <div class="enso-status">超强厄尔尼诺</div>
+        <div class="enso-meta">SST 30.2°C · 截至 2026-10-28 当周 · NOAA CPC 周度更新</div>
+      </a>
+      
     </div>
   </header>
 
-  
-  <section class="card">
-    <h2>美国新闻头条<span class="en">US Headlines (Google News)</span></h2>
-    
-      <ul class="items">
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxNOGJwajJTMnQ4VlgzdDdtOXY4ZmZDWHE1a1JoWG5ZRk1yNU43d29mdl9HUUw4TnJVVWFjQ3lfaGZlSFQwRWcwNmtFWklNR1RtZnlQc3lKMkVOWTl2d0pDNjM1UEk0ZVBKMzNlY3AtQXBweEF2TnhXckFDRmFQYWdYcElB?oc=5" target="_blank" rel="noopener">Midterm Elections Live Updates: Democrats Clear 250 House Seats in Decisive Power Shift - The New York Times</a></div>
-          <div class="zh-title">
-            中期选举实时更新：民主党拿下250个众议院席位，权力格局发生决定性转变 - 纽约时报
-            
-          </div>
-          <div class="snip">Midterm Elections Live Updates: Democrats Clear 250 House Seats in Decisive Power Shift The New York Times U.S. House Election Results The New York Times US midterm elections 2026 live: Democrats exce</div>
-          <div class="zh-snip">中期选举实时更新：民主党拿下250个众议院席位，权力格局发生决定性转变 纽约时报 美国众议院选举结果 纽约时报 2026年美国中期选举实时：民主党超...</div>
-          <div class="item-meta">
-            
-              The New York Times · Fri, 06 Nov 2026 08:30:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxOcjBRT0VzU19iY2dJQ1d3NGFOaWlpTVhBOVZzWDBzc3Q4bW04RDFBMXhoZTR0N3dPaU9sbm1QSkpTRDRnRmpYd2c1Z0NMdWRZN0RoQnlPUkF3U3JJZVA2YU4tcFpPODQ4Tmc3eXNIVFhDQmZ5RzdUOTlFbVpGV0JxSURNR0hQVzQ2QW0xQzlDaXhIcDF3UVFVZU1nYmdPdVlxMU1BMXFvVVAwMHZ1V3dSX2FVanB0VTVP?oc=5" target="_blank" rel="noopener">Judge halts Trump’s arch after federal panel approves it - The Washington Post</a></div>
-          <div class="zh-title">
-            联邦委员会批准后，法官叫停特朗普拱门 - 华盛顿邮报
-            
-          </div>
-          <div class="snip">Judge halts Trump’s arch after federal panel approves it The Washington Post Judge blocks construction of Trump’s arch within an hour of its final approval CNN Judge blocks Trump&#39;s 250-foot triumphal </div>
-          <div class="zh-snip">联邦委员会批准后，法官叫停特朗普拱门 华盛顿邮报 法官在最终批准一小时内阻止建造特朗普拱门 CNN 法官阻止特朗普250英尺高的凯旋门...</div>
-          <div class="item-meta">
-            
-              The Washington Post · Fri, 06 Nov 2026 05:42:27 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE5xOUtjbGRoaFpDdUgtbU5udm9hd2xhZ2hENkEtWDMyYUdCQnFPaWo2SWhhTl81QTZRSDRDa3pqMUU2cjZGMlZEbUlEbVFpazdLLWVLa3lIdVh3U1k?oc=5" target="_blank" rel="noopener">Melania Trump calls for lasting Ukraine truce as she hosts Russian and Ukrainian officials - BBC</a></div>
-          <div class="zh-title">
-            梅拉尼娅·特朗普呼吁乌克兰实现持久停火，同时接待俄罗斯和乌克兰官员 - 英国广播公司
-            
-          </div>
-          <div class="snip">Melania Trump calls for lasting Ukraine truce as she hosts Russian and Ukrainian officials BBC White House event reveals Ukraine and Russia share one goal: flattering Melania The Guardian Melania Trum</div>
-          <div class="zh-snip">梅拉尼娅·特朗普呼吁乌克兰实现持久停火，同时接待俄罗斯和乌克兰官员 英国广播公司 白宫活动揭示乌克兰和俄罗斯有一个共同目标：讨好梅拉尼娅 卫报 梅拉尼娅·特鲁</div>
-          <div class="item-meta">
-            
-              BBC · Fri, 06 Nov 2026 07:56:19 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBybzRqOVdsTlI1aDFOaFNiX1JIYzRqWUNocVJfSU1OTUZIOTNvSWlUTy1JdVdNckttWlB3YW5LWHZuVGR5bXRYOHVmV0lPS1o2SnROTEdNRk1ZODQ?oc=5" target="_blank" rel="noopener">White House denies Hegseth, Rubio will leave jobs amid Republican election fallout - BBC</a></div>
-          <div class="zh-title">
-            白宫否认赫格塞斯和鲁比奥将在共和党选举余波中离职 - BBC
-            
-          </div>
-          <div class="snip">White House denies Hegseth, Rubio will leave jobs amid Republican election fallout BBC Rubio Dismisses Reports He Will Leave His Jobs to Run for President The New York Times Rubio Weighs Leaving Admin</div>
-          <div class="zh-snip">白宫否认赫格塞斯和鲁比奥将在共和党选举余波中离职 BBC 鲁比奥否认他将离职竞选总统的报道 纽约时报 鲁比奥考虑离开政府...</div>
-          <div class="item-meta">
-            
-              BBC · Fri, 06 Nov 2026 02:08:57 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxOX0VaY3Q2aFBMZDBjWFpsV3l6OXhNVE95RXpGWWtzdV8yMFA1bVdLRmJJWWg5T1NnLW1IX2w2VlBYY0NkajhWeG9UVlpXdUdGeWZ0YVpWTFdEVXZLUVZVY2dKdWxSckZ0bW1aeDFETkd0MzZISTZYc1dwYVdLcnJONHhzVQ?oc=5" target="_blank" rel="noopener">Gov.-elect Gina Hinojosa pledges bipartisan administration in first public appearance since win - The Texas Tribune</a></div>
-          <div class="zh-title">
-            当选州长吉娜·伊诺霍萨胜选后首次公开露面，承诺建立跨党派政府 - 德克萨斯论坛报
-            
-          </div>
-          <div class="snip">Gov.-elect Gina Hinojosa pledges bipartisan administration in first public appearance since win The Texas Tribune Texas’s new Democratic governor Hinojosa vows to undo policies she calls divisive The </div>
-          <div class="zh-snip">当选州长吉娜·伊诺霍萨胜选后首次公开露面，承诺建立跨党派政府 德克萨斯论坛报 德克萨斯州新任民主党州长伊诺霍萨誓言废除她称之为分裂性的政策...</div>
-          <div class="item-meta">
-            
-              The Texas Tribune · Thu, 05 Nov 2026 19:43:10 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQTlhtbUFBZi1EWkZwbjJhOXBka3A5c3NVQUtSSF92bVg3LUlieTZ6SG56OWlmOWo1Wjd1S280T2lUVmJmdnd4cWlWTFlhZHpOTERzbWZGUW5wc1RocGt4SGVGTFNGT2JpQWRIWnBhakhrcGxXWXB2NzdKN3hEaEN3TTRqcTNNY3VWVnlmZWtUcERSVXhiaW9MeGpRM1RJOWpDRTh1c0QwRy1za0VNQ0RObV9nV2x2b0XSAbwBQVVfeXFMUEpLb3F3MDI3MENnS29zUzV1cGh0dW1yNDVyci1iT1Yxc09NcVQyUzJBSXBNU3g5ci14M3ZxbVVVLUNuR1RMREZhWk11eVdsNzlNUHh5RzZEVVBsc2NXUm1WT0dOS0R6Mml4cE05LThkaVVsUFhBZVRuWGVtUDdCZ3VCM3dBVEQ1bjVucXQySWRlZU1hMXMxSHpPcDJabi1rZkZWU2ZtcEFZQ1R1RFUyWWROOTJSZnY4a0o2UUk?oc=5" target="_blank" rel="noopener">California governor commutes sentences of more than 500 people on death row - Al Jazeera</a></div>
-          <div class="zh-title">
-            加州州长为500多名死囚减刑 - 半岛电视台
-            
-          </div>
-          <div class="snip">California governor commutes sentences of more than 500 people on death row Al Jazeera Newsom Commutes the Sentences of California’s 548 Death Row Inmates The New York Times We’ve just seen a transfor</div>
-          <div class="zh-snip">加州州长为500多名死囚减刑 半岛电视台 纽森为加州548名死囚减刑 纽约时报 我们刚刚见证了一场转变...</div>
-          <div class="item-meta">
-            
-              Al Jazeera · Fri, 06 Nov 2026 01:47:36 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPTE9EY1RuekxrZG90a2VFVHJZY2kxS21qa21NcVBXX0wzdEZrVzRBOFZUaS1qclpMRUZKRXlRRXZkcDRDYWJUTUw2ZUxGRTJ2bERkZEJKbllFbU8xTjFJMlNBTGZ4cjFqWTB0djhfUUtuQk5uVWU2bXJpX0RmbDB2QzM2eEZVOW5WX2tiTHhrMGpoWmRxcW5HU2JFWDFNa1hnQW1sNTdETTltV1k?oc=5" target="_blank" rel="noopener">Republicans rammed through Supreme Court nominees. Now Democrats will have the votes to stop them - AP News</a></div>
-          <div class="zh-title">
-            共和党强行通过最高法院提名人选，如今民主党将拥有阻止他们的票数 - 美联社
-            
-          </div>
-          <div class="snip">Republicans rammed through Supreme Court nominees. Now Democrats will have the votes to stop them AP News Chuck Schumer just won a huge majority. He’s already thinking about making it bigger. Politico</div>
-          <div class="zh-snip">共和党强行通过最高法院提名人选，如今民主党将拥有阻止他们的票数 美联社 舒默刚刚赢得压倒性多数，他已在考虑如何进一步扩大优势 政客新闻网...</div>
-          <div class="item-meta">
-            
-              AP News · Fri, 06 Nov 2026 05:06:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQWktIamctM0J2WXQ1QnRrS09yQ1BmYngyN09qREF2eW5MbEdpT040RjFiWUxPVm5MRTVjM2toZVdRbXZyWG1LTE0wcHg4aENqc29pX2NiUG1ycXZsTmJobWpBOVA0bDBUV3AzaVZOS2ZCUWtnRjFhZWtmOGhsS0NnVmdTUHViTmZtemVmOWFWQjRhVGRoRnZfenROeUN5aEhfOC1TWjM3VVRFemh5X1g4Rzh6UHcwR0XSAbwBQVVfeXFMTl9FNzd6RXBLaS1pMHVmdlowUEtEZTByUEhaRURLSXFTbm9MN1lwanBzUFQ0bktOaTFzNUlSVE5Ma1ZIWDVHVFgzUk5CWkVuQTZLeC1LWVhuVXpTZUVDSFV2NTNsdFNDRUs1ZjZ4QWdfMjlQRFhYWXFsUEtzTThRV25VZ3JGOGVRQ2RWRTNpQ3JYQXdEelFWbF9pSjc3bnJydnlrR0FRekRZWGlUaXprYUgySjFmeFEzRzc2N00?oc=5" target="_blank" rel="noopener">‘Hero’ security guard shoots gunman, stopping Tampa Citibank plaza attack: HCSO - WFLA</a></div>
-          <div class="zh-title">
-            “英雄”保安开枪击毙枪手，阻止坦帕花旗银行广场袭击：希尔斯伯勒县警长办公室 - WFLA
-            
-          </div>
-          <div class="snip">‘Hero’ security guard shoots gunman, stopping Tampa Citibank plaza attack: HCSO WFLA Citibank Center deadly shooting: What we know about the suspect FOX 13 Tampa Bay Citi shooter was ‘irate’ over $2,5</div>
-          <div class="zh-snip">“英雄”保安开枪击毙枪手，阻止坦帕花旗银行广场袭击：希尔斯伯勒县警长办公室 WFLA 花旗中心致命枪击案：我们所了解的嫌疑人信息 FOX 13 坦帕湾 花旗银行枪手因2,5...</div>
-          <div class="item-meta">
-            
-              WFLA · Thu, 05 Nov 2026 18:57:19 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE0zMUZ5akFDc1lMeThXeEt4TjdYRTR4UjhyMl9Qbi13VjNxRjY2Q3h6Q1UtYmxiYjRvd3k2TDNjd21DckNiZWR5cTM2eWM5Yll4b0h5MzVMMW4zVTQ?oc=5" target="_blank" rel="noopener">Trump signs order to prevent future presidents from changing Oval Office - BBC</a></div>
-          <div class="zh-title">
-            特朗普签署命令，防止未来总统改变椭圆形办公室 - BBC
-            
-          </div>
-          <div class="snip">Trump signs order to prevent future presidents from changing Oval Office BBC Trump signs proclamation to try to prevent changes to gold-covered Oval Office The Guardian Trump’s first post-election exe</div>
-          <div class="zh-snip">特朗普签署命令，防止未来总统改变椭圆形办公室 BBC 特朗普签署公告，试图防止改变镀金椭圆形办公室 卫报 特朗普选后首道行政令...</div>
-          <div class="item-meta">
-            
-              BBC · Fri, 06 Nov 2026 04:29:25 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxPeEVRZV91YTk5enJ5bV82TFZzajh5Wks2RnpnbkdsQ3pvVWlvYkVrVlNmNThvUDJ3Q3pPN2s4a0lRX1NKX1g4bGNQa3B5aW9ZQ1hWY0YtNTllajJpdmJlaC1CbUNvLXlsbENGdDIyV0RBbzRlSjJvSkstbnhhWncxRV8tbWFfTUJYY2N6LUNTSjJ1dHdlbDIxd2xnNlJ0cWlOWUZtcTVTaFFMZDU1RkE?oc=5" target="_blank" rel="noopener">Harmeet Dhillon Resigns From DOJ - Forbes</a></div>
-          <div class="zh-title">
-            哈米特·迪隆辞去司法部职务 - 福布斯
-            
-          </div>
-          <div class="snip">Harmeet Dhillon Resigns From DOJ Forbes Harmeet Dhillon, controversial head of Justice Department&#39;s Civil Rights Division, resigns CBS News DOJ civil rights chief Harmeet Dhillon resigns, says White H</div>
-          <div class="zh-snip">哈米特·迪隆辞去司法部职务 福布斯 哈米特·迪隆，备受争议的司法部民权司司长，辞职 CBS新闻 司法部民权主管哈米特·迪隆辞职，称白宫...</div>
-          <div class="item-meta">
-            
-              Forbes · Thu, 05 Nov 2026 18:15:47 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxNM2E0ank3Z3NZR3Q2bFVWS29uMlZDSGNfQ3I1WDNta2FYR3JOeFdtWEx0Q2dBUlN0MldyZUZOemdIVE1yRG1JRmZHZWMxZm5Ta1hwYUc0NVB1cEQ0Mkd2T05XcVdPS05RbE52c0o1QU5Ta0NjXzVOeWdNY2dJZzJFYzFCa0dXUVo5WWNURnc4QV9jNE5jUXZ0dERLN1JGVnYtMXZra2tNTkJDdGN1UG9GRnphMzU0ckFSSVNOTEZvYmlNWHFEeXVRVVhR?oc=5" target="_blank" rel="noopener">12 Planes in 12 Days: Pope Begins Major Latin America Tour, Weeks After Surgery - The New York Times</a></div>
-          <div class="zh-title">
-            12天12架飞机：教皇术后数周开启大规模拉丁美洲之旅 - 纽约时报
-            
-          </div>
-          <div class="snip">12 Planes in 12 Days: Pope Begins Major Latin America Tour, Weeks After Surgery The New York Times Pope begins lengthy trip to Latin America weeks after lung cancer surgery BBC After cancer surgery, P</div>
-          <div class="zh-snip">12天12架飞机：教皇术后数周开启大规模拉丁美洲之旅 纽约时报 教皇在肺癌手术后数周开启漫长的拉丁美洲之旅 BBC 癌症手术后，教...</div>
-          <div class="item-meta">
-            
-              The New York Times · Fri, 06 Nov 2026 05:01:25 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxOdURadE94eEowUjRBOW1zVHRSR3FReHl0Z0twQlQ5YllFYlBDYV9Qc3g2ZUFaSUQ2SGpIcC1vdVJYTy1qYkRDVklwQ08waDBtWHBNa3dwbGc3QWxjV3lwaTdjdEsyX1FwLXJ5NU1CU1A3NmVyemEzbm80RlMxMHZ2WDViOXFSbEJCVWtPcGNR?oc=5" target="_blank" rel="noopener">Flight bomb threats live: Multiple planes in Europe diverted for second time in a week - CNN</a></div>
-          <div class="zh-title">
-            欧洲航班炸弹威胁实时更新：一周内多架航班再次改道
-            
-          </div>
-          <div class="snip">Flight bomb threats live: Multiple planes in Europe diverted for second time in a week CNN New wave of bomb hoaxes hits dozens of flights across Europe Reuters (1) European skies on high alert after h</div>
-          <div class="zh-snip">新一波炸弹骗局席卷欧洲数十个航班，欧洲天空高度警戒……</div>
-          <div class="item-meta">
-            
-              CNN · Thu, 05 Nov 2026 17:44:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxNdmg3aEZDZkM5bFJ4QTRTSEZVdC1sSHZSSXZSeGMwa2ktY2FIcXdxUm9MdFFOSWdwSTFBTWVWNHFhSkhMb0N0MjlLZ0lRakxtYTVWVmZfRWYtT18yTFd2bm1YVW5kNll1SmN6aXNxWkQxdWpUZks1dzBoUDNDVW1SbA?oc=5" target="_blank" rel="noopener">Tens of thousands of workers in France flood streets for anti-government protests - CBS News</a></div>
-          <div class="zh-title">
-            法国数万工人涌上街头参加反政府抗议
-            
-          </div>
-          <div class="snip">Tens of thousands of workers in France flood streets for anti-government protests CBS News Hundreds of thousands march in France’s biggest day of protests in years. Here’s what we know CNN Trade union</div>
-          <div class="zh-snip">数十万人参加法国多年来最大规模的抗议活动。工会……</div>
-          <div class="item-meta">
-            
-              CBS News · Fri, 06 Nov 2026 00:56:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxQVm55WG55elNnbTlZX2lRaTZXaTFtWTZ2V2dadllWUElfaDNqbGgwaTQySUpDeFpYWTFuUDZCYXNVWmlkbjlDaDc0Y0xzUDNDSW1uTkJnbmNTcmxwaU1FR2FsN3o0SmtoTnJDVzFIZ19fTnZ6UDM0dmRVT3ZFLXc5UGlZa3A3bVYwTEpkaE5PLWdWd1FCbFdkYlB2TUFqbG9iZ2fSAacBQVVfeXFMUFdwRkZkQ2c2TDhZZjd2OHlIak5neHlnZ2dteFlKUVZfdWE1TTRyU0RZU0ZNNFFVM0hESkhiYkh0clVwYzcyeGhVLUNhT0dQd1VHTGVhamFiekVKel8temIxaW1USkpZMTNQN1MtaFJ4bFVXcFExeHhOVjVjdlRObUlQQXI4Q05JeHQ4NG5VWlBiOHRWRnpRQmJqT3lxLVFkaG8wWW1TTms?oc=5" target="_blank" rel="noopener">Paraguay Congress rejects President Pena’s resignation after bank collapse - Al Jazeera</a></div>
-          <div class="zh-title">
-            银行倒闭后巴拉圭国会拒绝总统佩尼亚辞职
-            
-          </div>
-          <div class="snip">Paraguay Congress rejects President Pena’s resignation after bank collapse Al Jazeera What is ueno bank and how did it trigger Paraguay&#39;s political crisis? Reuters President of Paraguay faces criminal</div>
-          <div class="zh-snip">什么是上野银行，它如何引发巴拉圭政治危机？巴拉圭总统面临刑事……</div>
-          <div class="item-meta">
-            
-              Al Jazeera · Fri, 06 Nov 2026 05:19:59 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE5XdkJGRE8yWFZFWXBDYzA4WXRyM1doblZVak9PRjFMNGszT1NCSEx0UEQ1QWduQjlvZ1Bnd21qcEc5MDU3cjRxRXFtTV8xd3BPdURJaENhUDdUMms?oc=5" target="_blank" rel="noopener">Global tech stocks plunge as US midterms add to AI slowdown fears - BBC</a></div>
-          <div class="zh-title">
-            美国中期选举加剧AI放缓担忧，全球科技股暴跌
-            
-          </div>
-          <div class="snip">Global tech stocks plunge as US midterms add to AI slowdown fears BBC Stock market today: Nasdaq plunges 5% amid chip stock wipeout, Dow and S&amp;P 500 erase post-election rally gains Yahoo Finance Marke</div>
-          <div class="zh-snip">今日股市：纳斯达克暴跌5%，芯片股遭血洗，道指和标普500抹去选后反弹涨幅……</div>
-          <div class="item-meta">
-            
-              BBC · Fri, 06 Nov 2026 02:57:24 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxNX3NGMHFJQlQwNk4yNzFPblZsOHRFS0FBcmc0b3JxbGRoSnUzUC00WGctejhmNllYa094VGFmMHJrSWYyaUhBRlFERkdKbktXSmRkcWhhc21JVUp5Z29kbFVtTE11YjZnc3ZkZU5jM3BvbmRqUVVyUDBveF9OTmJXd1poLVI1LVhlRUVfUjhzczh2b2t3cnZuTUc4UDExWXFmVWlQZ2R4MHVQaGllbnljdlR2UQ?oc=5" target="_blank" rel="noopener">Data centers took a beating in the midterm elections. A reckoning may be ahead for tech giants - AP News</a></div>
-          <div class="zh-title">
-            数据中心在中期选举中遭受重创，科技巨头可能面临清算
-            
-          </div>
-          <div class="snip">Data centers took a beating in the midterm elections. A reckoning may be ahead for tech giants AP News America got the anti-data-center wave it voted for. Here come the economic consequences CNN Top D</div>
-          <div class="zh-snip">美国迎来了它投票支持的反数据中心浪潮。经济后果随之而来……</div>
-          <div class="item-meta">
-            
-              AP News · Fri, 06 Nov 2026 05:08:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxPYXo4QW9qZVVXdU5oMzRhVlRKSElBYzd3eElBdWdrQjQ1M1Z5eEtfS3ROd1ZicTF3azg4ZWNuQXdTMktrUklIUTB3WTFSWVJyeTBmOC1pbW5GSDF1amJZQWRaWXBYUXFSMGoxSjlYQWpyOGFvZ003ckdVME1lWl85SzRRMUVtbUtyZ0hJ?oc=5" target="_blank" rel="noopener">Nikkei Falls 6.0%, Posts Biggest Loss in 1.5 Years - WSJ</a></div>
-          <div class="zh-title">
-            日经指数下跌6.0%，创1年半来最大跌幅
-            
-          </div>
-          <div class="snip">Nikkei Falls 6.0%, Posts Biggest Loss in 1.5 Years WSJ Asian Stocks Brace for Selloff as AI Rout Deepens: Markets Wrap Bloomberg.com The Outliers In Today’s European Selloff? AI Plays WSJ Tech selloff</div>
-          <div class="zh-snip">亚洲股市准备迎接抛售，AI崩盘加剧。今日欧洲抛售中的异类？AI股。科技股抛售……</div>
-          <div class="item-meta">
-            
-              WSJ · Fri, 06 Nov 2026 06:55:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNLUhhclMxWUFfUFQ3YW0wZUUya1MySGc5VGE3Zk0tdnZtTm5laHR0MkVmV2psOGc1VVNFekpFVV9CTG84YmNvV0VOUmVzWllRQy1NSzhwajB5R0FES0RUbGdreE54aWtpdHF3ZUVxX0s2dHRTdXdTQ1IzbzNlV242b21oTWpiOGRtYmd2TE1DS21FdWNUQ1J1d0RYYlZUR2ZYenB2VlFFRWc?oc=5" target="_blank" rel="noopener">IRS adjusts 2027 tax brackets. How your paycheck changes - USA Today</a></div>
-          <div class="zh-title">
-            美国国税局调整2027年税级，你的工资将如何变化
-            
-          </div>
-          <div class="snip">IRS adjusts 2027 tax brackets. How your paycheck changes USA Today IRS announces new federal income tax brackets for 2027 CNBC IRS announces increase in Child Tax Credit and deductions for 2027 NBC Lo</div>
-          <div class="zh-snip">国税局公布2027年新的联邦所得税税级。国税局宣布2027年儿童税收抵免和扣除额增加……</div>
-          <div class="item-meta">
-            
-              USA Today · Thu, 05 Nov 2026 21:49:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxNR3hvSHdQMFQ3VU55QkJqN1A3VlpleHVzZVhyaDdSOHFsUGFoMWx3cHJhS2tBeXdDcHlVenBmaGZpRFFTTmsxVGFDUU5vY0lkX1o2cmVGRXdvQ1hWdkpzNFBnblFhUC1TcEhVUFc5ZGdCZWVISlhLTG4xTnY1Q3dQQU9EYkhqQQ?oc=5" target="_blank" rel="noopener">Apple&#39;s First Touchscreen Mac is Now Arriving to Customers - MacRumors</a></div>
-          <div class="zh-title">
-            苹果首款触屏Mac现已送达客户手中
-            
-          </div>
-          <div class="snip">Apple&#39;s First Touchscreen Mac is Now Arriving to Customers MacRumors I Tested Apple’s Beautiful New Touchscreen MacBook. You Don’t Need It. The New York Times Apple drops 4 new products today. Take a </div>
-          <div class="zh-snip">我测试了苹果漂亮的新款触屏MacBook。你不需要它。苹果今天发布4款新品……</div>
-          <div class="item-meta">
-            
-              MacRumors · Thu, 05 Nov 2026 23:12:31 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxOLVJhXzNhR2ZJZ19kVm5FVkQ4dVVwUDlRV2ZZUGZKZ2ZZai1HQ3VzSTV4RHQ3UlhRNjNZbjhCcUFRMmFIN21PMmpKNGpzanZqSE5xZ3VZeUtMc3o1M0NidFpvV3VWSlR3YWdYV2RycTdXZGtYazNsYW9OZGljZFJHdzl4bi1valBMT0cyd3N3?oc=5" target="_blank" rel="noopener">OpenAI says its new cybersecurity model is better at not hacking other companies - The Verge</a></div>
-          <div class="zh-title">
-            OpenAI称其新网络安全模型更善于不攻击其他公司
-            
-          </div>
-          <div class="snip">OpenAI says its new cybersecurity model is better at not hacking other companies The Verge GPT‑6 Cyber: Advancing the frontier of aligned cybersecurity agents OpenAI OpenAI AI Pipeline Generates 948 L</div>
-          <div class="zh-snip">GPT-6 Cyber：推进对齐网络安全代理的前沿。OpenAI人工智能管道生成948……</div>
-          <div class="item-meta">
-            
-              The Verge · Thu, 05 Nov 2026 17:00:00 GMT
-            
-          </div>
-        </li>
-      
-      </ul>
-    
-  </section>
-  
-  <section class="card">
-    <h2>厄尔尼诺动态<span class="en">El Niño / La Niña (ENSO)</span></h2>
-    
-      <ul class="items">
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE80X1h2alZkeU9fZTBLckNKMjdVYmd2SGYxNFdPSE9XUzhFVmNUbTQ1OHk3Mmg5RGo4RG1BdU8tblhjXzl0S2hmdUpxQmF0bENtVHhpQmc2M1Nid1hK?oc=5" target="_blank" rel="noopener">El Niño / La Niña Phenomena - World Meteorological Organization WMO</a></div>
-          <div class="zh-title">
-            厄尔尼诺/拉尼娜现象 - 世界气象组织 WMO
-            
-          </div>
-          <div class="snip">El Niño / La Niña Phenomena World Meteorological Organization WMO</div>
-          <div class="zh-snip">厄尔尼诺/拉尼娜现象 世界气象组织 WMO</div>
-          <div class="item-meta">
-            
-              World Meteorological Organization WMO · Mon, 26 Oct 2026 07:00:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxNWDFONGJNajgzRDdUeURfdlFOSkt1U1E2RmI4WEpGNGRZRExzVmw4VFBkLUsxdlNfWkE4NVhUWjhseldzY1dYOU1PLTE0bDg2U1ozSC13bkotQnFGSXg3dmNONnRkd2x1bDFwRnRwdHNpN0VXbnNCekRiNGVZeHFaNXhOTkVIZUo4MXQ4?oc=5" target="_blank" rel="noopener">What Is the Difference Between El Niño and La Niña? - Britannica</a></div>
-          <div class="zh-title">
-            厄尔尼诺和拉尼娜有什么区别？ - 《大英百科全书》
-            
-          </div>
-          <div class="snip">What Is the Difference Between El Niño and La Niña? Britannica</div>
-          <div class="zh-snip">厄尔尼诺和拉尼娜有什么区别？《大英百科全书》</div>
-          <div class="item-meta">
-            
-              Britannica · Tue, 27 Oct 2026 07:00:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNSmlGeFNHaXJ6c1ZPX0U1eExMQ21TcmpLQTlGUzZVM1N3Yjc2bzdrd3ZQeXlTQlRkcmlKWkRVRVpUcElyVmVzdXMwZTlGa0FlYjZoTjdDUjBzRndUTjM3bFc3Njd3YTJVbHEzOXppTGFiZjVuNVBsZlR5WVdwVDZTaVdNaVhnQkJSY3RwZ0FfVENJSThaNEdabXREcDlkZzVQZFZ5UjVzZWJJeWhncld0UGNhVnBoUdIBygFBVV95cUxOWW9lb3BFNXZISS1lOEhnQmx2b3ptaGNDYWV6X0x5N25laHRXY2M2WDN4b2VLNUtZcHYwalVjVjBLTnRxNjRCS01KS29maC15d1kxMjN5bjAzZGQzaHVSb19FUGpXdGpUVXlodXNFN1BWcVV0ZnlKUktTTmxqQm5HQlIya1pDUGliSFJNNWpOVHNPb3Q0NTRBLW94V2Q5dXBDbHd6bk5GZ1VvNVZmZzdpS1N6bWExaE5HMjlnYzhLZlRRaGZEcmZRb1hn?oc=5" target="_blank" rel="noopener">The Breakdown: How El Niño, La Niña, and Neutral Phases Shape Mid-South Deadly Tornadoes - Action News 5</a></div>
-          <div class="zh-title">
-            深度解析：厄尔尼诺、拉尼娜和中性阶段如何塑造中南部的致命龙卷风
-            
-          </div>
-          <div class="snip">The Breakdown: How El Niño, La Niña, and Neutral Phases Shape Mid-South Deadly Tornadoes Action News 5</div>
-          <div class="zh-snip">深度解析：厄尔尼诺、拉尼娜和中性阶段如何塑造中南部的致命龙卷风</div>
-          <div class="item-meta">
-            
-              Action News 5 · Thu, 05 Nov 2026 14:44:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxOalhPOUpTbXI0SDN5ODdvbm9USkZvS2RxZ1BjRVo0RDJkODNhbGtjZmo0V29hMVZKbDR4WXRtTzFQSkRaWlF4M3hwVEV1dzFsX2d3bDI4cTVpZnpVOFUxX3VUN0YxdENybWxlR1VMZUFxRmFPY0dzRzlHREZKWmJOb3cwQUlxNDBya2J3Y0Nid0l1T1RHa3Vpd29FRkJ3Q1hvNG5uM2E2NXdJbGpYZ3VfVUtlZw?oc=5" target="_blank" rel="noopener">The Impact of El Niño on the U.S. Economy - Federal Reserve Bank of San Francisco</a></div>
-          <div class="zh-title">
-            厄尔尼诺对美国经济的影响 - 旧金山联邦储备银行
-            
-          </div>
-          <div class="snip">The Impact of El Niño on the U.S. Economy Federal Reserve Bank of San Francisco</div>
-          <div class="zh-snip">厄尔尼诺对美国经济的影响 旧金山联邦储备银行</div>
-          <div class="item-meta">
-            
-              Federal Reserve Bank of San Francisco · Mon, 02 Nov 2026 18:00:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxObTlPbXlIX0tTUktUS3RLRWZjeGZPNTlFRVpiYTBlRTdfaE11Szd6NFFjTG9uNHdSN2ludjR1V0llNjFWUG52dFNROUNzR3kxZUhiOW5kVk9ueXFVQjR4LWE5ZlRfRE1kSVZWbm52UjFia2Y5M0gtS0dNNi1VcW4yRDJpOHVzbHU2UXZTWE1xa3BDOGhFYnVOSy13?oc=5" target="_blank" rel="noopener">ENSO, PDO, NAO, and MJO. Creative use of the alphabet or do these have meaning? - Nebraska State Climate Office</a></div>
-          <div class="zh-title">
-            ENSO、PDO、NAO和MJO。是对字母表的创意使用还是确有其意？ - 内布拉斯加州气候办公室
-            
-          </div>
-          <div class="snip">ENSO, PDO, NAO, and MJO. Creative use of the alphabet or do these have meaning? Nebraska State Climate Office</div>
-          <div class="zh-snip">ENSO、PDO、NAO和MJO。是对字母表的创意使用还是确有其意？ 内布拉斯加州气候办公室</div>
-          <div class="item-meta">
-            
-              Nebraska State Climate Office · Wed, 28 Oct 2026 03:10:42 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5MajNQamZ5T0syTDg5cVc3d2VLVnZ2YWRNUjN5eGRSZ2M0Z3RlUTZmLWN1SXBNRHN1aWhPbXJCeE5HejdWeTBHdjdENExxX0J4ZUI3RFpmdjdqQ1hRbl8tNTdsbG0tcURpWnJn0gFrQVVfeXFMTXhfTmctTWlwQlZJVTdIWGFGbEhiaFZHYV92SnpSZG8tbXdranV5b3B1cWdYN3lRUVpPS3ZSR3Z0UGphbHFjTkYxYTdBNWZUWGFhcEFQTmpLeEpNU1RYNHpvYTVvZnJXbk5ZNkU?oc=5" target="_blank" rel="noopener">Here’s what the ‘super’ El Niño has in store for metro-east this winter: Forecast - Belleville News-Democrat</a></div>
-          <div class="zh-title">
-            “超级”厄尔尼诺将给大都会东区今年冬季带来什么：预报
-            
-          </div>
-          <div class="snip">Here’s what the ‘super’ El Niño has in store for metro-east this winter: Forecast Belleville News-Democrat</div>
-          <div class="zh-snip">“超级”厄尔尼诺将给大都会东区今年冬季带来什么：预报</div>
-          <div class="item-meta">
-            
-              Belleville News-Democrat · Thu, 29 Oct 2026 08:47:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNTW1EdjBTYU1Tei1LbzZXMUU5Y051aW4yUllzbm13R1htQ1RpVnpnNWNWdDlWXzloTUZzd1l6SEdIcG1VdGY1aDg0X3lsWW1GRVV2aFlGSVAzVGVoLVdHRnV4OHNrdTBfQm9rcjBDTTU5d25JX0FEekltbFAwSHlLdzVKWVhYcmVTaXNpNWMxaDNzYUF5S0I4WUZPS0xJTlBZY205TzFaR0tpTlU?oc=5" target="_blank" rel="noopener">‘Simply staggering’: Rapidly developing ‘super El Niño’ on track to peak in December - Carbon Brief</a></div>
-          <div class="zh-title">
-            “简直令人震惊”：快速发展的“超级厄尔尼诺”预计将于12月达到峰值
-            
-          </div>
-          <div class="snip">‘Simply staggering’: Rapidly developing ‘super El Niño’ on track to peak in December Carbon Brief</div>
-          <div class="zh-snip">“简直令人震惊”：快速发展的“超级厄尔尼诺”预计将于12月达到峰值。</div>
-          <div class="item-meta">
-            
-              Carbon Brief · Fri, 06 Nov 2026 09:23:17 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxQOFQ3ME82ODhuWkNVOEU2R1FxVXJ0c3A0ZzFrc2w1NVBfdjlPQzRLdDA4Zi1CSVdteGVsUFhzMDZEV2Qzb3h4TTRaSEU4NEp2Qjg1WW5tWW1ua1JXUUoxMGZnTFBjLTNEQ1dOUUp5VzdabnJlc04xX0liM2FGcGNMc2RCSUlhVlB0TUNVM2laYU5xYUlpNmpxMUtnbHI3SnAzWXhDOXJNRUZNZ9IBrwFBVV95cUxQMDQ4TmY1Y0pwcmUxX2tvelNybDU3cVQwZG42UzZ6QXluWFdGQ0s1TFVJWXRHRUNycFFqNGZzVHlQVUpZSUNaa2c0eGZTSWNoVkFYMzNPeTJoM2I2NVFIRmRwNGNpZ2dIbmFCamFoNkZrWDNhZ05tajVqN3NjRWlQSzJSUWZNTDJpcWZHRmd1bExnbk1iNXJOYXZWT3ZERlpSQkUyajVUWjhPNm8wSVB3?oc=5" target="_blank" rel="noopener">This was the last nationwide White Thanksgiving. How Super El Niño and the polar vortex could shape 2026 - FOX Weather</a></div>
-          <div class="zh-title">
-            这是最后一次全国性的白色感恩节。超级厄尔尼诺和极地涡旋将如何影响2026年
-            
-          </div>
-          <div class="snip">This was the last nationwide White Thanksgiving. How Super El Niño and the polar vortex could shape 2026 FOX Weather</div>
-          <div class="zh-snip">这是最后一次全国性的白色感恩节。超级厄尔尼诺和极地涡旋将如何影响2026年</div>
-          <div class="item-meta">
-            
-              FOX Weather · Thu, 29 Oct 2026 18:57:00 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE5WeFhKMThiNVd0S1lraW4zNnpMWUpmZVNWQjFIOWZGTUVWRXhJTThTMVNUa0w0TFZiZ3p4NHlFd1E1NFhaejlnbDBSV0ZzM2RodGI3LXVJSEVucTVJRWo0VFNDOFpnZ09pN1otbzJtSW42UQ?oc=5" target="_blank" rel="noopener">El Niño can influence weather and wreak havoc all around the globe. Scientists just found a better way to predict it - BBC Wildlife Magazine</a></div>
-          <div class="zh-title">
-            厄尔尼诺会影响全球天气并造成破坏，科学家刚找到更好的预测方法 - BBC Wildlife Magazine
-            
-          </div>
-          <div class="snip">El Niño can influence weather and wreak havoc all around the globe. Scientists just found a better way to predict it BBC Wildlife Magazine</div>
-          <div class="zh-snip">厄尔尼诺会影响全球天气并造成破坏。科学家刚找到更好的预测方法 BBC Wildlife Magazine</div>
-          <div class="item-meta">
-            
-              BBC Wildlife Magazine · Tue, 03 Nov 2026 03:36:35 GMT
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://news.google.com/rss/articles/CBMi4wFBVV95cUxOOWptVjBHM21MNjAzYklDS1gxa1h1RVpuek9sU2VTei1BZll0SlNyY2JzX0g3bUdnU21UVmQzWU5ieDNFbDNuVjFzZlQ4UGhhQk1RczhGNlNOYXhhWlFXVjJSaXlRZFhWUlJwbnpNZk42cFhGOTJSRk00LUVrS1dXNFQxYjF2em5BTmZpbDRsRjI2MUtGU1NNVHVEdlkzSV9qUV9QVFdHMnZablJXcVFMV3Z0OUtoZXBKQjYtenFOc1UyLTJ3aF92YnNuSmVteldIaTRZcG9nYTNIaWJ4U21oMUNyRQ?oc=5" target="_blank" rel="noopener">ENSO Watch: El Niño Continues To Strengthen With A Strong-To-Very Strong El Niño likely through January-March 2027 - StoneX</a></div>
-          <div class="zh-title">
-            ENSO观察：厄尔尼诺持续增强，2027年1月至3月可能出现强至非常强厄尔尼诺 - StoneX
-            
-          </div>
-          <div class="snip">ENSO Watch: El Niño Continues To Strengthen With A Strong-To-Very Strong El Niño likely through January-March 2027 StoneX</div>
-          <div class="zh-snip">ENSO观察：厄尔尼诺持续增强，2027年1月至3月可能出现强至非常强厄尔尼诺 StoneX</div>
-          <div class="item-meta">
-            
-              StoneX · Fri, 06 Nov 2026 06:10:13 GMT
-            
-          </div>
-        </li>
-      
-      </ul>
-    
-  </section>
-  
-  <section class="card">
-    <h2>X 美国热搜<span class="en">X US Trends</span></h2>
-    
-      <ul class="items">
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23DUUUVAL/" target="_blank" rel="noopener">#DUUUVAL</a></div>
-          <div class="zh-title">
-            #DUUUVAL
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：306 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23thursdayvibes/" target="_blank" rel="noopener">#thursdayvibes</a></div>
-          <div class="zh-title">
-            #周四氛围
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：292 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23OlandriaxRichLittleBrokeGirls/" target="_blank" rel="noopener">#OlandriaxRichLittleBrokeGirls</a></div>
-          <div class="zh-title">
-            #OlandriaxRichLittleBrokeGirls
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：237 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23LaGranjaSalvaci%C3%B3n/" target="_blank" rel="noopener">#LaGranjaSalvación</a></div>
-          <div class="zh-title">
-            #LaGranjaSalvación
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：228 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23RHOSLC/" target="_blank" rel="noopener">#RHOSLC</a></div>
-          <div class="zh-title">
-            盐湖城娇妻
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：223 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23criticalrolespoilers/" target="_blank" rel="noopener">#criticalrolespoilers</a></div>
-          <div class="zh-title">
-            #criticalrolespoilers
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：212 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23iQIYIiJOYTH2027/" target="_blank" rel="noopener">#iQIYIiJOYTH2027</a></div>
-          <div class="zh-title">
-            爱奇艺iJOYTH2027
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：211 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23JAXvsBAL/" target="_blank" rel="noopener">#JAXvsBAL</a></div>
-          <div class="zh-title">
-            #JAXvsBAL
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：184 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23911onABC/" target="_blank" rel="noopener">#911onABC</a></div>
-          <div class="zh-title">
-            #911onABC
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：178 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23ocarinaoftime/" target="_blank" rel="noopener">#ocarinaoftime</a></div>
-          <div class="zh-title">
-            时之笛
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：144 score · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23TNAiMPACT/" target="_blank" rel="noopener">#TNAiMPACT</a></div>
-          <div class="zh-title">
-            #TNAiMPACT
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：4 hours · getdaytrends.com
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://getdaytrends.com/united-states/trend/%23TNFonPrime/" target="_blank" rel="noopener">#TNFonPrime</a></div>
-          <div class="zh-title">
-            #TNFonPrime
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              热度：4 hours · getdaytrends.com
-            
-          </div>
-        </li>
-      
-      </ul>
-    
-  </section>
-  
-  <section class="card">
-    <h2>特朗普动态<span class="en">Trump on Truth Social</span></h2>
-    
-      <ul class="items">
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43493" target="_blank" rel="noopener">I JUST WASN’T ON THE BALLOT. IF I WERE, WE WOULD HAVE WON IN A LANDSLIDE! Presid…</a></div>
-          <div class="zh-title">
-            我只是没上选票。如果我上了，我们会以压倒性优势获胜！总统…
-            
-          </div>
-          <div class="snip">I JUST WASN’T ON THE BALLOT. IF I WERE, WE WOULD HAVE WON IN A LANDSLIDE! President DONALD J. TRUMP</div>
-          <div class="zh-snip">我只是没上选票。如果我上了，我们会以压倒性优势获胜！唐纳德·J·特朗普总统</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-06</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43492" target="_blank" rel="noopener">The Stock Market crashed today because the Dumocrats had a big Tuesday — So sad …</a></div>
-          <div class="zh-title">
-            股市今天崩盘了，因为民主党人周二大获全胜——太令人难过了……
-            
-          </div>
-          <div class="snip">The Stock Market crashed today because the Dumocrats had a big Tuesday — So sad to see, you only have yourselves to blame! President DONALD J. TRUMP</div>
-          <div class="zh-snip">股市今天崩盘了，因为民主党人周二大获全胜——看着真让人难过，你们只能怪自己！唐纳德·J·特朗普总统</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-06</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43491" target="_blank" rel="noopener">The Stock Market suffered one of the Worst Days in History based on the results …</a></div>
-          <div class="zh-title">
-            基于选举结果，股市经历了历史上最糟糕的日子之一……
-            
-          </div>
-          <div class="snip">The Stock Market suffered one of the Worst Days in History based on the results of the Election. Such a sad thing to watch! It took so much work to get us to a level that no one has ever seen before, and then this. Your 401(k)s have, therefore, dropped. Remember, it wasn’t Republicans, it was Dumocrats. Do not fear, however, we will soon, one way or the other, be BIGGER AND STRONGER THAN EVER BEFORE. MAKE AMERICA GREAT AGAIN! President DONALD J. TRUMP</div>
-          <div class="zh-snip">基于选举结果，股市经历了历史上最糟糕的日子之一。看着真让人难过！我们付出了如此多的努力才达到了前所未有的水平，然后却发生了这种事。因此，你们的401(k)账户已经下跌。记住，这不是共和党人的错，是民主党人。然而，不要害怕，我们很快将以某种方式变得比以往任何时候都更加强大。让美国再次伟大！唐纳德·J·特朗普总统</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-06</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43490" target="_blank" rel="noopener">The vote totals for the Fake Dan Sullivan, plus the other “slug” that the Dems p…</a></div>
-          <div class="zh-title">
-            假丹·沙利文的选票总数，加上民主党人推上选票的另一条&#39;鼻涕虫&#39;……
-            
-          </div>
-          <div class="snip">The vote totals for the Fake Dan Sullivan, plus the other “slug” that the Dems put on the Ballot, should be immediately given to the REAL Dan Sullivan, and the Election is over - He easily wins. There is no other fair solution! President DJT</div>
-          <div class="zh-snip">假丹·沙利文的选票总数，加上民主党人推上选票的另一条&#39;鼻涕虫&#39;，应该立即划归真正的丹·沙利文，这样选举就结束了——他会轻松获胜。没有其他公平的解决方案！DJT总统</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-05</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43489" target="_blank" rel="noopener">https://truthsocial.com/@WhiteHouse/117550235500967429</a></div>
-          <div class="zh-title">
-            https://truthsocial.com/@WhiteHouse/117550235500967429
-            
-          </div>
-          <div class="snip">https://truthsocial.com/@WhiteHouse/117550235500967429</div>
-          <div class="zh-snip">https://truthsocial.com/@WhiteHouse/117550235500967429</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-05</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43488" target="_blank" rel="noopener">[Image post]</a></div>
-          <div class="zh-title">
-            [图片帖子]
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-05</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43487" target="_blank" rel="noopener">Too bad the Senate has not yet approved the Sunshine Protection Act or, the I Do…</a></div>
-          <div class="zh-title">
-            遗憾的是参议院尚未批准《阳光保护法》，或者《我不想再调时钟法》
-            
-          </div>
-          <div class="snip">Too bad the Senate has not yet approved the Sunshine Protection Act or, the I Don’t Want to Change My Clocks Anymore Act. It’s so dark outside, so early (Sunset was 5:06 P.M., and it was dark by 5:31 P.M. — Isn’t that ridiculous?). Just a few days ago it was so nice and sunny at this same time. In addition, everyone’s been running around changing their clocks all over the place. I didn’t want to make a big deal out of this prior to the Election because I didn’t want to have certain Senators lose their Race, in a landslide, but it is too bad they can’t get it done. The House sent it over to the Senate with great bipartisan support, numerous times (308-117), but the Senate didn’t take it up. We have far bigger priorities, but I will keep fighting for this! President DONALD J. TRUMP</div>
-          <div class="zh-snip">遗憾的是，参议院尚未批准《阳光保护法》，或者说《我不想再调时钟法》。外面天这么黑，又这么早（日落是下午5:06，到5:31就全黑了——这不是很荒谬吗？）。就在几天前，同一时间还阳光明媚。此外，所有人都在到处忙着调时钟。我不想在选举前拿这事大做文章，因为我不想让某些参议员以压倒性劣势输掉竞选，但遗憾的是他们就是办不成。众议院以巨大的两党支持多次将其送交参议院（308票对117票），但参议院没有受理。我们有远更重大的优先事项，但我会继续为此奋斗！总统唐纳德·J·特朗普</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-05</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43486" target="_blank" rel="noopener">Stock Market just hit another Record High — 91 Days in just a short period of ti…</a></div>
-          <div class="zh-title">
-            股市刚刚再创历史新高——在不到两年的短短时间内已达91天
-            
-          </div>
-          <div class="snip">Stock Market just hit another Record High — 91 Days in just a short period of time — Less than two years. Your 401(k)s are through the roof. Record Setting All! President DONALD J. TRUMP</div>
-          <div class="zh-snip">股市刚刚再创历史新高——在不到两年的短短时间内已达91天。你们的401(k)退休储蓄账户涨上了天。全线创纪录！总统唐纳德·J·特朗普</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-05</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43485" target="_blank" rel="noopener">[Image post]</a></div>
-          <div class="zh-title">
-            [图片帖子]
-            
-          </div>
-          
-          
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-05</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-        <li>
-          <div class="en-title"><a href="https://www.trumpstruth.org/statuses/43484" target="_blank" rel="noopener">Why does FoxNews have Bill de Blasio, the Worst Mayor in the History of New York…</a></div>
-          <div class="zh-title">
-            为什么福克斯新闻要让比尔·德布拉西奥——纽约历史上最糟糕的市长……
-            
-          </div>
-          <div class="snip">Why does FoxNews have Bill de Blasio, the Worst Mayor in the History of New York City, on air, ranting and raving like a Lunatic? He left the City in disgrace, and the damage he caused was incalculable — It has never been the same, and now he’s telling us how to run America. FoxNews bears responsibility for these losses by constantly and consistently putting on the Dumocrat opposition, and worse. GOD BLESS AMERICA! President DONALD J. TRUMP</div>
-          <div class="zh-snip">为什么福克斯新闻要让比尔·德布拉西奥——纽约历史上最糟糕的市长——上电视，像个疯子一样胡言乱语、大吼大叫？他灰溜溜地离开了这座城市，造成的损失难以估量——这座城市再也不是从前的样子了，而现在他竟然在教我们如何管理美国。福克斯新闻对这些失败负有责任，因为他们不断、持续地让民主党反对派，甚至更糟的人上节目。上帝保佑美国！唐纳德·J·特朗普总统</div>
-          <div class="item-meta">
-            
-              <span class="trump-time">2026-11-04</span>
-              
-              · trumpstruth.org
-            
-          </div>
-        </li>
-      
-      </ul>
-    
-  </section>
-  
+  <!-- ================= 双栏内容 ================= -->
+  <div class="cols">
 
-  
-  <footer class="arch">
-    <h2>📅 历史归档（最近 30 期）</h2>
-    
-    <ul>
+    <!-- 主栏 -->
+    <div class="main-col">
       
-      <li><a href="archive/2026-11-06-am.html">2026 11 06 am</a></li>
+      <section class="module" id="sec-news">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#e0457a;"></span>
+          <h2>美国新闻头条</h2>
+          <span class="en">TOP STORIES · Google News</span>
+          <span class="mod-count">0 条</span>
+        </div>
+
+        
+        <p class="fail">本次更新失败：ConnectTimeout: HTTPSConnectionPool(host=&#39;news.google.com&#39;, port=443): Max retries exceeded with url</p>
+
+        
+      </section>
       
-      <li><a href="archive/2026-11-05-pm.html">2026 11 05 pm</a></li>
+      <section class="module" id="sec-enso">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#0e7c86;"></span>
+          <h2>厄尔尼诺动态</h2>
+          <span class="en">ENSO WATCH · NOAA + Google News</span>
+          <span class="mod-count">0 条</span>
+        </div>
+
+        
+        <p class="fail">本次更新失败：ENSO 新闻抓取失败（NOAA 指数单独获取，见页首卡片）</p>
+
+        
+      </section>
       
-      <li><a href="archive/2026-11-05-am.html">2026 11 05 am</a></li>
+      <section class="module" id="sec-trump">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#1d4ed8;"></span>
+          <h2>特朗普动态</h2>
+          <span class="en">TRUMP LIVE · Truth Social</span>
+          <span class="mod-count">10 条</span>
+        </div>
+
+        
+        <ul class="timeline">
+          
+          <li>
+            <div class="tl-top"><b>2026-11-06</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">I JUST WASN’T ON THE BALLOT. IF I WERE, WE WOULD HAVE WON IN A LANDSLIDE! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              我根本没上选票。如果我在，我们会以压倒性优势获胜！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43493" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-06</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">The Stock Market crashed today because the Dumocrats had a big Tuesday — So sad to see, you only have yourselves to blame! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              股市今天崩盘了，因为民主党人周二大获全胜——看着真让人难过，你们只能怪自己！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43492" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-06</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">The Stock Market suffered one of the Worst Days in History based on the results of the Election. Such a sad thing to watch! It took so much work to get us to a level that no one has ever seen before, and then this. Your 401(k)s have, therefore, dropped. Remember, it wasn’t Republicans, it was Dumocrats. Do not fear, however, we will soon, one way or the other, be BIGGER AND STRONGER THAN EVER BEFORE. MAKE AMERICA GREAT AGAIN! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              基于选举结果，股市经历了历史上最糟糕的日子之一。看着真让人难过！我们付出了如此多的努力才达到了前所未有的水平，然后却发生了这种事。因此，你们的401(k)账户已经下跌。记住，这不是共和党人干的，是民主党人干的。然而，不要害怕，我们很快就会以某种方式变得比以往任何时候都更大更强。让美国再次伟大！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43491" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">The vote totals for the Fake Dan Sullivan, plus the other “slug” that the Dems put on the Ballot, should be immediately given to the REAL Dan Sullivan, and the Election is over - He easily wins. There is no other fair solution! President DJT</p>
+            <p class="tl-zh">
+              假丹·沙利文的得票总数，加上民主党人放上选票的另一个“废物”，应该立即归真正的丹·沙利文所有，这样选举就结束了——他会轻松获胜。没有其他公平的解决方案！DJT总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43490" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">https://truthsocial.com/@WhiteHouse/117550235500967429</p>
+            <p class="tl-zh">
+              https://truthsocial.com/@WhiteHouse/117550235500967429
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43489" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">[Image post]</p>
+            <p class="tl-zh">
+              [图片帖子]
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43488" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">Too bad the Senate has not yet approved the Sunshine Protection Act or, the I Don’t Want to Change My Clocks Anymore Act. It’s so dark outside, so early (Sunset was 5:06 P.M., and it was dark by 5:31 P.M. — Isn’t that ridiculous?). Just a few days ago it was so nice and sunny at this same time. In addition, everyone’s been running around changing their clocks all over the place. I didn’t want to make a big deal out of this prior to the Election because I didn’t want to have certain Senators lose their Race, in a landslide, but it is too bad they can’t get it done. The House sent it over to the Senate with great bipartisan support, numerous times (308-117), but the Senate didn’t take it up. We have far bigger priorities, but I will keep fighting for this! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              太遗憾了，参议院尚未批准《阳光保护法》，或者叫《我不想再调时钟法案》。外面天黑得太早了（日落是下午5:06，到5:31就全黑了——这难道不荒谬吗？）。就在几天前，同样的时间还阳光明媚。此外，每个人都到处跑来跑去调时钟。我本不想在选举前大张旗鼓地谈论此事，因为我不想让某些参议员以压倒性劣势输掉竞选，但太遗憾了他们就是办不成。众议院以巨大的两党支持多次将其送交参议院（308票对117票），但参议院没有受理。我们有更大的优先事项，但我会继续为此奋斗！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43487" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">Stock Market just hit another Record High — 91 Days in just a short period of time — Less than two years. Your 401(k)s are through the roof. Record Setting All! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              股市刚刚再创历史新高——在短短不到两年时间里就有91天。你们的401(k)账户涨到了天际。全面创纪录！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43486" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-05</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">[Image post]</p>
+            <p class="tl-zh">
+              [图片帖子]
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43485" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+          <li>
+            <div class="tl-top"><b>2026-11-04</b> · trumpstruth.org</div>
+            
+            <p class="tl-en">Why does FoxNews have Bill de Blasio, the Worst Mayor in the History of New York City, on air, ranting and raving like a Lunatic? He left the City in disgrace, and the damage he caused was incalculable — It has never been the same, and now he’s telling us how to run America. FoxNews bears responsibility for these losses by constantly and consistently putting on the Dumocrat opposition, and worse. GOD BLESS AMERICA! President DONALD J. TRUMP</p>
+            <p class="tl-zh">
+              为什么福克斯新闻要让比尔·德布拉西奥，纽约市历史上最糟糕的市长，上电视，像个疯子一样大喊大叫？他灰溜溜地离开了这座城市，他造成的损害无法估量——这座城市再也不是以前的样子了，而现在他竟然在告诉我们如何管理美国。福克斯新闻不断、持续地让民主党反对派，甚至更糟的人上节目，对这些损失负有责任。上帝保佑美国！唐纳德·J·特朗普总统
+              
+            </p>
+            
+            <a class="tl-link" href="https://www.trumpstruth.org/statuses/43484" target="_blank" rel="noopener">阅读原文 trumpstruth.org ↗</a>
+          </li>
+          
+        </ul>
+
+        
+      </section>
       
-      <li><a href="archive/2026-11-04-pm.html">2026 11 04 pm</a></li>
+    </div>
+
+    <!-- 侧栏 -->
+    <div class="side-col">
       
-      <li><a href="archive/2026-11-04-am.html">2026 11 04 am</a></li>
+      <section class="module" id="sec-x_trends">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#111111;"></span>
+          <h2>X 美国热搜</h2>
+          <span class="en">X TRENDS · getdaytrends</span>
+          <span class="mod-count">13</span>
+        </div>
+        
+        <ol class="rank">
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23DUUUVAL/" target="_blank" rel="noopener">
+              <span class="rank-zh">杜瓦尔</span>
+              <span class="rank-en">#DUUUVAL</span>
+              <span class="rank-heat">306 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23thursdayvibes/" target="_blank" rel="noopener">
+              <span class="rank-zh">周四氛围</span>
+              <span class="rank-en">#thursdayvibes</span>
+              <span class="rank-heat">292 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23LaGranjaSalvaci%C3%B3n/" target="_blank" rel="noopener">
+              <span class="rank-zh">拯救农场</span>
+              <span class="rank-en">#LaGranjaSalvación</span>
+              <span class="rank-heat">268 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23criticalrolespoilers/" target="_blank" rel="noopener">
+              <span class="rank-zh">Critical Role剧透</span>
+              <span class="rank-en">#criticalrolespoilers</span>
+              <span class="rank-heat">255 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23OlandriaxRichLittleBrokeGirls/" target="_blank" rel="noopener">
+              <span class="rank-zh">Olandria与RichLittleBrokeGirls联名</span>
+              <span class="rank-en">#OlandriaxRichLittleBrokeGirls</span>
+              <span class="rank-heat">237 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23JAXvsBAL/" target="_blank" rel="noopener">
+              <span class="rank-zh">美洲虎对阵乌鸦</span>
+              <span class="rank-en">#JAXvsBAL</span>
+              <span class="rank-heat">184 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23RHOSLC/" target="_blank" rel="noopener">
+              <span class="rank-zh">盐湖城娇妻</span>
+              <span class="rank-en">#RHOSLC</span>
+              <span class="rank-heat">182 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23911onABC/" target="_blank" rel="noopener">
+              <span class="rank-zh">ABC台《紧急呼救》</span>
+              <span class="rank-en">#911onABC</span>
+              <span class="rank-heat">178 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23iQIYIiJOYTH2027/" target="_blank" rel="noopener">
+              <span class="rank-zh">爱奇艺iJOY泰国2027</span>
+              <span class="rank-en">#iQIYIiJOYTH2027</span>
+              <span class="rank-heat">165 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23%E4%B8%8A%E6%B5%B7%E5%8F%A0%E7%BA%B8%E5%A7%9A%E6%B6%A6%E6%98%8A%E7%8E%AF%E7%90%83%E9%9C%B2%E5%87%BA/" target="_blank" rel="noopener">
+              <span class="rank-zh">#上海叠纸姚润昊环球露出</span>
+              <span class="rank-en">#上海叠纸姚润昊环球露出</span>
+              <span class="rank-heat">135 score</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23BLOW_UP/" target="_blank" rel="noopener">
+              <span class="rank-zh">#爆炸</span>
+              <span class="rank-en">#BLOW_UP</span>
+              <span class="rank-heat">4 hours</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23TNAiMPACT/" target="_blank" rel="noopener">
+              <span class="rank-zh">#TNAiMPACT</span>
+              <span class="rank-en">#TNAiMPACT</span>
+              <span class="rank-heat">4 hours</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://getdaytrends.com/united-states/trend/%23TNFonPrime/" target="_blank" rel="noopener">
+              <span class="rank-zh">#TNFonPrime</span>
+              <span class="rank-en">#TNFonPrime</span>
+              <span class="rank-heat">4 hours</span>
+            </a>
+          </li>
+          
+        </ol>
+        
+      </section>
       
-      <li><a href="archive/2026-11-03-pm.html">2026 11 03 pm</a></li>
-      
-      <li><a href="archive/2026-11-03-am.html">2026 11 03 am</a></li>
-      
-      <li><a href="archive/2026-11-02-pm.html">2026 11 02 pm</a></li>
-      
-      <li><a href="archive/2026-11-02-am.html">2026 11 02 am</a></li>
-      
-      <li><a href="archive/2026-11-01-pm.html">2026 11 01 pm</a></li>
-      
-      <li><a href="archive/2026-11-01-am.html">2026 11 01 am</a></li>
-      
-      <li><a href="archive/2026-10-31-pm.html">2026 10 31 pm</a></li>
-      
-      <li><a href="archive/2026-10-31-am.html">2026 10 31 am</a></li>
-      
-      <li><a href="archive/2026-10-30-pm.html">2026 10 30 pm</a></li>
-      
-      <li><a href="archive/2026-10-30-am.html">2026 10 30 am</a></li>
-      
-      <li><a href="archive/2026-10-29-pm.html">2026 10 29 pm</a></li>
-      
-      <li><a href="archive/2026-10-29-am.html">2026 10 29 am</a></li>
-      
-      <li><a href="archive/2026-10-28-pm.html">2026 10 28 pm</a></li>
-      
-      <li><a href="archive/2026-10-28-am.html">2026 10 28 am</a></li>
-      
-      <li><a href="archive/2026-10-27-pm.html">2026 10 27 pm</a></li>
-      
-      <li><a href="archive/2026-10-27-am.html">2026 10 27 am</a></li>
-      
-      <li><a href="archive/2026-10-26-pm.html">2026 10 26 pm</a></li>
-      
-      <li><a href="archive/2026-10-26-am.html">2026 10 26 am</a></li>
-      
-      <li><a href="archive/2026-10-25-pm.html">2026 10 25 pm</a></li>
-      
-      <li><a href="archive/2026-10-25-am.html">2026 10 25 am</a></li>
-      
-      <li><a href="archive/2026-10-24-pm.html">2026 10 24 pm</a></li>
-      
-      <li><a href="archive/2026-10-24-am.html">2026 10 24 am</a></li>
-      
-      <li><a href="archive/2026-10-23-pm.html">2026 10 23 pm</a></li>
-      
-      <li><a href="archive/2026-10-23-am.html">2026 10 23 am</a></li>
-      
-      <li><a href="archive/2026-10-22-pm.html">2026 10 22 pm</a></li>
-      
-    </ul>
-    
-  </footer>
-  
+
+      <section class="module">
+        <div class="mod-head">
+          <span class="mod-bar" style="background:#111111;"></span>
+          <h2>历史归档</h2>
+          <span class="en">ARCHIVE</span>
+        </div>
+        <div class="arc-list">
+          
+          
+          <a href="archive/2026-11-06.html">2026-11-06</a>
+          
+          <a href="archive/2026-11-03-pm.html">2026-11-03 下午</a>
+          
+          <a href="archive/2026-10-19-pm.html">2026-10-19 下午</a>
+          
+          <a href="archive/2026-10-13-pm.html">2026-10-13 下午</a>
+          
+          <a href="archive/2026-10-11-pm.html">2026-10-11 下午</a>
+          
+          <a href="archive/2026-10-11-am.html">2026-10-11 上午</a>
+          
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="foot">US DAILY BRIEF · 原文 + AI 中文对照 · 数据来自公开渠道（Google News / NOAA CPC / getdaytrends.com / trumpstruth.org）</div>
 </div>
 </body>
 </html>
