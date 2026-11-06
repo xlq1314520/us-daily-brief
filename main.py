@@ -1,4 +1,4 @@
-"""入口：抓取 5 个数据源 → 批量翻译 → 生成静态站点。
+"""入口：抓取数据源 → 批量翻译 → 生成静态站点。
 
 用法：
     python main.py                # 抓取 + 翻译（需要 MOONSHOT_API_KEY）
@@ -12,10 +12,10 @@ from datetime import datetime
 
 import build_site
 import translator
-from fetchers import enso, google_trends, news, reddit, trump, x_trends, youtube
+from fetchers import enso, news, trump, x_trends
 
-# 用户暂不使用油管：重新启用时在列表中加回 youtube 即可
-FETCHERS = [news, enso, google_trends, reddit, x_trends, trump]
+# 用户不使用油管、Google 热搜、Reddit：需要时在列表中加回对应模块即可
+FETCHERS = [news, enso, x_trends, trump]
 
 # 每板块最多翻译/展示的条数
 SECTION_LIMITS = {
