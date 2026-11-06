@@ -1,6 +1,6 @@
 # 美国每日热榜 · 中英对照摘要站
 
-每天北京时间 07:50 / 19:50 自动抓取 5 个美国热门信息源，用 Kimi API 批量翻译成中文，
+每天北京时间 07:00 自动抓取美国主流信息源，用 Kimi API 批量翻译成中文，
 生成移动端友好的静态网页，托管在 GitHub Pages（全免费）。
 
 ## 内容板块
@@ -17,7 +17,7 @@ YouTube 美国热榜、Google 美国热搜、Reddit 热帖已按用户要求停�
 所有数据源均为免费公开渠道，无需任何额外 API。**
 
 任一源抓取失败只影响对应板块（显示"本次更新失败"），页面照常生成。
-历史每期自动归档到 `site/archive/YYYY-MM-DD-{am,pm}.html`（按北京时间分上午/下午版）。
+历史每期自动归档到 `site/archive/YYYY-MM-DD.html`（每天一期，按北京时间日期命名）。
 
 页首右上角为 **Niño 3.4 指数卡片**（NOAA CPC 周度 OISST 数据，每周更新）：
 大号数字为海温距平 SSTA，按数值分级着色（暖橙红=厄尔尼诺、冷蓝=拉尼娜、灰=中性），
@@ -65,8 +65,8 @@ NOAA 官方 ENSO 监测页。数据周滞后或抓取失败时卡片显示"指�
 - Source 选 **Deploy from a branch**
 - Branch 选 `gh-pages` / `(root)`，保存
 
-GitHub Actions（`.github/workflows/update.yml`）每天 UTC 23:50 和 11:50
-（= 北京时间次日 07:50 / 当天 19:50）自动运行，也可以用
+GitHub Actions（`.github/workflows/update.yml`）每天 UTC 23:00
+（= 北京时间次日 07:00）自动运行，也可以用
 Actions 页面右上角的 **Run workflow** 按钮手动触发。
 首次运行成功后，Pages 地址即为 `https://<你的用户名>.github.io/us-daily-brief/`。
 
@@ -84,11 +84,11 @@ python main.py                  # 需要环境变量 MOONSHOT_API_KEY
 
 ### Windows 任务计划（本地定时备用）
 
-不想依赖 GitHub Actions 时，可用系统任务计划每天本地运行两次：
+不想依赖 GitHub Actions 时，可用系统任务计划每天本地运行一次：
 
 1. 开始菜单搜索"任务计划程序" → 右侧"创建任务"
 2. 常规：名称 `us-daily-brief`；安全选项选"不管用户是否登录都要运行"（或仅登录时）
-3. 触发器：新建 ×2 个，分别是每天 `07:50` 和 `19:50`
+3. 触发器：新建 1 个，每天 `07:00`
 4. 操作：新建 → 程序填 `C:\Windows\System32\cmd.exe`，
    参数填 `/c "D:\个人记录\杂文\kimi'\us-daily-brief\run_local.bat"`
 5. 条件选项卡：取消"只有在计算机使用交流电源时才启动"的勾选（笔记本）
