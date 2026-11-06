@@ -7,13 +7,14 @@
 
 | 板块 | 数据源 | 是否需要密钥 |
 |---|---|---|
-| YouTube 美国热榜 | YouTube Data API v3（mostPopular, US） | ✅ `YOUTUBE_API_KEY` |
 | 美国新闻头条 | Google News RSS（美国版） | 否 |
 | 厄尔尼诺动态 | NOAA CPC 周度 Niño 3.4 指数 + Google News 近 14 天 ENSO 报道 | 否 |
-| Google 美国热搜 | trends.google.com 官方每日热搜 RSS（geo=US） | 否 |
-| Reddit 热帖 | r/news + r/worldnews 当日 top | 否 |
 | X 美国热搜 | trends24.in → getdaytrends.com 回退 | 否 |
 | 特朗普动态 | trumpstruth.org 存档站 → r.jina.ai → Truth Social API → RSSHub 回退 | 否 |
+
+YouTube 美国热榜、Google 美国热搜、Reddit 热帖已按用户要求停用（代码保留，
+在 `main.py` 的 `FETCHERS` 中加回即可恢复）。**目前仅 Kimi 翻译接口需要密钥，
+所有数据源均为免费公开渠道，无需任何额外 API。**
 
 任一源抓取失败只影响对应板块（显示"本次更新失败"），页面照常生成。
 历史每期自动归档到 `site/archive/YYYY-MM-DD-{am,pm}.html`（按北京时间分上午/下午版）。
@@ -96,14 +97,13 @@ python main.py                  # 需要环境变量 MOONSHOT_API_KEY
 
 ## 常见问题
 
-- **某板块显示"本次更新失败"**：多为网络或目标站反爬。Reddit 有
-  www → old.reddit.com → r.jina.ai 三级回退，Truth Social 有
-  官方 API → RSSHub 实例 → r.jina.ai 三级回退，X 热搜有
+- **某板块显示"本次更新失败"**：多为网络或目标站反爬。Truth Social 有
+  trumpstruth.org → r.jina.ai → 官方 API → RSSHub 多级回退，X 热搜有
   trends24.in → getdaytrends.com 回退；GitHub Actions（美国机房）成功率远高于国内家庭网络。
-- **翻译失败**：检查 `MOONSHOT_API_KEY` 是否有效、余额是否充足；
+- **翻译失败**：检查 `MOONSHOT_API_KEY` 是否有效、余额是否充足（欠费时 API 返回 429）；
   翻译按每批最多 10 条分批调用，单批失败只影响该批条目，
   在页面上标注"翻译失败"，不影响其他条目。
-- **本地跑 news/reddit 超时**：国内网络对 Google/Reddit 的连通性问题，
+- **本地跑 news/enso 超时**：国内网络对 Google 的连通性问题，
   不是代码问题，云端运行不受影响。
 
 ## 项目结构
