@@ -12,10 +12,10 @@ from datetime import datetime
 
 import build_site
 import translator
-from fetchers import enso, news, outlets, trump, x_trends
+from fetchers import enso, news, outlets, topics, trump, x_trends
 
 # 用户不使用油管、Google 热搜、Reddit：需要时在列表中加回对应模块即可
-FETCHERS = [news, outlets, enso, x_trends, trump]
+FETCHERS = [news, outlets, topics, enso, x_trends, trump]
 
 # 每板块最多翻译/展示的条数
 SECTION_LIMITS = {
