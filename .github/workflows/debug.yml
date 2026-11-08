@@ -6,8 +6,7 @@ jobs:
     steps:
       - name: probe feeds
         run: |
-          probe() { echo "=== $1"; curl -sL -m 25 -A "Mozilla/5.0" -o /tmp/f.xml -w "HTTP %{http_code} %{size_download}B" "$1" || true; echo; head -c 200 /tmp/f.xml | tr -d "
-"; echo; grep -c "<item" /tmp/f.xml || true; }
+          probe() { echo "=== $1"; curl -sL -m 25 -A "Mozilla/5.0" -o /tmp/f.xml -w "HTTP %{http_code} %{size_download}B" "$1" || true; echo; head -c 150 /tmp/f.xml; echo; echo "items: $(grep -c "<item" /tmp/f.xml)"; }
           probe "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
           probe "http://rss.cnn.com/rss/edition.rss"
           probe "https://feeds.npr.org/1001/rss.xml"
