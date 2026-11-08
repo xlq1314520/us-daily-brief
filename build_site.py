@@ -15,7 +15,8 @@ SITE_DIR = os.path.join("site")
 ARCHIVE_DIR = os.path.join(SITE_DIR, "archive")
 ARCHIVE_KEEP = 30
 
-CAT_TABS = [("politics", "政治"), ("military", "军事"), ("tech", "科技"), ("finance", "财经")]
+CAT_TABS = [("politics", "政治"), ("military", "军事"), ("tech", "科技"),
+            ("finance", "财经"), ("entertainment", "娱乐"), ("sports", "体育")]
 COUNTRY_ORDER = {"美国": 0, "英国": 1, "法国": 2, "俄罗斯": 3, "中国": 4, "国际": 5}
 COUNTRY_COLORS = {
     "美国": "#1d4ed8", "英国": "#9f1239", "法国": "#1e40af",
@@ -127,10 +128,16 @@ def build(results, translations, run_dt=None):
                     "entries": headlines, "note": partial_note,
                     "error": None if headlines else "头条源本次更新失败"})
 
+    topics_entries = entries_of("topics")
     for cat, label in CAT_TABS:
-        entries = by_country([e for e in outlet_entries if e["category"] == cat])
+        # 各国媒体对照在前，专题版块源保底在后（保证每板块 5 条以上）
+        entries = by_country([e for e in outlet_entries if e["category"] == cat]) + \
+                  [e for e in topics_entries if e["category"] == cat]
+        note = ""
+        if 0 < len(entries) < 5:
+            note = f"本期该类内容较少（{len(entries)} 条）"
         modules.append({"key": cat, "label": label, "kind": "news", "entries": entries,
-                        "note": "", "error": None if entries else "本期暂无此类报道"})
+                        "note": note, "error": None if entries else "本期暂无此类报道"})
 
     enso_r = by_source.get("enso")
     enso_groups = []
