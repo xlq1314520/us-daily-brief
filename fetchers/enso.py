@@ -79,42 +79,76 @@ def _fetch_index():
         return None
 
 
+GROUPS = [
+    ("agency", "机构预测与解读",
+     '(El Niño OR La Niña OR ENSO) when:14d', 8),
+    ("disaster", "全球天灾动态",
+     '(hurricane OR typhoon OR cyclone OR flood OR drought OR wildfire OR heatwave) when:7d', 8),
+    ("agri", "农业与粮食",
+     '(crop OR harvest OR "food prices" OR wheat OR corn OR rice) '
+     '("El Niño" OR drought OR flood OR climate) when:14d', 8),
+    ("south", "南半球动态",
+     '("El Niño" OR "La Niña" OR ENSO) '
+     '(Australia OR Brazil OR Argentina OR Peru OR Chile OR "South Africa" OR Indonesia) when:14d', 6),
+]
+
+from urllib.parse import quote as _quote
+
+
+def _search_news(query, limit):
+    url = ("https://news.google.com/rss/search?q=" + _quote(query) +
+           "&hl=en-US&gl=US&ceid=US:en")
+    r = requests.get(url, timeout=30,
+                     headers={"User-Agent": "us-daily-brief/1.0"})
+    r.raise_for_status()
+    feed = feedparser.parse(r.content)
+    items = []
+    for entry in feed.entries[:limit]:
+        title = entry.get("title", "")
+        if not title:
+            continue
+        raw = entry.get("summary") or entry.get("description") or ""
+        items.append({
+            "id": "en-" + (entry.get("guid") or entry.get("link", ""))[-48:],
+            "title": title,
+            "url": entry.get("link", ""),
+            "snippet": _clean_snippet(raw),
+            "extra": {
+                "source": (entry.get("source") or {}).get("title", "")
+                if isinstance(entry.get("source"), dict) else "",
+                "published": entry.get("published", ""),
+            },
+            "category": "enso",
+            "country": "国际",
+        })
+    return items
+
+
 def _fetch_news(limit):
-    try:
-        r = requests.get(NEWS_URL, timeout=30,
-                         headers={"User-Agent": "us-daily-brief/1.0"})
-        r.raise_for_status()
-        feed = feedparser.parse(r.content)
-        items = []
-        for entry in feed.entries[:limit]:
-            title = entry.get("title", "")
-            if not title:
-                continue
-            raw = entry.get("summary") or entry.get("description") or ""
-            items.append({
-                "id": "en-" + (entry.get("guid") or entry.get("link", ""))[-48:],
-                "title": title,
-                "url": entry.get("link", ""),
-                "snippet": _clean_snippet(raw),
-                "extra": {
-                    "source": (entry.get("source") or {}).get("title", "")
-                    if isinstance(entry.get("source"), dict) else "",
-                    "published": entry.get("published", ""),
-                },
-            })
-        return items
-    except Exception:
-        return []
+    return _search_news(NEWS_URL.split("q=")[1].split("&")[0].replace("%20", " "), limit)
 
 
 def fetch(limit=10):
-    result = {"ok": False, "source": SOURCE, "items": [], "error": None, "index": None}
+    result = {"ok": False, "source": SOURCE, "items": [], "error": None,
+              "index": None, "groups": []}
     try:
         result["index"] = _fetch_index()
-        result["items"] = _fetch_news(limit)
-        result["ok"] = bool(result["items"])
-        if not result["ok"]:
-            result["error"] = "ENSO 新闻抓取失败（NOAA 指数单独获取，见页首卡片）"
-    except Exception as e:
-        result["error"] = f"{type(e).__name__}: {e}"
+    except Exception:
+        result["index"] = None
+
+    # 4 个子板块独立容错：一个失败不影响其他
+    for key, name, query, n in GROUPS:
+        try:
+            items = _search_news(query, n)
+            if items:
+                result["groups"].append({"key": key, "name": name, "items": items})
+        except Exception:
+            continue
+
+    # 兼容：items 为 agency 子板块的别名
+    agency = next((g["items"] for g in result["groups"] if g["key"] == "agency"), [])
+    result["items"] = agency
+    result["ok"] = bool(result["groups"])
+    if not result["ok"]:
+        result["error"] = "ENSO 各子板块抓取均失败（NOAA 指数单独获取，见页首卡片）"
     return result
