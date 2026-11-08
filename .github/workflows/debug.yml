@@ -1,0 +1,22 @@
+name: debug-net
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe feeds
+        run: |
+          probe() { echo "=== $1"; curl -sL -m 25 -A "Mozilla/5.0" -o /tmp/f.xml -w "HTTP %{http_code} %{size_download}B" "$1" || true; echo; head -c 200 /tmp/f.xml | tr -d "
+"; echo; grep -c "<item" /tmp/f.xml || true; }
+          probe "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+          probe "http://rss.cnn.com/rss/edition.rss"
+          probe "https://feeds.npr.org/1001/rss.xml"
+          probe "https://tass.com/rss/v2.xml"
+          probe "https://www.rt.com/rss/"
+          probe "https://www.themoscowtimes.com/rss/news"
+          probe "http://www.chinadaily.com.cn/rss/china_rss.xml"
+          probe "https://www.globaltimes.cn/rss/outbrain.xml"
+          probe "https://www.france24.com/en/rss"
+          probe "https://www.rfi.fr/en/rss"
+          probe "https://www.bbc.com/news/world/rss.xml"
+          exit 0
