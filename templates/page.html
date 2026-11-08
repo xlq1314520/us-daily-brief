@@ -1,278 +1,229 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if is_archive %}历史日报 · {{ archive_date }}{% else %}美国每日热榜 · US DAILY BRIEF{% endif %}</title>
 <style>
-  :root {
-    --bg:#f5f4f0; --card:#ffffff; --ink:#1a1a1a; --ink-soft:#333333;
-    --gray:#8a8a8a; --gray-mid:#555555; --line:#e5e2dc; --hair:#eceae4;
-    --mast:#101c2c; --accent:#e0457a; --gold:#f2b245;
+  :root{
+    --bg:#f5f4f0; --ink:#161616; --muted:#6b7280; --line:#e5e2dc;
+    --accent:#e0457a; --navy:#101c2c; --gold:#e8b45a;
   }
-  * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { margin:0; background:var(--bg); color:var(--ink);
-         font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",
-                     "Segoe UI",Roboto,sans-serif; line-height:1.6; }
-  a { color:inherit; }
-  .wrap { max-width:1180px; margin:0 auto; padding:26px 22px 60px; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 18px 60px}
 
-  /* ---------- 深色报头 ---------- */
-  .masthead { background:var(--mast); border-radius:16px; padding:34px 38px;
-              display:flex; justify-content:space-between; align-items:center;
-              gap:28px; flex-wrap:wrap; }
-  .mast-left { flex:1 1 480px; min-width:0; }
-  .kicker { font-size:.75rem; letter-spacing:.22em; font-weight:700;
-            color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
-  .masthead h1 { font-size:3rem; font-weight:900; color:#fff; margin:0; line-height:1.15; }
-  .masthead .sub { color:#9fb0c3; font-size:.88rem; margin-top:8px; letter-spacing:.05em; }
-  .statusline { color:#8b9cb0; font-size:.8rem; margin:14px 0 0; }
-  .statusline b { color:var(--gold); }
-  .enso-card { flex:0 1 270px; min-width:230px; background:var(--card);
-               border-radius:12px; padding:14px 18px;
-               box-shadow:0 2px 10px rgba(0,0,0,.25); }
-  .enso-card a { text-decoration:none; display:block; }
-  .enso-title { font-size:.68rem; letter-spacing:.14em; color:var(--gray);
-                text-transform:uppercase; font-weight:600; }
-  .enso-value { font-size:2rem; font-weight:900; line-height:1.25; }
-  .enso-status { font-size:.88rem; font-weight:700; }
-  .enso-meta { font-size:.7rem; color:var(--gray); margin-top:3px; }
-  .enso-missing { font-size:.82rem; color:var(--gray); padding:6px 0; }
-  .kind-el_nino .enso-value, .kind-el_nino .enso-status { color:#c2410c; }
-  .kind-la_nina .enso-value, .kind-la_nina .enso-status { color:#1d4ed8; }
-  .kind-neutral .enso-value, .kind-neutral .enso-status { color:#6b7280; }
+  /* ===== 深色报头 ===== */
+  .hero{background:var(--navy);color:#fff;border-radius:16px;padding:34px 36px;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+  .hero-left{flex:1 1 380px;min-width:0}
+  .kicker{color:var(--gold);font-size:12px;letter-spacing:.22em;font-weight:600;margin-bottom:14px}
+  .hero h1{font-size:44px;line-height:1.15;letter-spacing:.01em;white-space:nowrap}
+  .hero .sub{color:#93a3b8;font-size:13px;letter-spacing:.08em;margin-top:10px}
+  .hero .status{color:#7d90a6;font-size:13px;margin-top:18px}
+  .hero .status b{color:var(--gold);font-weight:600}
+  .enso-card{background:#fff;color:var(--ink);border-radius:12px;padding:16px 20px;flex:0 1 300px;min-width:230px}
+  .enso-card .t{font-size:12px;color:var(--muted);letter-spacing:.12em}
+  .enso-card .v{font-size:38px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}
+  .enso-card .s{font-size:15px;font-weight:700;margin-top:2px}
+  .enso-card .m{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .kind-el_nino .v,.kind-el_nino .s{color:#c2410c}
+  .kind-la_nina .v,.kind-la_nina .s{color:#1d4ed8}
+  .kind-neutral .v,.kind-neutral .s{color:#6b7280}
+  .enso-card .na .v,.enso-card .na .s{color:#9ca3af}
+  .backlink{display:inline-block;margin:14px 0 0;color:var(--accent);font-size:13px}
 
-  /* ---------- 双栏 ---------- */
-  .cols { display:grid; grid-template-columns:minmax(0,1fr) 340px;
-          gap:28px; margin-top:28px; align-items:start; }
-  .main-col, .side-col { display:flex; flex-direction:column; gap:28px; min-width:0; }
+  /* ===== 标签栏 ===== */
+  .tabs{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:14px 2px 12px;border-bottom:1px solid var(--line);scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:#374151;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;font-family:inherit}
+  .tab .n{font-size:11px;color:var(--muted);margin-left:5px;font-variant-numeric:tabular-nums}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tab.active .n{color:var(--gold)}
 
-  /* ---------- 模块卡片 ---------- */
-  .module { background:var(--card); border:1px solid var(--line); border-radius:12px;
-            box-shadow:0 1px 3px rgba(0,0,0,.05); padding:22px 26px; }
-  .mod-head { display:flex; align-items:center; gap:12px; margin-bottom:6px;
-              flex-wrap:wrap; }
-  .mod-bar { width:4px; height:22px; border-radius:2px; flex:0 0 auto; }
-  .mod-head h2 { font-size:1.3rem; font-weight:900; margin:0; flex:0 0 auto; }
-  .mod-head .en { font-size:.72rem; color:var(--gray); letter-spacing:.1em;
-                  text-transform:uppercase; font-weight:600; flex:1 1 140px;
-                  min-width:120px; }
-  .mod-count { margin-left:auto; font-size:.72rem; font-weight:700; color:var(--accent);
-               background:#fdf2f6; border-radius:20px; padding:2px 10px; flex:0 0 auto; }
-  .fail { font-size:.8rem; color:var(--gray); padding:10px 0 2px; }
+  /* ===== 模块 ===== */
+  .module{display:none;margin-top:22px}
+  .module.show{display:block}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 26px;box-shadow:0 1px 3px rgba(16,28,44,.04)}
+  .mod-note{color:var(--muted);font-size:13px;margin-bottom:12px}
+  .mod-error{color:var(--muted);font-size:14px;padding:18px 0}
 
-  /* ---------- 条目（新闻 / 厄尔尼诺） ---------- */
-  article.item { padding:16px 0 14px; border-bottom:1px solid var(--hair); }
-  article.item:last-child { border-bottom:none; }
-  .item-zh-title { font-size:19px; font-weight:800; color:var(--ink);
-                   margin:0; line-height:1.5; }
-  .item-zh-title .zh-missing { color:var(--gray); font-size:.82rem; font-weight:400; }
-  .item-en-title { font-size:15px; color:var(--gray-mid); margin:5px 0 0; line-height:1.55; }
-  .item-zh-snip { font-size:15px; color:var(--ink-soft); line-height:1.85; margin:9px 0 0; }
-  .item-en-snip { font-size:14px; color:var(--gray); margin:7px 0 0; line-height:1.7; }
-  .item-meta { font-size:.76rem; color:var(--gray); margin-top:10px; }
-  .item-meta a { color:var(--accent); text-decoration:none; font-weight:600; }
-  .item-meta a:hover { text-decoration:underline; }
+  .group-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;margin:22px 0 6px}
+  .group-title:first-child{margin-top:0}
+  .group-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .group-title.enso-disaster .dot{background:#dc2626}
+  .group-title.enso-agri .dot{background:#65a30d}
+  .group-title.enso-south .dot{background:#0e7c86}
+  .group-title.enso-agency .dot{background:#1d4ed8}
+  .group-count{font-size:12px;color:var(--muted);font-weight:400}
 
-  /* ---------- 特朗普时间线 ---------- */
-  ul.timeline { list-style:none; margin:6px 0 0; padding:0 0 0 18px;
-                border-left:2px solid #c9d4f0; }
-  ul.timeline li { position:relative; padding:12px 0 12px 16px;
-                   border-bottom:1px solid var(--hair); }
-  ul.timeline li:last-child { border-bottom:none; }
-  ul.timeline li::before { content:""; position:absolute; left:-7px; top:22px;
-                          width:12px; height:12px; border-radius:50%;
-                          background:#1d4ed8; border:2.5px solid var(--card); }
-  .tl-top { font-size:.74rem; color:var(--gray); }
-  .tl-top b { color:var(--ink); letter-spacing:.04em; }
-  .tl-en { font-size:15px; line-height:1.8; margin:6px 0 0; word-break:break-word; }
-  .tl-zh { font-size:15px; color:var(--ink-soft); line-height:1.85; margin:6px 0 0;
-           word-break:break-word; }
-  .tl-zh .zh-missing { color:var(--gray); font-size:.82rem; }
-  .tl-link { display:inline-block; font-size:.74rem; color:var(--accent);
-             text-decoration:none; margin-top:8px; font-weight:600; }
-  .tl-link:hover { text-decoration:underline; }
+  /* 新闻条目 */
+  .item{padding:20px 0;border-bottom:1px solid var(--line)}
+  .item:last-child{border-bottom:none;padding-bottom:4px}
+  .badges{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .country{color:#fff;font-size:11px;padding:2px 8px;border-radius:4px;letter-spacing:.05em}
+  .outlet{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+  .zh-title{font-size:19px;font-weight:700;line-height:1.5}
+  .en-title{font-size:14px;color:#555;margin-top:5px;line-height:1.55}
+  .zh-snippet{font-size:15px;color:#333;line-height:1.85;margin-top:10px}
+  .en-snippet{font-size:13px;color:#777;line-height:1.7;margin-top:8px}
+  .meta{margin-top:10px;font-size:12px;color:var(--muted)}
+  .meta a{color:var(--accent)}
+  .meta a:hover{text-decoration:underline}
 
-  /* ---------- X 热搜排行 ---------- */
-  ol.rank { list-style:none; margin:6px 0 0; padding:0; counter-reset:r; }
-  ol.rank li { counter-increment:r; }
-  ol.rank a { display:flex; align-items:baseline; gap:10px; text-decoration:none;
-              padding:8px 6px; border-radius:6px; border-bottom:1px solid var(--hair); }
-  ol.rank li:last-child a { border-bottom:none; }
-  ol.rank a:hover { background:#faf9f6; }
-  ol.rank li::before { content:counter(r,decimal-leading-zero); font-size:.8rem;
-                      font-weight:800; color:var(--accent); flex:0 0 24px;
-                      font-variant-numeric:tabular-nums; }
-  .rank-zh { font-weight:700; font-size:.92rem; white-space:nowrap;
-              overflow:hidden; text-overflow:ellipsis; min-width:0; }
-  .rank-en { color:var(--gray); font-size:.8rem; white-space:nowrap;
-              overflow:hidden; text-overflow:ellipsis; max-width:42%; flex:0 1 auto; }
-  .rank-heat { margin-left:auto; font-size:.72rem; color:var(--gray);
-               flex:0 0 auto; font-variant-numeric:tabular-nums; }
+  /* X 热搜排行 */
+  .rank{display:flex;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .rank:last-child{border-bottom:none}
+  .rank .no{color:var(--accent);font-variant-numeric:tabular-nums;font-size:12px;flex:0 0 24px;font-weight:600}
+  .rank .word{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
+  .rank .orig{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+  .rank .heat{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;flex:0 0 auto}
 
-  /* ---------- 归档模块 ---------- */
-  .arc-list a { display:block; font-size:.82rem; color:var(--gray-mid);
-                text-decoration:none; padding:5px 0; border-bottom:1px solid var(--hair); }
-  .arc-list a:last-child { border-bottom:none; }
-  .arc-list a:hover { color:var(--accent); }
-  .arc-list a.home { color:var(--ink); font-weight:700; }
+  /* 特朗普时间线 */
+  .timeline{border-left:2px solid #dbe3ee;margin-left:6px}
+  .post{position:relative;padding:0 0 26px 22px}
+  .post:before{content:"";position:absolute;left:-6.5px;top:7px;width:11px;height:11px;border-radius:50%;background:#1d4ed8;border:2px solid #fff}
+  .post .date{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .post .en{font-size:15px;line-height:1.8;color:#222;word-break:break-word}
+  .post .zh{font-size:15px;line-height:1.85;color:#444;margin-top:8px;word-break:break-word}
 
-  .foot { margin-top:36px; padding-top:14px; border-top:1px solid var(--line);
-          font-size:.72rem; color:var(--gray); text-align:center; }
-  .backline { margin:0 0 14px; font-size:.82rem; }
-  .backline a { color:var(--accent); text-decoration:none; font-weight:600; }
-  .backline a:hover { text-decoration:underline; }
+  /* 归档 */
+  .arch{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .arch a{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px;font-variant-numeric:tabular-nums}
+  .arch a:hover{border-color:var(--accent);color:var(--accent)}
 
-  /* ---------- 移动端 ---------- */
-  @media (max-width:960px) {
-    .wrap { padding:16px 14px 44px; }
-    .masthead { padding:24px 20px; border-radius:14px; }
-    .masthead h1 { font-size:2.1rem; }
-    .enso-card { flex:1 1 100%; }
-    .cols { grid-template-columns:minmax(0,1fr); }
+  .footer{margin-top:34px;color:var(--muted);font-size:12px;text-align:center;line-height:1.9}
+
+  @media (max-width:960px){
+    .hero{padding:26px 22px}
+    .hero h1{font-size:34px}
+    .enso-card{flex:0 0 100%}
+    .card{padding:18px 18px}
+    .zh-title{font-size:18px}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ================= 深色报头 ================= -->
-  <header class="masthead">
-    <div class="mast-left">
+  <header class="hero">
+    <div class="hero-left">
       <div class="kicker">● DAILY BRIEF · 每日电讯</div>
-      {% if is_archive %}
-      <div class="backline" style="margin:10px 0 0;"><a href="../index.html">← 返回最新一期</a></div>
-      <h1>历史日报 · <span style="white-space:nowrap;">{{ archive_date }}</span></h1>
-      {% else %}
-      <h1>美国每日热榜</h1>
-      {% endif %}
-      <div class="sub">US DAILY BRIEF · 原文 + AI 中文对照</div>
-      <p class="statusline">更新于 {{ generated_at }} · 每天 07:00 自动更新 · 本期共 <b>{{ total_count }}</b> 条</p>
+      <h1>{% if is_archive %}历史日报{% else %}美国每日热榜{% endif %}</h1>
+      <div class="sub">US DAILY BRIEF · 原文 + AI 中文对照{% if is_archive %} · {{ archive_date }}{% endif %}</div>
+      <div class="status">更新于 {{ generated_at }} · 每天 07:00 自动更新 · 本期共 <b>{{ total_count }}</b> 条</div>
+      {% if is_archive %}<a class="backlink" href="../index.html">← 返回最新一期</a>{% endif %}
     </div>
-    <div class="enso-card kind-{{ enso_index.kind if enso_index else 'none' }}">
-      {% if enso_index %}
-      <a href="{{ enso_index.url }}" target="_blank" rel="noopener">
-        <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
-        <div class="enso-value">{% if enso_index.ssta > 0 %}+{% endif %}{{ "%.1f" | format(enso_index.ssta) }}°C</div>
-        <div class="enso-status">{{ enso_index.status }}</div>
-        <div class="enso-meta">SST {{ "%.1f" | format(enso_index.sst) }}°C · 截至 {{ enso_index.week }} 当周 · NOAA CPC 周度更新</div>
-      </a>
-      {% else %}
-      <div class="enso-title">厄尔尼诺指数 Niño 3.4</div>
-      <div class="enso-missing">指数数据暂缺</div>
-      {% endif %}
-    </div>
+    {% if enso_index %}
+    <a class="enso-card kind-{{ enso_index.kind }}" href="{{ enso_index.url }}" target="_blank" rel="noopener">
+      <div class="t">厄尔尼诺指数 NIÑO 3.4</div>
+      <div class="v">{{ "%+.1f"|format(enso_index.ssta) }}°C</div>
+      <div class="s">{{ enso_index.status }}</div>
+      <div class="m">SST {{ enso_index.sst }}°C · 截至 {{ enso_index.week }} 当周 · NOAA CPC 周度更新</div>
+    </a>
+    {% else %}
+    <div class="enso-card kind-neutral"><div class="t">厄尔尼诺指数 NIÑO 3.4</div>
+      <div class="v na">—</div><div class="s na">指数数据暂缺</div>
+      <div class="m">NOAA CPC 周度更新 · 下次更新时自动补齐</div></div>
+    {% endif %}
   </header>
 
-  <!-- ================= 双栏内容 ================= -->
-  <div class="cols">
+  <nav class="tabs" id="tabs">
+    {% for m in modules %}
+    <button class="tab" data-tab="{{ m.key }}">{{ m.label }}<span class="n">{% if m.kind == "enso" %}{{ m.groups|map(attribute='entries')|map('length')|sum }}{% else %}{{ m.entries|length }}{% endif %}</span></button>
+    {% endfor %}
+    <button class="tab" data-tab="archive">历史归档<span class="n">{{ archives|length }}</span></button>
+  </nav>
 
-    <!-- 主栏 -->
-    <div class="main-col">
-      {% for sec in main_sections %}
-      <section class="module" id="sec-{{ sec.source }}">
-        <div class="mod-head">
-          <span class="mod-bar" style="background:{{ sec.color }};"></span>
-          <h2>{{ sec.zh }}</h2>
-          <span class="en">{{ sec.en }}</span>
-          <span class="mod-count">{{ sec.entries | length }} 条</span>
-        </div>
+  {% macro news_item(e) %}
+  <article class="item">
+    <div class="badges">
+      {% if e.country %}<span class="country" style="background:{{ e.country_color }}">{{ e.country }}</span>{% endif %}
+      {% if e.outlet %}<span class="outlet">{{ e.outlet }}</span>{% endif %}
+    </div>
+    <div class="zh-title">{{ e.zh_title or e.title }}</div>
+    {% if e.zh_title %}<div class="en-title">{{ e.title }}</div>{% endif %}
+    {% if e.zh_snippet %}<div class="zh-snippet">{{ e.zh_snippet }}</div>{% endif %}
+    {% if e.snippet and e.zh_snippet %}<div class="en-snippet">{{ e.snippet }}</div>
+    {% elif e.snippet %}<div class="en-snippet">{{ e.snippet }}</div>{% endif %}
+    <div class="meta">{{ e.date_str }}{% if e.date_str %} · {% endif %}<a href="{{ e.url }}" target="_blank" rel="noopener">阅读原文 {{ e.domain }} ↗</a></div>
+  </article>
+  {% endmacro %}
 
-        {% if not sec.ok %}
-        <p class="fail">本次更新失败：{{ sec.error }}</p>
-
-        {% elif sec.source == "trump" %}
-        <ul class="timeline">
-          {% for it in sec.entries %}
-          <li>
-            <div class="tl-top"><b>{{ it.date_str }}</b> · {{ it.source_name }}</div>
-            {% if it.snippet and it.snippet != it.title %}
-            <p class="tl-en">{{ it.snippet }}</p>
-            <p class="tl-zh">
-              {% if it.zh_snippet %}{{ it.zh_snippet }}
-              {% elif it.zh_title %}{{ it.zh_title }}
-              {% else %}<span class="zh-missing">（翻译失败）</span>{% endif %}
-            </p>
-            {% else %}
-            <p class="tl-en">{{ it.title }}</p>
-            <p class="tl-zh">
-              {% if it.zh_title %}{{ it.zh_title }}
-              {% else %}<span class="zh-missing">（翻译失败）</span>{% endif %}
-            </p>
-            {% endif %}
-            {% if it.domain %}<a class="tl-link" href="{{ it.url }}" target="_blank" rel="noopener">阅读原文 {{ it.domain }} ↗</a>{% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-
-        {% else %}
-        {% for it in sec.entries %}
-        <article class="item">
-          <p class="item-zh-title">
-            {% if it.zh_title %}{{ it.zh_title }}
-            {% else %}<span class="zh-missing">（翻译失败）</span>{% endif %}
-          </p>
-          <p class="item-en-title">{{ it.title }}</p>
-          {% if it.zh_snippet %}<p class="item-zh-snip">{{ it.zh_snippet }}</p>{% endif %}
-          {% if it.snippet %}<p class="item-en-snip">{{ it.snippet }}</p>{% endif %}
-          <div class="item-meta">{{ it.source_name }} · {{ it.date_str }}
-            {% if it.domain %} · <a href="{{ it.url }}" target="_blank" rel="noopener">阅读原文 ↗</a>{% endif %}
-          </div>
-        </article>
+  {% for m in modules %}
+  <section class="module" id="tab-{{ m.key }}">
+    <div class="card">
+      {% if m.kind == "enso" %}
+        {% for g in m.groups %}
+        <h2 class="group-title enso-{{ g.key }}"><span class="dot"></span>{{ g.name }}<span class="group-count">{{ g.entries|length }} 条</span></h2>
+        {% for e in g.entries %}{{ news_item(e) }}{% endfor %}
         {% endfor %}
-        {% endif %}
-      </section>
-      {% endfor %}
+        {% if m.error %}<div class="mod-error">{{ m.error }}</div>{% endif %}
+      {% elif m.kind == "x_trends" %}
+        {% for e in m.entries %}
+        <a class="rank" href="{{ e.url }}" target="_blank" rel="noopener">
+          <span class="no">{{ "%02d"|format(loop.index) }}</span>
+          <span class="word">{{ e.zh_title or e.title }}</span>
+          {% if e.zh_title %}<span class="orig">{{ e.title }}</span>{% endif %}
+          <span class="heat">{{ e.extra.tweet_count }}</span>
+        </a>
+        {% endfor %}
+        {% if m.error %}<div class="mod-error">{{ m.error }}</div>{% endif %}
+      {% elif m.kind == "trump" %}
+        <div class="timeline">
+        {% for e in m.entries %}
+          <div class="post">
+            <div class="date">{{ e.date_str }} · trumpstruth.org · <a href="{{ e.url }}" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            {% if e.snippet and e.snippet != e.title %}
+              <div class="en">{{ e.snippet }}</div>
+              {% if e.zh_snippet %}<div class="zh">{{ e.zh_snippet }}</div>{% endif %}
+            {% else %}
+              <div class="en">{{ e.zh_title or e.title }}</div>
+              {% if e.zh_title and e.title != e.zh_title %}<div class="zh">{{ e.title }}</div>{% endif %}
+            {% endif %}
+          </div>
+        {% endfor %}
+        </div>
+        {% if m.error %}<div class="mod-error">{{ m.error }}</div>{% endif %}
+      {% else %}
+        {% if m.note %}<div class="mod-note">{{ m.note }}</div>{% endif %}
+        {% for e in m.entries %}{{ news_item(e) }}{% endfor %}
+        {% if m.error %}<div class="mod-error">{{ m.error }}</div>{% endif %}
+      {% endif %}
     </div>
+  </section>
+  {% endfor %}
 
-    <!-- 侧栏 -->
-    <div class="side-col">
-      {% for sec in sidebar_sections %}
-      <section class="module" id="sec-{{ sec.source }}">
-        <div class="mod-head">
-          <span class="mod-bar" style="background:{{ sec.color }};"></span>
-          <h2>{{ sec.zh }}</h2>
-          <span class="en">{{ sec.en }}</span>
-          <span class="mod-count">{{ sec.entries | length }}</span>
-        </div>
-        {% if not sec.ok %}
-        <p class="fail">本次更新失败：{{ sec.error }}</p>
-        {% else %}
-        <ol class="rank">
-          {% for it in sec.entries %}
-          <li>
-            <a href="{{ it.url }}" target="_blank" rel="noopener">
-              <span class="rank-zh">{% if it.zh_title %}{{ it.zh_title }}{% else %}{{ it.title }}{% endif %}</span>
-              {% if it.zh_title %}<span class="rank-en">{{ it.title }}</span>{% endif %}
-              <span class="rank-heat">{{ it.extra.tweet_count }}</span>
-            </a>
-          </li>
-          {% endfor %}
-        </ol>
-        {% endif %}
-      </section>
-      {% endfor %}
-
-      <section class="module">
-        <div class="mod-head">
-          <span class="mod-bar" style="background:#111111;"></span>
-          <h2>历史归档</h2>
-          <span class="en">ARCHIVE</span>
-        </div>
-        <div class="arc-list">
-          {% if is_archive %}
-          <a class="home" href="../index.html">← 返回最新一期</a>
-          {% endif %}
-          {% for a in archives %}
-          <a href="{{ archive_prefix }}{{ a.name }}">{{ a.label }}</a>
-          {% endfor %}
-        </div>
-      </section>
+  <section class="module" id="tab-archive">
+    <div class="card">
+      <div class="arch">
+        {% for a in archives %}<a href="{{ archive_prefix }}{{ a.name }}">{{ a.label }}</a>{% endfor %}
+      </div>
+      {% if not archives %}<div class="mod-error">暂无历史归档</div>{% endif %}
     </div>
+  </section>
+
+  <div class="footer">
+    数据源：Google News · NYT · CNN · NPR · TASS · The Moscow Times · Global Times · France 24 · RFI · BBC · NOAA CPC · getdaytrends · trumpstruth.org<br>
+    每天北京时间 07:00 自动更新 · 历史日报永久归档 · 由 GitHub Actions 驱动
   </div>
-
-  <div class="foot">US DAILY BRIEF · 原文 + AI 中文对照 · 数据来自公开渠道（Google News / NOAA CPC / getdaytrends.com / trumpstruth.org）</div>
 </div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  function show(key){
+    document.querySelectorAll('.module').forEach(function(s){ s.classList.remove('show'); });
+    var el = document.getElementById('tab-' + key);
+    if(el) el.classList.add('show');
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.tab === key); });
+    if(history.replaceState) history.replaceState(null, '', '#' + key);
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.tab); }); });
+  var initial = location.hash ? location.hash.slice(1) : 'headlines';
+  if(!document.getElementById('tab-' + initial)) initial = 'headlines';
+  show(initial);
+})();
+</script>
 </body>
 </html>
