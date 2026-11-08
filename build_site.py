@@ -1,7 +1,8 @@
 """生成静态站点：site/index.html（最新一期）+ site/archive/YYYY-MM-DD.html。
 
-每天一期（北京时间 07:00 更新）。index.html 侧栏列出最近 ARCHIVE_KEEP 期归档
-（兼容旧的 YYYY-MM-DD-{am,pm}.html 命名，新的在前）。
+每天一期（北京时间 07:00 更新）。页面为顶部标签栏切换结构：
+头条 / 政治 / 军事 / 科技 / 财经 / 厄尔尼诺专板 / X 热搜 / 特朗普动态 / 历史归档。
+归档兼容旧的 YYYY-MM-DD-{am,pm}.html 命名，新的在前。
 """
 import os
 from datetime import datetime, timedelta, timezone
@@ -12,19 +13,14 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 SITE_DIR = os.path.join("site")
 ARCHIVE_DIR = os.path.join(SITE_DIR, "archive")
-ARCHIVE_KEEP = 15
+ARCHIVE_KEEP = 30
 
-SECTION_META = {
-    "youtube": {"zh": "YouTube 美国热榜", "en": "YOUTUBE TRENDING", "color": "#111111"},
-    "reddit": {"zh": "Reddit 热帖", "en": "Reddit Hot", "color": "#111111"},
-    "news": {"zh": "美国新闻头条", "en": "TOP STORIES · Google News", "color": "#e0457a"},
-    "enso": {"zh": "厄尔尼诺动态", "en": "ENSO WATCH · NOAA + Google News", "color": "#0e7c86"},
-    "google_trends": {"zh": "Google 美国热搜", "en": "Google Trending", "color": "#111111"},
-    "x_trends": {"zh": "X 美国热搜", "en": "X TRENDS · getdaytrends", "color": "#111111"},
-    "trump": {"zh": "特朗普动态", "en": "TRUMP LIVE · Truth Social", "color": "#1d4ed8"},
+CAT_TABS = [("politics", "政治"), ("military", "军事"), ("tech", "科技"), ("finance", "财经")]
+COUNTRY_ORDER = {"美国": 0, "英国": 1, "法国": 2, "俄罗斯": 3, "中国": 4, "国际": 5}
+COUNTRY_COLORS = {
+    "美国": "#1d4ed8", "英国": "#9f1239", "法国": "#1e40af",
+    "俄罗斯": "#475569", "中国": "#b91c1c", "国际": "#0e7c86",
 }
-
-SECTION_ORDER = ["youtube", "news", "enso", "google_trends", "reddit", "x_trends", "trump"]
 
 SOURCE_NAMES = {
     "news": "Google News",
@@ -32,9 +28,6 @@ SOURCE_NAMES = {
     "x_trends": "getdaytrends.com",
     "trump": "trumpstruth.org",
 }
-
-# X 热搜渲染在侧栏，其余板块渲染在主栏
-SIDEBAR_SOURCES = {"x_trends"}
 
 
 def _archive_label(name):
@@ -51,12 +44,7 @@ def beijing_now():
     return datetime.now(timezone.utc) + timedelta(hours=8)
 
 
-def _fmt_dt(dt):
-    return dt.strftime("%Y-%m-%d %H:%M")
-
-
 def _date_str(source, extra):
-    """条目头部的日期显示。"""
     p = extra.get("published", "")
     if not p:
         return ""
@@ -82,56 +70,89 @@ def _render(env, context, out_path):
         f.write(tpl.render(**context))
 
 
+def _entry(it, source, translations):
+    extra = it.get("extra", {})
+    zh = translations.get(it["id"], {})
+    country = it.get("country") or ""
+    return {
+        "id": it["id"],
+        "title": it["title"],
+        "url": it["url"],
+        "snippet": it["snippet"],
+        "extra": extra,
+        "zh_title": zh.get("zh_title"),
+        "zh_snippet": zh.get("zh_snippet"),
+        "category": it.get("category") or zh.get("category") or "general",
+        "country": country,
+        "country_color": COUNTRY_COLORS.get(country, "#555555"),
+        "outlet": it.get("outlet") or extra.get("outlet") or extra.get("source") or SOURCE_NAMES.get(source, ""),
+        "date_str": _date_str(source, extra),
+        "domain": _domain(it.get("url", "")),
+        "source_name": SOURCE_NAMES.get(source, ""),
+        "source": source,
+    }
+
+
 def build(results, translations, run_dt=None):
-    """results: fetcher 返回结构列表；translations: {"key": {"zh_title","zh_snippet"}}。"""
+    """results: fetcher 返回结构列表；translations: {"key": {"zh_title","zh_snippet","category"}}。"""
     run_dt = run_dt or beijing_now()
     archive_name = f"{run_dt.strftime('%Y-%m-%d')}.html"
+    by_source = {r["source"]: r for r in results}
 
     env = Environment(
         loader=FileSystemLoader("templates"),
         autoescape=select_autoescape(["html"]),
     )
 
-    sections = []
-    for source in SECTION_ORDER:
-        r = next((x for x in results if x["source"] == source), None)
-        if r is None:
-            continue  # 该源未启用（不在 main.py 的 FETCHERS 中），不渲染板块
-        meta = SECTION_META[source]
-        if not r.get("ok"):
-            sections.append({
-                "source": source,
-                "zh": meta["zh"], "en": meta["en"], "color": meta["color"],
-                "ok": False,
-                "error": (r.get("error") or "未知错误")[:100],
-                "entries": [],
-            })
-            continue
-        items = []
-        for it in r["items"]:
-            zh = translations.get(it["id"], {})
-            extra = it.get("extra", {})
-            items.append({
-                "id": it["id"],
-                "title": it["title"],
-                "url": it["url"],
-                "snippet": it["snippet"],
-                "extra": extra,
-                "zh_title": zh.get("zh_title"),
-                "zh_snippet": zh.get("zh_snippet"),
-                "date_str": _date_str(source, extra),
-                "domain": _domain(it.get("url", "")),
-                "source_name": SOURCE_NAMES.get(source, ""),
-            })
-        sections.append({
-            "source": source,
-            "zh": meta["zh"], "en": meta["en"], "color": meta["color"],
-            "ok": True, "error": None, "entries": items,
-        })
-        continue
+    def entries_of(source):
+        r = by_source.get(source)
+        if not r or not r.get("ok"):
+            return []
+        return [_entry(it, source, translations) for it in r["items"]]
 
-    # 归档索引：最近 ARCHIVE_KEEP 期；新命名 YYYY-MM-DD.html 与旧命名
-    # YYYY-MM-DD-{am,pm}.html 均能列出（字典序即时间序，新的在前）
+    def by_country(entries):
+        return sorted(entries, key=lambda e: COUNTRY_ORDER.get(e["country"], 9))
+
+    # ---- 组装各标签模块 ----
+    modules = []  # [{"key","label","kind",...}]，模板按列表遍历避免 dict.items 坑
+
+    news_entries = entries_of("news")
+    outlet_entries = entries_of("outlets")
+    headlines = news_entries + by_country([e for e in outlet_entries if e["category"] == "general"])
+    outlets_r = by_source.get("outlets")
+    partial_note = ""
+    if outlets_r and outlets_r.get("partial_errors"):
+        partial_note = "部分媒体源本次失败：" + "、".join(outlets_r["partial_errors"])
+    modules.append({"key": "headlines", "label": "头条", "kind": "news",
+                    "entries": headlines, "note": partial_note,
+                    "error": None if headlines else "头条源本次更新失败"})
+
+    for cat, label in CAT_TABS:
+        entries = by_country([e for e in outlet_entries if e["category"] == cat])
+        modules.append({"key": cat, "label": label, "kind": "news", "entries": entries,
+                        "note": "", "error": None if entries else "本期暂无此类报道"})
+
+    enso_r = by_source.get("enso")
+    enso_groups = []
+    if enso_r and enso_r.get("groups"):
+        for g in enso_r["groups"]:
+            enso_groups.append({"key": g["key"], "name": g["name"],
+                                "entries": [_entry(it, "enso", translations) for it in g["items"]]})
+    modules.append({"key": "enso", "label": "厄尔尼诺专板", "kind": "enso",
+                    "groups": enso_groups,
+                    "error": None if enso_groups else "ENSO 各子板块本次更新失败（指数见页首卡片）"})
+
+    xt_entries = entries_of("x_trends")
+    modules.append({"key": "x_trends", "label": "X 美国热搜", "kind": "x_trends",
+                    "entries": xt_entries,
+                    "error": None if xt_entries else "X 热搜本次更新失败"})
+
+    trump_entries = entries_of("trump")
+    modules.append({"key": "trump", "label": "特朗普动态", "kind": "trump",
+                    "entries": trump_entries,
+                    "error": None if trump_entries else "特朗普动态本次更新失败"})
+
+    # 归档索引：最近 ARCHIVE_KEEP 期；新旧命名混排，新的在前
     archives = []
     if os.path.isdir(ARCHIVE_DIR):
         names = sorted(
@@ -140,17 +161,13 @@ def build(results, translations, run_dt=None):
         )[:ARCHIVE_KEEP]
         archives = [{"name": n, "label": _archive_label(n)} for n in names]
 
-    enso_index = next((r.get("index") for r in results
-                       if r.get("source") == "enso" and r.get("index")), None)
-
-    total_count = sum(len(s["entries"]) for s in sections)
-    main_sections = [s for s in sections if s["source"] not in SIDEBAR_SOURCES]
-    sidebar_sections = [s for s in sections if s["source"] in SIDEBAR_SOURCES]
+    enso_index = enso_r.get("index") if enso_r else None
+    total_count = sum(len(m.get("entries", [])) for m in modules) + \
+        sum(len(g["entries"]) for m in modules if m["kind"] == "enso" for g in m["groups"])
 
     context = {
-        "generated_at": _fmt_dt(run_dt) + "（北京）",
-        "main_sections": main_sections,
-        "sidebar_sections": sidebar_sections,
+        "generated_at": run_dt.strftime("%Y-%m-%d %H:%M") + "（北京）",
+        "modules": modules,
         "archives": archives,
         "enso_index": enso_index,
         "total_count": total_count,
