@@ -34,15 +34,21 @@ def _save_cache(cache):
         pass
 
 
+CATS = ("politics", "military", "tech", "finance", "general")
+
 def _call_kimi(payload_texts, api_key):
     """调用 Kimi API，返回 (items, None) 或 (None, error)。"""
     lines = []
     for i, t in enumerate(payload_texts):
         lines.append(f'[{i}] {t}')
     user = (
-        "把下面的英文新闻条目翻译成中文。每条格式为 [编号] TITLE || SNIPPET。\n"
-        "严格返回一个 JSON 数组，每个元素为 {\"i\": 编号, \"zh_title\": \"...\", \"zh_snippet\": \"...\"}，"
-        "不要返回任何其他文字、解释或 markdown 代码块。\n\n" + "\n".join(lines)
+        "把下面的英文新闻条目翻译成中文并分类。每条格式为 [编号] TITLE || SNIPPET。\n"
+        "严格返回一个 JSON 数组，每个元素为 {\"i\": 编号, \"zh_title\": \"...\", \"zh_snippet\": \"...\", \"cat\": \"类别\"}，"
+        "不要返回任何其他文字、解释或 markdown 代码块。\n"
+        "cat 只能是 politics / military / tech / finance / general 之一："
+        "政治外交选举为 politics，军事战争国防为 military，科技互联网 AI 数码为 tech，"
+        "财经市场经济股市为 finance，其他一律 general。"
+        "如果条目只有标题没有摘要，zh_snippet 返回空字符串。\n\n" + "\n".join(lines)
     )
     body = {
         "model": MODEL,  # kimi-k2.6 为推理模型，仅允许默认 temperature=1
@@ -65,9 +71,10 @@ def _call_kimi(payload_texts, api_key):
 
 
 def translate(entries):
-    """entries: [{"key", "title", "snippet"}...] → {"key": {"zh_title":..,"zh_snippet":..}}。
+    """entries: [{"key", "title", "snippet"}...] → {"key": {"zh_title","zh_snippet","category"}}。
 
     无 key 或全部缓存命中时不发请求；任何异常降级为 zh 字段为 None。
+    分类缓存在同一 cache 文件里以 "cat:"+标题hash 为 key，与旧缓存共存。
     """
     result = {}
     api_key = os.environ.get("MOONSHOT_API_KEY", "").strip()
@@ -78,13 +85,15 @@ def translate(entries):
         # 某条目模型幻觉出的 zh_snippet 会串到所有空 snippet 条目上），也永远不求翻译
         th = _hash(e["title"])
         sh = _hash(e["snippet"]) if e["snippet"] else None
+        ck = "cat:" + th
         if th in cache and (sh is None or sh in cache):
             result[e["key"]] = {"zh_title": cache[th],
-                                "zh_snippet": cache.get(sh) if sh else None}
+                                "zh_snippet": cache.get(sh) if sh else None,
+                                "category": cache.get(ck)}
         else:
             pending.append((e, th, sh))
     for e, _, _ in pending:
-        result[e["key"]] = {"zh_title": None, "zh_snippet": None}
+        result[e["key"]] = {"zh_title": None, "zh_snippet": None, "category": None}
 
     if not api_key or not pending:
         if not api_key and pending:
@@ -128,12 +137,16 @@ def translate(entries):
             zh_title = (item.get("zh_title") or "").strip() or None
             # 空 snippet 的条目不接受模型"看图说话"编出的 zh_snippet
             zh_snippet = (item.get("zh_snippet") or "").strip() or None if sh else None
+            cat = (item.get("cat") or "").strip().lower()
+            category = cat if cat in CATS else "general"
             result[e["key"]]["zh_title"] = zh_title
             result[e["key"]]["zh_snippet"] = zh_snippet
+            result[e["key"]]["category"] = category
             if zh_title:
                 cache[th] = zh_title
             if zh_snippet and sh:
                 cache[sh] = zh_snippet
+            cache["cat:" + th] = category
 
     if failed_errs:
         print("[translator] 以下批次失败（已重试 1 次）: " + "；".join(failed_errs))
