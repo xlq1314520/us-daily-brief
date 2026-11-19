@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>历史日报 · 2026-11-19</title>
+<style>
+  :root{
+    --bg:#f5f4f0; --ink:#161616; --muted:#6b7280; --line:#e5e2dc;
+    --accent:#e0457a; --navy:#101c2c; --gold:#e8b45a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 18px 60px}
+
+  /* ===== 深色报头 ===== */
+  .hero{background:var(--navy);color:#fff;border-radius:16px;padding:34px 36px;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+  .hero-left{flex:1 1 380px;min-width:0}
+  .kicker{color:var(--gold);font-size:12px;letter-spacing:.22em;font-weight:600;margin-bottom:14px}
+  .hero h1{font-size:44px;line-height:1.15;letter-spacing:.01em;white-space:nowrap}
+  .hero .sub{color:#93a3b8;font-size:13px;letter-spacing:.08em;margin-top:10px}
+  .hero .status{color:#7d90a6;font-size:13px;margin-top:18px}
+  .hero .status b{color:var(--gold);font-weight:600}
+  .enso-card{background:#fff;color:var(--ink);border-radius:12px;padding:16px 20px;flex:0 1 300px;min-width:230px}
+  .enso-card .t{font-size:12px;color:var(--muted);letter-spacing:.12em}
+  .enso-card .v{font-size:38px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}
+  .enso-card .s{font-size:15px;font-weight:700;margin-top:2px}
+  .enso-card .m{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .kind-el_nino .v,.kind-el_nino .s{color:#c2410c}
+  .kind-la_nina .v,.kind-la_nina .s{color:#1d4ed8}
+  .kind-neutral .v,.kind-neutral .s{color:#6b7280}
+  .enso-card .na .v,.enso-card .na .s{color:#9ca3af}
+  .backlink{display:inline-block;margin:14px 0 0;color:var(--accent);font-size:13px}
+
+  /* ===== 标签栏 ===== */
+  .tabs{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:14px 2px 12px;border-bottom:1px solid var(--line);scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:#374151;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;font-family:inherit}
+  .tab .n{font-size:11px;color:var(--muted);margin-left:5px;font-variant-numeric:tabular-nums}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tab.active .n{color:var(--gold)}
+
+  /* ===== 模块 ===== */
+  .module{display:none;margin-top:22px}
+  .module.show{display:block}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 26px;box-shadow:0 1px 3px rgba(16,28,44,.04)}
+  .mod-note{color:var(--muted);font-size:13px;margin-bottom:12px}
+  .mod-error{color:var(--muted);font-size:14px;padding:18px 0}
+
+  .group-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;margin:22px 0 6px}
+  .group-title:first-child{margin-top:0}
+  .group-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .group-title.enso-disaster .dot{background:#dc2626}
+  .group-title.enso-agri .dot{background:#65a30d}
+  .group-title.enso-south .dot{background:#0e7c86}
+  .group-title.enso-agency .dot{background:#1d4ed8}
+  .group-count{font-size:12px;color:var(--muted);font-weight:400}
+
+  /* 新闻条目 */
+  .item{padding:20px 0;border-bottom:1px solid var(--line)}
+  .item:last-child{border-bottom:none;padding-bottom:4px}
+  .badges{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .country{color:#fff;font-size:11px;padding:2px 8px;border-radius:4px;letter-spacing:.05em}
+  .outlet{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+  .zh-title{font-size:19px;font-weight:700;line-height:1.5}
+  .en-title{font-size:14px;color:#555;margin-top:5px;line-height:1.55}
+  .zh-snippet{font-size:15px;color:#333;line-height:1.85;margin-top:10px}
+  .en-snippet{font-size:13px;color:#777;line-height:1.7;margin-top:8px}
+  .meta{margin-top:10px;font-size:12px;color:var(--muted)}
+  .meta a{color:var(--accent)}
+  .meta a:hover{text-decoration:underline}
+
+  /* X 热搜排行 */
+  .rank{display:flex;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .rank:last-child{border-bottom:none}
+  .rank .no{color:var(--accent);font-variant-numeric:tabular-nums;font-size:12px;flex:0 0 24px;font-weight:600}
+  .rank .word{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
+  .rank .orig{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+  .rank .heat{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;flex:0 0 auto}
+
+  /* 特朗普时间线 */
+  .timeline{border-left:2px solid #dbe3ee;margin-left:6px}
+  .post{position:relative;padding:0 0 26px 22px}
+  .post:before{content:"";position:absolute;left:-6.5px;top:7px;width:11px;height:11px;border-radius:50%;background:#1d4ed8;border:2px solid #fff}
+  .post .date{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .post .en{font-size:15px;line-height:1.8;color:#222;word-break:break-word}
+  .post .zh{font-size:15px;line-height:1.85;color:#444;margin-top:8px;word-break:break-word}
+
+  /* 归档 */
+  .arch{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .arch a{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px;font-variant-numeric:tabular-nums}
+  .arch a:hover{border-color:var(--accent);color:var(--accent)}
+
+  .footer{margin-top:34px;color:var(--muted);font-size:12px;text-align:center;line-height:1.9}
+
+  @media (max-width:960px){
+    .hero{padding:26px 22px}
+    .hero h1{font-size:34px}
+    .enso-card{flex:0 0 100%}
+    .card{padding:18px 18px}
+    .zh-title{font-size:18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-left">
+      <div class="kicker">● DAILY BRIEF · 每日电讯</div>
+      <h1>历史日报</h1>
+      <div class="sub">US DAILY BRIEF · 原文 + AI 中文对照 · 2026-11-19</div>
+      <div class="status">更新于 2026-11-19 11:57（北京） · 每天 07:00 自动更新 · 本期共 <b>178</b> 条</div>
+      <a class="backlink" href="../index.html">← 返回最新一期</a>
+    </div>
+    
+    <a class="enso-card kind-el_nino" href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/" target="_blank" rel="noopener">
+      <div class="t">厄尔尼诺指数 NIÑO 3.4</div>
+      <div class="v">+3.2°C</div>
+      <div class="s">超强厄尔尼诺</div>
+      <div class="m">SST 29.9°C · 截至 2026-11-11 当周 · NOAA CPC 周度更新</div>
+    </a>
+    
+  </header>
+
+  <nav class="tabs" id="tabs">
+    
+    <button class="tab" data-tab="headlines">头条<span class="n">65</span></button>
+    
+    <button class="tab" data-tab="politics">政治<span class="n">15</span></button>
+    
+    <button class="tab" data-tab="military">军事<span class="n">9</span></button>
+    
+    <button class="tab" data-tab="tech">科技<span class="n">9</span></button>
+    
+    <button class="tab" data-tab="finance">财经<span class="n">8</span></button>
+    
+    <button class="tab" data-tab="entertainment">娱乐<span class="n">10</span></button>
+    
+    <button class="tab" data-tab="sports">体育<span class="n">8</span></button>
+    
+    <button class="tab" data-tab="enso">厄尔尼诺专板<span class="n">30</span></button>
+    
+    <button class="tab" data-tab="x_trends">X 美国热搜<span class="n">12</span></button>
+    
+    <button class="tab" data-tab="trump">特朗普动态<span class="n">12</span></button>
+    
+    <button class="tab" data-tab="archive">历史归档<span class="n">30</span></button>
+  </nav>
+
+  
+
+  
+  <section class="module" id="tab-headlines">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Trump, Xi and Putin set to hold historic meeting on Apec sidelines - BBC</div>
+    
+    
+    <div class="en-snippet">Trump, Xi and Putin set to hold historic meeting on Apec sidelines BBC ‘An absolute nightmare’ — Trump’s trilateral with Xi and Putin spooks allies Politico APEC Live: Trump, Xi and Putin to meet in h</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE1JaDV1Q0dGNjZ3bW8xZEFsR3hsRzFlb1dFUGFoUFlxejBDaUNyeHZqRnpyZkRTTkhHSWFNU2IxeWhoV0M0c1p5ZEcyMmRFMmpJb2R2TmxB?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">Mary Peltola flips Alaska&#39;s Senate seat. And, Nvidia won&#39;t reinstate Jensen Huang - NPR</div>
+    
+    
+    <div class="en-snippet">Mary Peltola flips Alaska&#39;s Senate seat. And, Nvidia won&#39;t reinstate Jensen Huang NPR Mary Peltola ousts incumbent Republican Dan Sullivan in Alaska Senate race, giving Democrats 56 seats CNN With Ala</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxOaUs5ZXotc29oMFdCVEFwWkE3cXZEeUc1TWFCdm1obnMzbnh0MnhxSFBOWGw2c1VSblZzejEzdWY5ZkJocjJHUUdaSEhPT0NGM2NIS1JQR1FLY2lRcU56Z3dQem9sb3VzYXVIVGlpZGp5ZlM3TlZVajBWMnJ6T05VUmdZNDRWN0dRa192a0Y1cjEwQndrU0NwTlhWVy1LQVRMWEZXdVg2UmJGZDhxckFFWUxmWXNEQQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">House Democrats Cast Wide Net as They Prepare Trump Investigations - The New York Times</div>
+    
+    
+    <div class="en-snippet">House Democrats Cast Wide Net as They Prepare Trump Investigations The New York Times Leading House Democrat targets Trump’s inner circle for first investigations The Washington Post House Democrat wa</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQWlJQTWo5ek5SZGlUalR6SFI1U3JNeTI3RVNkOVQydjZUcjM1YWc1cEhEUWtROHB6OEk2c3pNUkNhUTEzQU1iYXFFd3BMZl9MS2JFVmM0Rlk1cXo0UEl3Z3U5V2drZDEyVHhWMmh3aXVzRXhSSzc5TFppZTRxT2tJNFVFM2lkdDN2bUNSU3BvYWM?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">SFGATE</span>
+    </div>
+    <div class="zh-title">Thousands lose power across Bay Area as heavy rain batters the region - SFGATE</div>
+    
+    
+    <div class="en-snippet">Thousands lose power across Bay Area as heavy rain batters the region SFGATE Video shows flooding across San Francisco Bay Area as storm batters region ABC7 Bay Area Super El Niño floods neighborhoods</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMif0FVX3lxTFBTY2RJN2VwdDlNU2Z5UWVjT0w4QmJrS05kbjE0UmNDdmQxZ1lEczNSYVlUS0dhd1cxd1BNS1JaY1J6c3g1SzZXc3hEXzl1LTRlM1NOdjVLZVFlQ2Rwc2VEQjQzYnJkd2dRX2dud2lnRmN6blRZUDRhZ3MxclVtWms?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The Guardian</span>
+    </div>
+    <div class="zh-title">Crimea bridge has been attacked again, says Russian-installed governor - The Guardian</div>
+    
+    
+    <div class="en-snippet">Crimea bridge has been attacked again, says Russian-installed governor The Guardian Kerch attack: Bridge connecting Russia to occupied Crimea has been hit again CNN Russian Offensive Campaign Assessme</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxNTkhuRXZBS0pyYWltUGM2UGg4ejdvOExOcVhTNnJqeVVOS2s3T2pEdU1SV0J4SUhDcnp6WDVWaERPR19taTd3OXRvdEg1NGdmdWtwOWdadkFOOXMtZVN5T29Yak9hTzJpSVIzSUU5bXBEcGJua1dzRVFobVVDcFlxZi00MzBfZWNnQUZwdmRuVWJsczlja2ZBOXBndw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The Washington Post</span>
+    </div>
+    <div class="zh-title">Democrat Hakeem Jeffries nominated to be first Black speaker of House next year - The Washington Post</div>
+    
+    
+    <div class="en-snippet">Democrat Hakeem Jeffries nominated to be first Black speaker of House next year The Washington Post Hakeem Jeffries overwhelmingly wins House speaker nomination despite threats from ultra-progressives</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxNQmNzX0tUcG5xd3lWR09sUDdPc28zQUVnUUk1WnpSdDk2bEl0aGl5cUdaZl96YXYzVkVEYV9aMVVTQ1hhTUJDUktmLTMtaW9SWmhoc1M0TUhvWWdhU0JNSEZ3U3pYOW1IRml6dzI5WnFYWXNJLTBWTm5oM3FXY1lQYlNHa1BEOXdXS0V2eWlJaUhjaDlSb1doamJOUHdoWko5cFVldkZ6TFVuV3JHcklz?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The Washington Post</span>
+    </div>
+    <div class="zh-title">More than a foot of overnight rain in South Florida causes widespread flooding - The Washington Post</div>
+    
+    
+    <div class="en-snippet">More than a foot of overnight rain in South Florida causes widespread flooding The Washington Post See more headlines &amp; perspectives on Google News</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxOTkg5cGFfNHFJYW16d2xvamk0X3lHR0M1NE1BLW5TU2F5cEoxT2dOZ3VpWGF2N2Zab09OaEVGWXcwZVc4Ni1zM0ZwdFFhWVZVRlk1dFNvU1JhYWYzNURRWFNtNmpPNzctX200YUx5S1BqUEJhWmhBb1lWNF9yUGdzNWdRMHltMHRtV01KSi1YM2ZkclZyS05XSVpwUEI5QnBBMFpPalFfVHdHNUpRTEtNQnJIRVIzOVJNejBNSQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The Hill</span>
+    </div>
+    <div class="zh-title">Cornyn blocks Trump’s nomination to federal district court because he didn’t choose a Texan - The Hill</div>
+    
+    
+    <div class="en-snippet">Cornyn blocks Trump’s nomination to federal district court because he didn’t choose a Texan The Hill Sen. Cornyn blocks judicial nominee because Trump didn’t choose Texas CNN Republican Senator Cornyn</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5raTJreThiUkNqVXNrSTM5WE4zVE9SX2llZG4wbDJicmJEMUdvWDkxbDBUYkZyTDF6QUM3d3RJanEzR3N2V1hiYnVhUVlfLTNGcWhweHhXRk95QTNrellreG54RHgzVjB4T2pJcG1DdUFuNDhDdTB4eTFrMjZrX2PSAYQBQVVfeXFMTnV2ajlQcm9ac3hGQzZ5aDFEb2hJa0tFWDNpS1dGbTlQdmRzVWhqU0I4WHhFOEozZkZBX3hXUGxYNlk2SmxXQ2FqNVdyZU8tbG5BOEgweGRVTG0tZkltcUUwdnl1b1hiamRmNlpZNndwMmVKanh4VnF3cjhvUENKOVh0T3JR?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The Guardian</span>
+    </div>
+    <div class="zh-title">Four Maryland high school students sue after AI mistakes Doritos bag for gun - The Guardian</div>
+    
+    
+    <div class="en-snippet">Four Maryland high school students sue after AI mistakes Doritos bag for gun The Guardian Lawyers’ Committee Files Lawsuit on Behalf of Black Students Detained and Searched Due to AI Alert Falsely Ide</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQSF91bW51a2g2SHNIZjBOd0lXSDEzNUtKRVBHNDFGSnZCNjlQWGpBbmZOTkJTcVliamhleExMaWJla1E0dWdMTTBLRmI5Q0NSSmZkU2RVMzlwYmpVd1FNT0ItTnJWbUY0alM2bnlaUVBxUUx5a214ZE44WjZhYkl0UGQ3ZXhGNHhIclFTelphMzJSc2Q5eFRaSkdKX3g?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">ABC7 Los Angeles</span>
+    </div>
+    <div class="zh-title">Evacuation warnings issued for some SoCal burn scar areas ahead of storm - ABC7 Los Angeles</div>
+    
+    
+    <div class="en-snippet">Evacuation warnings issued for some SoCal burn scar areas ahead of storm ABC7 Los Angeles L.A. County issues evacuation warnings as storm nears; snow, flooding expected Los Angeles Times Californians </div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxOcHhrVmlMRHBXWm9vcERDbmNqbmVLRVJQdlJiOG9nbjIxbDBPS3NnNU9FeXl1bEJNVUJpMzhEb3pPN0w3b25ZcV9EMlFkVDAyNUVhdFZXTnZRS2tES3BJb3c2NDlPV0ttSWk1OTFrQkhOQWFtc2FwYUNZQVo3UnoxY2EtM0ozRUE2ODRIMlZ5RTZyYzJ6VU5zdmFUVVFrblNVVGtVT09DTHlTamNpV0RPWEVveElvSmxDUUlKVkNLVUY3OTNCemZ3ZEVtMA?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Israeli military launches rare ground operation in Gaza beyond Yellow Line - BBC</div>
+    
+    
+    <div class="en-snippet">Israeli military launches rare ground operation in Gaza beyond Yellow Line BBC What does Israel’s new ground offensive mean for Palestinians in Gaza? Al Jazeera Israeli tanks roll into central Gaza in</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9hTVBjZ3ZTR2x5c0NaYmhGUl9VUUg0enFwUWNmUW9RR0hNSElNN1NfRWxMRkdDWkx6UFZNY0xlMG9WNUJfU0V4amltWU1WOGN6Ykt6WVktakgwaG8?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">CBS News</span>
+    </div>
+    <div class="zh-title">Iran War Updates: Gulf states and tankers under fire as U.S. and Iran ramp back up tit-for-tat strikes - CBS News</div>
+    
+    
+    <div class="en-snippet">Iran War Updates: Gulf states and tankers under fire as U.S. and Iran ramp back up tit-for-tat strikes CBS News Iran widens Gulf attacks after US strikes missile launch site CNN Mideast nations ramp u</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxNczRzemtDSHlJLXZIOHl1WHVMYUZkLTFMd1Z4TDJHNWhDa2E3djdWWnM4MXlwbXpnYjNyUU9TcXR6YjhsOWRVS29ub25Dd0pLVWNZRFZWR25CdnNxeTQ4VDRYX2g1dlFqZmQ1N1o1WWowQk5XRTJvSnhwWENzaXlBSF83RW5kbE5FelFKa0J2dnlhQVJJTkE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">PBS</span>
+    </div>
+    <div class="zh-title">Muslims are projected to outnumber Christians by 2035 as the world&#39;s largest religion - PBS</div>
+    
+    
+    <div class="en-snippet">Muslims are projected to outnumber Christians by 2035 as the world&#39;s largest religion PBS The Future of World Religions: Population Growth Projections, 2020-2070 Pew Research Center Muslims to outnumb</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiuwFBVV95cUxOMS1HQ0pyNUo5cE5PU1p0RHl3NFpENXEzNTg1aUlCQ0U5ZkZhNVMweHFNNDZMbFNkeFM0M1daYlNlekMwckR6Sk1nRFpDMlVXMlpaXy1MMUNfMGU0Q19ETG5XYUFQMVRzbE5Dc09wVXdEeDhTS3hITmJVUWVrNDdNSDZmTmktUk9vZ1V5TWl6ZHZaN0ljdE40QjhMVGFnb1hDM3REc3NNUlk4bW9iQnEwREtEQU1rX0FpV1dJ0gHAAUFVX3lxTFBrMjA3UkttS1dpSWxHc2M0UWRFMXp6ZXBzblVxdk9MWVQwMW8tWjFUUHZ6bzhzbzhMMjRMY1RBYkJUNTFJSDctWXlaam1rdFV5c3I4ekNDMUdKTXBmRldCVWtqVjg0THJwaW90RER5a3YzektLTGJaV2hQN2YzTGg0ZUsxMGQ0WXh2SklxeUc1dEhlNDVuNTRHQjR1QzZTX2hHc19SbV9VNjMyN3NJTzgxU0IyRW96Z2d4allQR3hHXw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Myanmar faces historic genocide verdict at UN court over Rohingya massacres - BBC</div>
+    
+    
+    <div class="en-snippet">Myanmar faces historic genocide verdict at UN court over Rohingya massacres BBC Fears grow that US will put Nobel-winning judge under sanctions after Myanmar genocide ruling The Guardian What to Look </div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OaGZfX2FoWHppbFJsYnQtYm15bHh6c05XYWNZMGY0dl9UeElHa1BWN3JGRkNvTEZDdF9qcHcyQm9MMExmWVJ1QThGTVVfYU1fcUx3cFFYZE1YbEU?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">AI giant Anthropic valued at up to $1.5tn ahead of stock market debut - BBC</div>
+    
+    
+    <div class="en-snippet">AI giant Anthropic valued at up to $1.5tn ahead of stock market debut BBC Anthropic IPO raises over $81 billion in largest offering on record, topping SpaceX CNBC Anthropic IPO live: Company said to p</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE15eVFIWE5uZFRSSHFUOTNCZWJySy1leGw3NHYxbVZkZVpFU01maWdFYW5FU1lrY25NSDEwQV9NRXBpaG5LSDB5dEhXcW83X3JTVEF4aGlIM0FrVm8?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">DealBook Summit: Elon Musk Paints Himself as Political Moderate, Says He Is ‘Not MAGA’ - The New York Times</div>
+    
+    
+    <div class="en-snippet">DealBook Summit: Elon Musk Paints Himself as Political Moderate, Says He Is ‘Not MAGA’ The New York Times Elon Musk says record spending on US midterms was &#39;pretty foolish&#39; BBC Dealbook Summit 2026 li</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1ZYjB2UXJGcEo1ZE0xNVhkMHU4VnU5NmNYWS1NUkRhYWVhdFdTSTRMNlUxcFRuVlF4VHVQSWVlZzR5VjNOOXZQdGR5R2lzVUM2aWZ2aVhhRkVxZDVVVzhJTTkzU29HeUVtOUxpcmIyN1lDdnFqb1ZvYQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">New York Post</span>
+    </div>
+    <div class="zh-title">Nvidia’s interim CEO urges employees to leave Jensen Huang behind: ‘Let’s move forward’ - New York Post</div>
+    
+    
+    <div class="en-snippet">Nvidia’s interim CEO urges employees to leave Jensen Huang behind: ‘Let’s move forward’ New York Post What Nvidia’s Interim CEO, Colette Kress, Said to Employees After Jensen Huang’s Resignation The N</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQb3Q4dnoyWkg4d1lwN3I4ZmpMaGxzQlRvWGRIMjV0THZ0dkw1NDFoM19RX0YyUFNMUWhhT1NHMGxfeDhvV202ZTJMdHEwN1hUT05RdEI1aXlwcFBqT19BRkxfamduVjdMRjRqUlpXc29jNDVqbFBUTzZHVmMwUjZjRkRRbGYzaXBUYXZQZ2ZlekRIbnF2RUx1SW5CQzNJRUc1WWlGRWpLUE1CalZDaWI0RDBydktJUnRvbXhCNW0xQQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">CNBC</span>
+    </div>
+    <div class="zh-title">Musk says Jensen Huang is irreplaceable, regrets midterm spending - CNBC</div>
+    
+    
+    <div class="en-snippet">Musk says Jensen Huang is irreplaceable, regrets midterm spending CNBC Nvidia’s roaring results can’t hide its troubles The Economist Nvidia retreats as strong outlook fails to dispel uncertainty Reut</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1IZzFuTWNYdk9Ic0Z4cGxSR2pBcVB1a0hMUE1icWUyYnNrYzBaOEphTmcwcDlncDJsZG5lY2Rjby1KOGZrU2liaGxNOGhPZlctcm5pOUFOeG1ZbTBYeXRjV0NZbGJUS21RbE5oYkhwYk5vSjQzdVFV0gF8QVVfeXFMTjBQalZjdEotUDUwTXJOOTdvUi0xcExrZUlNUkEtLWprdGhIdHUxb1ctUVRkaXFVczg3UWJJaC1Nalg5cW1KS2x3LVpydHMxejlJUEJYZWZiUWxKSzB4SXJSUEJEVFBJbkVqTno0STl0S2V1VDhDbEFnb1FLZA?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">POLITICO.eu</span>
+    </div>
+    <div class="zh-title">Grand Theft Auto VI is here. The EU has 6 reasons to pay attention. - POLITICO.eu</div>
+    
+    
+    <div class="en-snippet">Grand Theft Auto VI is here. The EU has 6 reasons to pay attention. POLITICO.eu G.T.A. 6 Review: This Release Will Steal Your Heart The New York Times ‘Grand Theft Auto VI’ is a cultural and economic </div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxPSzVUdEJxeUdWcjNjVG9tQ0didFVFcnd4S0tvLXRiRHZmNXY3T3FGM2ZuNHR3Wnd0WGVkTGhwN2xaZHVKVTllckRmMC1iRktBNDN2ekhra25oaEtkVXFEMlg1ZGpvbkZNNXQzYUZrTElzVGY2ZlRReTF3Z1ZmekFfZVplRWtsYzJjd1lqQXlHNDE4LThUT0h6d1l1S0VneDFld1E?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      
+      <span class="outlet">The Verge</span>
+    </div>
+    <div class="zh-title">The first Nvidia RTX Spark mini PCs launch today from Asus, Dell, and MSI - The Verge</div>
+    
+    
+    <div class="en-snippet">The first Nvidia RTX Spark mini PCs launch today from Asus, Dell, and MSI The Verge NVIDIA RTX Spark Compact Desktops Out Now NVIDIA Blog ASUS Announces Availability of ProArt GR1X Business Wire Nvidi</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5zZm5CbU9vTU1pMGUyWTJLNE95azJ4Q2dmVC0zeERkNFZkOG44X3hNb0JWalRrc2tWdXJydmQtTGpTWm5RaUpWTXNFbEtsOWc4UXJvTDByUWdXZTIzbHRJS0tVX3U1UDJUZkpScjBURmE3dEpsaWpDdlMtWEdoaFE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">How Nvidia Chips Ended Up Within Reach of China’s Military</div>
+    
+    
+    <div class="en-snippet">Alibaba, the Chinese internet giant behind the company at the center of the Nvidia spy saga, has used its A.I. computing technology to aid a lab with links to China’s military.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.nytimes.com/2026/11/18/technology/nvidia-alibaba-china-military.html" target="_blank" rel="noopener">阅读原文 nytimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">How We Broke Open the Nvidia Investigation</div>
+    
+    
+    <div class="en-snippet">A global reporting effort by The New York Times included many twists and turns, from surprising photos and shipment records to a big break through astonishing tips from sources.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.nytimes.com/2026/11/18/insider/nvidia-jensen-huang-spying-plot.html" target="_blank" rel="noopener">阅读原文 nytimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">Anthropic Sells $81.3 Billion in Shares for a Record IPO</div>
+    
+    
+    <div class="en-snippet">The sale valued the A.I. company, which makes the Claude chatbot, at more than $1.5 trillion. Shares begin trading on Thursday.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.nytimes.com/2026/11/18/technology/anthropic-ipo-pricing.html" target="_blank" rel="noopener">阅读原文 nytimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">Takeaways From the 2026 DealBook Summit</div>
+    
+    
+    <div class="en-snippet">Leaders in artificial intelligence and governments discussed America’s shifting politics, the reverberations of Jensen Huang’s ouster at Nvidia and more on Wednesday.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.nytimes.com/2026/11/18/business/dealbook/dealbook-summit-musk-altman-ellison.html" target="_blank" rel="noopener">阅读原文 nytimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">That ‘SNL’ Sister Sketch: It’s More Like Nonfiction</div>
+    
+    
+    <div class="en-snippet">“Saturday Night Live” exposed a truth about gender roles in caring for aging parents: While many nations have a federal safety net for older adults, the U.S. has sisters.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.nytimes.com/2026/11/18/upshot/sister-snl-elder-care.html" target="_blank" rel="noopener">阅读原文 nytimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">Trump Weighs New Strikes on Iran as Israel Presses for Action, Officials Say</div>
+    
+    
+    <div class="en-snippet">Warnings that Iran is rebuilding its missile stockpile and advancing biological and chemical programs have divided the Trump administration.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.nytimes.com/2026/11/18/us/politics/trump-israel-iran-war.html" target="_blank" rel="noopener">阅读原文 nytimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">俄罗斯当局拘留圣彼得堡咖啡馆爆炸案嫌疑人</div>
+    <div class="en-title">Russian authorities detain suspect over St. Petersburg cafe blast</div>
+    
+    
+    <div class="meta"><a href="https://edition.cnn.com/webview/europe/live-news/russia-ukraine-war-news-04-03-23/index.html" target="_blank" rel="noopener">阅读原文 edition.cnn.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">Anthropic IPO raises record $81.3 billion on strong AI demand</div>
+    
+    
+    <div class="en-snippet">The five-year-old artificial intelligence powerhouse priced its initial public offering at $83 a share, shrugging off growing concern about a possible AI bubble and volatility in tech stocks.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.npr.org/2026/11/18/nx-s1-6046212/anthropic-record-ipo-price" target="_blank" rel="noopener">阅读原文 npr.org ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">The law releasing the Epstein files passed one year ago. What do his victims say?</div>
+    
+    
+    <div class="en-snippet">It&#39;s been a year since the House passed the Epstein Files Transparency Act, forcing the Justice Department to release millions of files connected to the convicted sex offender. His victims speak out.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.npr.org/2026/11/18/nx-s1-6041708/the-law-releasing-the-epstein-files-passed-one-year-ago-what-do-his-victims-say" target="_blank" rel="noopener">阅读原文 npr.org ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">Why the Nvidia scandal is a national security issue</div>
+    
+    
+    <div class="en-snippet">The Nvidia scandal has spilled over into the Trump administration, which is now under intense scrutiny for how it allowed America&#39;s top AI chips to end up in China&#39;s hands.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.npr.org/2026/11/18/nx-s1-6044275/why-the-nvidia-scandal-is-a-national-security-issue" target="_blank" rel="noopener">阅读原文 npr.org ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">Democrats nominate Jeffries for speaker, prep investigations into Trump&#39;s orbit</div>
+    
+    
+    <div class="en-snippet">Democrats gave the official nod to Hakeem Jeffries to be the next speaker of the House. Meanwhile, Democrats are ramping up their plans to investigate the Trump administration come January.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.npr.org/2026/11/18/nx-s1-6043185/democrats-nominate-jeffries-for-speaker-prep-investigations-into-trumps-orbit" target="_blank" rel="noopener">阅读原文 npr.org ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">After Nepal&#39;s epic flood, they&#39;re restoring their community ... and their lives</div>
+    
+    
+    <div class="en-snippet">As the emergency response to the flood ends, aid workers turn to the hard work of rebuilding communities that lost everything. Many of those workers lost everything, too.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.npr.org/2026/11/18/nx-s1-6022034/flood-nepal-survival-climate-change" target="_blank" rel="noopener">阅读原文 npr.org ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">NPR</span>
+    </div>
+    <div class="zh-title">Democratic Black women take over almost all state agencies in Georgia soon</div>
+    
+    
+    <div class="en-snippet">In January, most of Georgia&#39;s state agencies will be headed by Black women who were all elected in the 2026 midterms.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.npr.org/2026/11/18/nx-s1-6043103/democratic-black-women-take-over-almost-all-state-agencies-in-georgia-soon" target="_blank" rel="noopener">阅读原文 npr.org ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#9f1239">英国</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Inside the old gas pipeline where Ukraine is fighting an underground war with Russia</div>
+    
+    
+    <div class="en-snippet">Watch: The BBC&#39;s Jonathan Beale joins Ukrainian forces taking the battle below ground and out of sight of Russian drones.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.bbc.co.uk/news/videos/c8p3vw4q6nzzo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">阅读原文 bbc.co.uk ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#9f1239">英国</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">&#39;The drones don&#39;t fly here&#39; - BBC reports from Ukraine&#39;s new front line</div>
+    
+    
+    <div class="en-snippet">Ukrainian forces are fighting Russian troops in an old Soviet tunnel in the Kharkiv region.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.bbc.co.uk/news/articles/c32l507ev4v4o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">阅读原文 bbc.co.uk ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#9f1239">英国</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Myanmar faces historic genocide verdict at UN court over Rohingya massacres</div>
+    
+    
+    <div class="en-snippet">No state has ever been found guilty by an international court of committing genocide.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.bbc.co.uk/news/articles/c5m2l90ez144o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">阅读原文 bbc.co.uk ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#9f1239">英国</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">AI giant Anthropic valued at up to $1.5tn ahead of stock market debut</div>
+    
+    
+    <div class="en-snippet">The firm started just five years ago and is now one of the biggest names in artificial intelligence.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.bbc.co.uk/news/articles/c6742m39xgzxo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">阅读原文 bbc.co.uk ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#9f1239">英国</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Van Gogh painting sells for record $190.4m after row over its Nazi history</div>
+    
+    
+    <div class="en-snippet">Châtaigniers en fleurs was painted in 1890 in the final two months of Vincent van Gogh&#39;s life.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.bbc.co.uk/news/articles/c5dj1dkwzvzwo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">阅读原文 bbc.co.uk ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#9f1239">英国</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">Crimean Bridge attacked again, Russian official says</div>
+    
+    
+    <div class="en-snippet">The head of Crimea said traffic was suspended after another attack on the link between Russia and the occupied territory.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.bbc.co.uk/news/articles/cm879dqn3e1jo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">阅读原文 bbc.co.uk ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">France 24</span>
+    </div>
+    <div class="zh-title">COP31: Vanuatu calls for UN climate summit reform, warns of backsliding</div>
+    
+    
+    <div class="en-snippet">Vanuatu&#39;s Environment Minister Ralph Regenvanu has called for changes to the UN climate summit process, accusing a small group of countries of blocking progress and warning that COP31 risks reversing </div>
+    <div class="meta">2026-11-19 · <a href="https://www.france24.com/en/europe/20261119-cop31-vanuatu-un-climate-summit-reform-warns-of-backsliding" target="_blank" rel="noopener">阅读原文 france24.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">France 24</span>
+    </div>
+    <div class="zh-title">Xi-Trump-Putin talks live: China, US and Russia leaders to hold landmark three-way meeting</div>
+    
+    
+    <div class="en-snippet">The leaders of China, the US and Russia are set to hold a first-of-its-kind trilateral meeting on Thursday in the Chinese city of Shenzhen, on the sidelines of an APEC summit. The meeting between Xi J</div>
+    <div class="meta">2026-11-19 · <a href="https://www.france24.com/en/asia-pacific/20261119-xi-trump-putin-talks-live-china-us-russia-leaders-hold-landmark-three-way-meeting" target="_blank" rel="noopener">阅读原文 france24.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">France 24</span>
+    </div>
+    <div class="zh-title">24-month matured Comté crowned world’s best cheese</div>
+    
+    
+    <div class="en-snippet">With its nutty flavour and smooth, supple texture, it was aged for two years in a former military fortress in eastern France. Comté, an unpasteurised cow’s milk cheese from the Jura Mountains, has bea</div>
+    <div class="meta">2026-11-18 · <a href="https://www.france24.com/en/video/20261118-24-month-matured-comt%C3%A9-crowned-world-s-best-cheese" target="_blank" rel="noopener">阅读原文 france24.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">France 24</span>
+    </div>
+    <div class="zh-title">Inside Limoges City Hall devastated by arson attack</div>
+    
+    
+    <div class="en-snippet">Work is underway to restore the city hall of Limoges, in central France, which was devastated by an arson attack during riots on October 17. More than €1.7 million has been raised through an online fu</div>
+    <div class="meta">2026-11-18 · <a href="https://www.france24.com/en/tv-shows/business/20261118-inside-limoges-city-hall-devastated-by-arson-attack" target="_blank" rel="noopener">阅读原文 france24.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">France 24</span>
+    </div>
+    <div class="zh-title">Crimea bridge strike: Fact-checking fake videos of damage after Ukraine&#39;s attack</div>
+    
+    
+    <div class="en-snippet">Ukraine struck the Kerch Bridge linking Russia to occupied Crimea, but not all the dramatic footage circulating online is real. Multiple AI-generated videos falsely show the bridge collapsed with exte</div>
+    <div class="meta">2026-11-18 · <a href="https://www.france24.com/en/tv-shows/truth-or-fake/20261118-crimea-bridge-strike-fact-checking-fake-videos-of-damage-after-ukraine-s-attack" target="_blank" rel="noopener">阅读原文 france24.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">France 24</span>
+    </div>
+    <div class="zh-title">Bassirou Diomaye Faye excluded from Senegal&#39;s ruling party</div>
+    
+    
+    <div class="en-snippet">In tonight&#39;s edition, the political divorce between Senegal&#39;s president and the powerful former prime minister and mentor is official. Also, all of Nigeria&#39;s states have shown willingness for a push t</div>
+    <div class="meta">2026-11-18 · <a href="https://www.france24.com/en/bassirou-diomaye-faye-excluded-from-senegal-s-ruling-party" target="_blank" rel="noopener">阅读原文 france24.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">RFI</span>
+    </div>
+    <div class="zh-title">Xi, Trump and Putin prepare for historic summit, but will it reset the world order?</div>
+    
+    
+    <div class="en-snippet">Donald Trump, Xi Jinping and Vladimir Putin are to hold their first trilateral summit in Shenzhen on Thursday, on the margins of the Asia-Pacific Economic Cooperation gathering. RFI spoke to Michael D</div>
+    <div class="meta">2026-11-18 · <a href="https://www.rfi.fr/en/international/20261118-xi-trump-and-putin-prepare-for-historic-summit-but-will-it-reset-the-world-order" target="_blank" rel="noopener">阅读原文 rfi.fr ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">RFI</span>
+    </div>
+    <div class="zh-title">OpenAI partners with NATO to strengthen alliance&#39;s cyber defences</div>
+    
+    
+    <div class="en-snippet">OpenAI announced Tuesday that it is partnering with NATO to help the transatlantic alliance strengthen its cyber defences and investigate potential attacks.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.rfi.fr/en/international/20261118-openai-partners-with-nato-to-strengthen-alliance-s-cyber-defences" target="_blank" rel="noopener">阅读原文 rfi.fr ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">RFI</span>
+    </div>
+    <div class="zh-title">France rejects &#39;absurd&#39; Russian claims of direct involvement in Ukraine war</div>
+    
+    
+    <div class="en-snippet">The French government on Tuesday dismissed Russian accusations that France is directly involved in the war in Ukraine, following an RFI investigation which revealed a small number of French soldiers h</div>
+    <div class="meta">2026-11-18 · <a href="https://www.rfi.fr/en/france/20261118-france-rejects-absurd-russian-claims-of-direct-involvement-in-ukraine-war" target="_blank" rel="noopener">阅读原文 rfi.fr ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">RFI</span>
+    </div>
+    <div class="zh-title">Iraq hands six more French IS members life sentences, including Barnouin</div>
+    
+    
+    <div class="en-snippet">An Iraqi court on Wednesday sentenced six more French nationals, including veteran jihadist Thomas Barnouin, to life imprisonment for belonging to the Islamic State group. The verdicts bring to 16 the</div>
+    <div class="meta">2026-11-18 · <a href="https://www.rfi.fr/en/international/20261118-iraq-hands-six-more-french-is-members-life-sentences-including-barnouin" target="_blank" rel="noopener">阅读原文 rfi.fr ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">RFI</span>
+    </div>
+    <div class="zh-title">Alaska flips to Democrats, giving party 56–44 US Senate majority</div>
+    
+    
+    <div class="en-snippet">Democrat Mary Peltola flipped the US Senate seat in Alaska on Tuesday after a tight race that unseated Republican incumbent Dan S. Sullivan, according to the latest vote count.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.rfi.fr/en/international/20261118-alaska-flips-to-democrats-giving-party-56%E2%80%9344-us-senate-majority" target="_blank" rel="noopener">阅读原文 rfi.fr ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1e40af">法国</span>
+      <span class="outlet">RFI</span>
+    </div>
+    <div class="zh-title">Africa&#39;s struggle for electricity puts Cop31 energy goal to the test</div>
+    
+    
+    <div class="en-snippet">Turkey&#39;s plan to increase the world&#39;s use of electricity has won the support of 75 countries at the Cop31 climate summit, but deep divisions remain over how poorer nations can afford the transition – </div>
+    <div class="meta">2026-11-18 · <a href="https://www.rfi.fr/en/environment/20261118-africa-struggle-for-electricity-puts-cop31-energy-goal-to-the-test-antalya-turkey" target="_blank" rel="noopener">阅读原文 rfi.fr ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">TASS</span>
+    </div>
+    <div class="zh-title">Russia’s GDP up by over 10% in real terms over past three years — Putin</div>
+    
+    
+    <div class="en-snippet">The Russian president made this statement at the plenary session of the APEC summit</div>
+    <div class="meta">2026-11-19 · <a href="https://tass.com/economy/2220905" target="_blank" rel="noopener">阅读原文 tass.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">TASS</span>
+    </div>
+    <div class="zh-title">Putin says partnership with Asia Pacific economies is Russia’s strategic priority</div>
+    
+    
+    <div class="en-snippet">Russia contributes much to the economic prosperity of the region, the president said</div>
+    <div class="meta">2026-11-19 · <a href="https://tass.com/politics/2220903" target="_blank" rel="noopener">阅读原文 tass.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">TASS</span>
+    </div>
+    <div class="zh-title">Russia carries out fundamental reforms in its economy — Putin</div>
+    
+    
+    <div class="en-snippet">The Russian president added that the reforms are aimed at improving the industrial base and technological capabilities and controlling inflation</div>
+    <div class="meta">2026-11-19 · <a href="https://tass.com/politics/2220899" target="_blank" rel="noopener">阅读原文 tass.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">TASS</span>
+    </div>
+    <div class="zh-title">Russia supports draft APEC summit final declaration — Putin</div>
+    
+    
+    <div class="en-snippet">The Russian leader noted that in today’s challenging conditions, the APEC forum must set a unifying tone and establish a constructive agenda for cooperation</div>
+    <div class="meta">2026-11-19 · <a href="https://tass.com/politics/2220897" target="_blank" rel="noopener">阅读原文 tass.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">TASS</span>
+    </div>
+    <div class="zh-title">Russia’s trade with Asia Pacific countries grew by third in 8 months of 2026 — Putin</div>
+    
+    
+    <div class="en-snippet">According to the Russian president, the country&#39;s total trade with ASEAN nations has increased by nearly 60% over the past 10 years</div>
+    <div class="meta">2026-11-19 · <a href="https://tass.com/economy/2220891" target="_blank" rel="noopener">阅读原文 tass.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">TASS</span>
+    </div>
+    <div class="zh-title">Putin, Trump shake hands again before photo session on day two of APEC summit</div>
+    
+    
+    <div class="en-snippet">The presidents exchanged a few words</div>
+    <div class="meta">2026-11-19 · <a href="https://tass.com/politics/2220865" target="_blank" rel="noopener">阅读原文 tass.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">The Moscow Times</span>
+    </div>
+    <div class="zh-title">Traffic Suspended Over Crimean Bridge After Attack, Moscow-Installed Official Says</div>
+    
+    
+    <div class="en-snippet">The attack is the third time the bridge has been targeted by Ukraine in as many days.</div>
+    <div class="meta">2026-11-19 · <a href="https://www.themoscowtimes.com/2026/11/19/traffic-suspended-over-crimean-bridge-after-attack-moscow-installed-official-says-a94306" target="_blank" rel="noopener">阅读原文 themoscowtimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">The Moscow Times</span>
+    </div>
+    <div class="zh-title">The Researchers Counting Russia’s War Dead, One Name at a Time</div>
+    
+    
+    <div class="en-snippet">Volunteers and journalists have identified more than 285,000 fallen Russian soldiers, documenting a toll the Kremlin would rather keep hidden.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.themoscowtimes.com/2026/11/18/the-researchers-counting-russias-war-dead-one-name-at-a-time-a94302" target="_blank" rel="noopener">阅读原文 themoscowtimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">The Moscow Times</span>
+    </div>
+    <div class="zh-title">Prosecution Seeks to Drop Khachaturyan Sisters Murder Case</div>
+    
+    
+    <div class="en-snippet">The sisters, who were 17, 18 and 19 when they killed their father have been barred from communicating with one another for more than eight years.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.themoscowtimes.com/2026/11/18/prosecution-seeks-to-drop-khachaturyan-sisters-murder-case-a94304" target="_blank" rel="noopener">阅读原文 themoscowtimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">The Moscow Times</span>
+    </div>
+    <div class="zh-title">Xi and Putin Blast Western &#39;Protectionism,&#39; Sanctions as Trump Lands in China</div>
+    
+    
+    <div class="en-snippet">The three men are due to meet on Thursday and potentially discuss Russia&#39;s war with Ukraine and the U.S. war in Iran, as well as other flashpoints.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.themoscowtimes.com/2026/11/18/xi-and-putin-blast-western-protectionism-sanctions-as-trump-lands-in-china-a94292" target="_blank" rel="noopener">阅读原文 themoscowtimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">The Moscow Times</span>
+    </div>
+    <div class="zh-title">Slovenia Halts Tourist Visas for Russian Citizens</div>
+    
+    
+    <div class="en-snippet">Slovenia issued 1,254 mostly single-entry Schengen visas to Russian citizens in 2025. Across the EU, 680,000 visas were issued to Russian nationals in 2025.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.themoscowtimes.com/2026/11/18/slovenia-halts-tourist-visas-for-russian-citizens-a94301" target="_blank" rel="noopener">阅读原文 themoscowtimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#475569">俄罗斯</span>
+      <span class="outlet">The Moscow Times</span>
+    </div>
+    <div class="zh-title">Russia Loses Nearly 1 in 5 Maternity Facilities as Births Fall</div>
+    
+    
+    <div class="en-snippet">At least 15 regions no longer have full maternity wards at their district hospitals.</div>
+    <div class="meta">2026-11-18 · <a href="https://www.themoscowtimes.com/2026/11/18/russia-loses-nearly-1-in-5-maternity-facilities-as-births-fall-a94300" target="_blank" rel="noopener">阅读原文 themoscowtimes.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#b91c1c">中国</span>
+      <span class="outlet">Global Times</span>
+    </div>
+    <div class="zh-title">中国将于7月1日起实行新列车运行图，包括开通北京至乌鲁木齐高铁服务</div>
+    <div class="en-title">China to introduce new train timetable from July 1, including high-speed train service between Beijing and Urumqi</div>
+    
+    
+    <div class="meta">2026-06-18 · <a href="https://www.globaltimes.cn/page/202606/1363810.shtml" target="_blank" rel="noopener">阅读原文 globaltimes.cn ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#b91c1c">中国</span>
+      <span class="outlet">Global Times</span>
+    </div>
+    <div class="zh-title">据媒体报道，华盛顿特区庆典枪击案嫌犯在给家人的书信中表达对美国政府的不满</div>
+    <div class="en-title">DC gala shooting suspect voices grievances against US administration in writings to family: media reports</div>
+    
+    
+    <div class="meta">2026-04-28 · <a href="https://www.globaltimes.cn/page/202604/1359873.shtml" target="_blank" rel="noopener">阅读原文 globaltimes.cn ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-politics">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">特朗普对34项重罪指控表示不认罪</div>
+    <div class="en-title">Trump pleads not guilty to 34 felony counts</div>
+    
+    
+    <div class="meta"><a href="https://edition.cnn.com/webview/politics/live-news/trump-indictment-stormy-daniels-news-04-03-23/index.html" target="_blank" rel="noopener">阅读原文 edition.cnn.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">哈伯曼透露特朗普为何在演讲中攻击法官及其家人</div>
+    <div class="en-title">Haberman reveals why Trump attacked judge and his family in speech</div>
+    <div class="zh-snippet">CNN政治评论员玛吉·哈伯曼解释了唐纳德·特朗普在因重罪指控被传讯后，在海湖庄园发表演讲时攻击法官及其家人的原因。</div>
+    <div class="en-snippet">CNN political contributor Maggie Haberman explains the reasoning behind Donald Trump&#39;s attacks on the judge and his family during a speech at his Mar-a-Lago resort after he was arraigned on felony cha</div>
+    
+    <div class="meta">2023-04-05 · <a href="https://www.cnn.com/videos/politics/2023/04/05/maggie-haberman-donald-trump-speech-indictment-reaction-sot-cnntm-vpx.cnn" target="_blank" rel="noopener">阅读原文 cnn.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">在特朗普出庭前夕，关于对他的起诉需要了解什么</div>
+    <div class="en-title">What to know about the Trump indictment on the eve of his court appearance</div>
+    
+    
+    <div class="meta">2023-04-05 · <a href="https://www.cnn.com/collections/intl-trump-040223/" target="_blank" rel="noopener">阅读原文 cnn.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">阅读：与封口费有关的特朗普起诉书</div>
+    <div class="en-title">READ: Trump indictment related to hush money payment</div>
+    
+    
+    <div class="meta"><a href="https://cnn.it/411KYN7" target="_blank" rel="noopener">阅读原文 cnn.it ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#b91c1c">中国</span>
+      <span class="outlet">Global Times</span>
+    </div>
+    <div class="zh-title">南非自由日纪念集会揭示了其在后种族隔离时代对尊严和包容性治理的追求</div>
+    <div class="en-title">South Africa freedom day memorial gathering reveals its pursuit of dignity and inclusive governance in post apartheid era</div>
+    
+    
+    <div class="meta">2026-08-23 · <a href="https://www.globaltimes.cn/page/202608/1368830.shtml" target="_blank" rel="noopener">阅读原文 globaltimes.cn ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#b91c1c">中国</span>
+      <span class="outlet">Global Times</span>
+    </div>
+    <div class="zh-title">中国专家批评菲律宾外长称日菲划界“与中国无关”的言论，警告此举有不可告人目的</div>
+    <div class="en-title">Chinese expert criticizes Filipino FM&#39;s claim that Japan-Philippines delimitation &#39;nothing to do&#39; with China, warns move serves ulterior purposes beyond bilateral talks</div>
+    
+    
+    <div class="meta">2026-06-11 · <a href="https://www.globaltimes.cn/page/202606/1363326.shtml" target="_blank" rel="noopener">阅读原文 globaltimes.cn ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#b91c1c">中国</span>
+      <span class="outlet">Global Times</span>
+    </div>
+    <div class="zh-title">东京审判揭穿臭名昭著的靖国神社颠倒黑白的历史叙事</div>
+    <div class="en-title">Tokyo Trial debunks notorious Yasukuni Shrine&#39;s inverted narrative</div>
+    
+    
+    <div class="meta">2026-05-08 · <a href="https://www.globaltimes.cn/page/202605/1360513.shtml" target="_blank" rel="noopener">阅读原文 globaltimes.cn ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Alaska Public Media</span>
+    </div>
+    <div class="zh-title">Five Republicans lose seats in Legislature as election officials finish vote-counting and tabulation - Alaska Public Media</div>
+    
+    
+    <div class="en-snippet">Five Republicans lose seats in Legislature as election officials finish vote-counting and tabulation Alaska Public Media</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMi8gFBVV95cUxPaG5tQzI0cW1GQWF1V05LbWJyMkkwWFVvZkMwTHMzckZNTGdKb0VqQkItX2dtM1hTLVRNUVhUdU5mejdaYnVLR2gxYW1XVjMyaC14NnFSaUxCY3gtMWxvLTZuZW1ObmZNZE1MYjVNTnV6dElDZkdLb0U4SjFZdlE1cnhiSVo2c1loaVVCYmZDNTJ2ZDlPamFkRDVGSHlteXZJWVRUVGw5OFlsQkFOV05iUll6V2RlMno2ellET2pXTWZuRVlmWW9VZGlkc3FaWFVOTm10eGoydVJ4YjFUNlJ6X09TLUM5MkFzdzlNdk5FSTVHdw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Alaska Beacon</span>
+    </div>
+    <div class="zh-title">Commentary: Let&#39;s hope better government isn&#39;t just a dream - Alaska Beacon</div>
+    
+    
+    <div class="en-snippet">Commentary: Let&#39;s hope better government isn&#39;t just a dream Alaska Beacon</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxOZVZLZ19XLWFNODBJQ1VtaDNicmlzUm1sNW80OHRuVzBwdmFja2dxSUl1QUV6R0VyMDdOUmgtMjFjNmlKUU45N19PajZic2NXblppZV85S1BpZ3lWY1NreUJaX2JvMGx0RVEwdGN6aXZ0LUpOcmxNZy1nQWZockNVX2ExTTZCSkZKR2c?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Houston Public Media</span>
+    </div>
+    <div class="zh-title">Texas Secretary of State launches first-of-its-kind audit of U.S. Senate election, newly required by state law - Houston Public Media</div>
+    
+    
+    <div class="en-snippet">Texas Secretary of State launches first-of-its-kind audit of U.S. Senate election, newly required by state law Houston Public Media</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxPQ2hFWjdqSVgtemxHMm9vckpzTHpfdklIRFFES2dTR1hIc2pwNksyOHVEbzhWNllEMU1Ja2s0NG9kbUlyaWoteW9xc3UyczhvOWZrU0VDSkZqelVSQkVadGpFNXVjY3FIWF81QVVwZ2lNeG1TY1gzbnVoTnMxaTBlTXlEcGZfRU1EbEdGem1DRFBUd1hRQV92OUg5LUpmejBGSjQ3ai1YTkhQZUxubm9ENWRPOGR6TGJyUW5idXJ6SkJYU1R3TkNpUjhLeGdfcVhzMUFhWVVR0gHeAUFVX3lxTE5HU0dzTk9sN2ZtU1hZa0dPMUxlQ3UzTVBlRFhCNDN4bzR0SkRzNW1iR0YwUjVleVdtOFJmSlJFeEtaZzVRYjdWOHg4NDlaWkozNGlYdDBmZGxPYnVldWtPaDZIdlJxZ3JsWVlySEpKUlkzd2wzMy1LVVJhbFZ1UFJSWnlCVjE1cHpuLWxDd2JPX1BZR284WG4yLUlDQ3IwdnVqNzZRVkROdTNnajhsYVBtWVRXMmdvbE9lSnh1UVpNQ0RUanlOY2dfSDd3bmhWWnRaY3JsTndaZWIzV0xXUQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The Atlantic</span>
+    </div>
+    <div class="zh-title">Election Denialism Is All but Dead - The Atlantic</div>
+    
+    
+    <div class="en-snippet">Election Denialism Is All but Dead The Atlantic</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPZ2VVNGo3QUdhU29IVDNYQ1cxTmQ5WHZ5WlFWQzVDSGU0QVJURFd3Q2lpbnZsZXIzdjduMHRYdnA5SGxGdVRWT25hcWJSY0ExdnkxT0I4bUlnMkFmQ0hRalRuYXN4bHpHdl9wVGhoTGZCb0oxZkVlOXJ5dVE3aGViQ1NhLTI3YV9C?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Time Magazine</span>
+    </div>
+    <div class="zh-title">How Do Election Recounts Work—and How Often Do They Change Results? - Time Magazine</div>
+    
+    
+    <div class="en-snippet">How Do Election Recounts Work—and How Often Do They Change Results? Time Magazine</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1IY012RUVuR2xLY01CWFh5MC1GRklVV3NkLVRRUktzd3pJb29YT1NyeWRTVkZndHJtTjlNOEhnckt4UnJ1WmRXM0tIbHlHdDFlR0R5cG91Y3pMYXFxaE4yMVFGaHVncmswenN5MnRJWHpLblh0QUVENw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Politico</span>
+    </div>
+    <div class="zh-title">Musk says he feels ‘foolish’ after GOP election spending spree - Politico</div>
+    
+    
+    <div class="en-snippet">Musk says he feels ‘foolish’ after GOP election spending spree Politico</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxQcXVUcXVheVUyMW5NWV8wRkptVklfYlZtOTZVUUNKNmxKdDZEbDdFZlJmVjhTN1UyQXlDUzZWVi00b2RRZlZFRWQzNm9GWnUtYnA3blFsR2FoTHN1b0ozTHlETFA4b2FSV2hFeU9Kems1MzlfSU1kQXF3OWhNek9jWGUxRWg1TmZRMXcwMVlwVG8xWnBlS190OG9CbWlSOWlyUzdWWXMxVzl2cGg5RS1n?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Government Executive</span>
+    </div>
+    <div class="zh-title">Trump’s GAO pick was a done deal before Congress got a say - Government Executive</div>
+    
+    
+    <div class="en-snippet">Trump’s GAO pick was a done deal before Congress got a say Government Executive</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxOMm9yemxXeTdhbXhocFdSVy05WXUxZTJFd0xnWHI0YkxTUmsydUpzTFVBM1A2cThTaFd5b3Nra3FGYm56V1A4VXlaNE9jYnJxTDBzdnNPY0xZZFVOLWpCVFV2NjdFYTNNR2ZLeFAxMElkRkVYM0tack11MWJ6bjFjdEdYMG1IcFFJX1NkVVc1UGpDbW1VUG9XQzJIYzI?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Maricopa County (.gov)</span>
+    </div>
+    <div class="zh-title">Board Votes to Name New Elections Facility After Helen Purcell - Maricopa County (.gov)</div>
+    
+    
+    <div class="en-snippet">Board Votes to Name New Elections Facility After Helen Purcell Maricopa County (.gov)</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE1jU0hXcE5iMnl6NUxRVEI5Z19OM3VZVUdvT1hDY2JQQWV2TW5GQ2VtaDlSUXY2bnN2aXVrU3p3Wk4tZkFQNlhfUU1ZWkFOMktQUWpZX2xFUGFROFV6Q2ZN?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-military">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#1d4ed8">美国</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">视频显示俄罗斯咖啡馆致命爆炸瞬间</div>
+    <div class="en-title">Video shows moment of deadly explosion at cafe in Russia</div>
+    <div class="zh-snippet">当局称，知名俄罗斯军事博主弗拉基米尔·塔塔尔斯基在圣彼得堡一家咖啡馆的爆炸中丧生。美国有线电视新闻网（CNN）记者马修·钱斯报道。</div>
+    <div class="en-snippet">A well-known Russian military blogger, Vladlen Tatarsky, was killed in an explosion at a cafe in St. Petersburg, authorities said. CNN&#39;s Matthew Chance reports.</div>
+    
+    <div class="meta">2023-04-04 · <a href="https://www.cnn.com/videos/world/2023/04/02/russian-military-blogger-vladlen-tatarsky-killed-cafe-explosion-chance-vpx.cnn" target="_blank" rel="noopener">阅读原文 cnn.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">How Nvidia Chips Ended Up Within Reach of China’s Military - The New York Times</div>
+    
+    
+    <div class="en-snippet">How Nvidia Chips Ended Up Within Reach of China’s Military The New York Times</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxNLVc5N1B2V0VEaE01RDFyU3NaYTNiV3pmb2dqRDVMMWpjenVCbGUwNTh6aHhKX3hLNnBEU3dFZWxFU3I2SkJqQUVEUC1TY0IzNkNnRHc5OUU3SEY3R0RGRFE5M0UwOThfQktjVHgtSUhyeW9XNjJlQm1qdnFMcGtJNVBLNzZtX00?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">WSJ</span>
+    </div>
+    <div class="zh-title">European Defense Chief Snaps at Pentagon Official Over Ukraine Criticism - WSJ</div>
+    
+    
+    <div class="en-snippet">European Defense Chief Snaps at Pentagon Official Over Ukraine Criticism WSJ</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxPRHNzdmd2QWUxaUJvZm1kaU1EVWNUdmtDWUp6SHljdmZwZDUxM2ZYX1hmY0xQWXhvcFZlZDRqODJJWUI3aE53cDJBTG1ldDNoNHVaaHNnOVlEUW5fYU1SZU5qMlJFMEZTR0ZDcTEyN3l2WWRfUmZZSktIV1FZaVU4NDJTeUpoS3NZdkdJc01TNkV5YkZKTXE2d2xDTjZmLURXX0xESjFYVE42S3R2SlJfdC1GTGI?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Atlantic Council</span>
+    </div>
+    <div class="zh-title">Dispatch from Kyiv: Let Ukraine strike Russia’s missile launchers at the source - Atlantic Council</div>
+    
+    
+    <div class="en-snippet">Dispatch from Kyiv: Let Ukraine strike Russia’s missile launchers at the source Atlantic Council</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxPNTgtX08zaGpfcXJJU2h1eFRFT1VLd2M3RjlHMkZqN3FfMzlJdWZIZnhoZWtvTEZKTktEc2VCRE1mcHJ6UmxyYVV3WEZBZERIZ3R3X0gtZlBXaF9IUDQyWWZrUi1INXQxRVRoUHJJcjN2UjNIY1FCSFphNGJXU1M5ZlJhdGxfV3o5bzdDbTAxN09aVUFTblV0VHNkN09rOG1hV2ZuZnV5cVgxTFRCcHJ4MUhfV0s4UVI1eDdkS21B?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">AP News</span>
+    </div>
+    <div class="zh-title">US and Venezuela sign a deal to reestablish military ties, Hegseth says in visit to Caracas - AP News</div>
+    
+    
+    <div class="en-snippet">US and Venezuela sign a deal to reestablish military ties, Hegseth says in visit to Caracas AP News</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxONFk1RlZIUXh1dXlFVHVzSlh1YjVibG0wdV81RS1na0Ywc3p5MEhaOXB6YlREV3FFRzJpM1VhMFgzYnNLU3hvaXBXOUh4TkpXa01XYTRzS1o1R0VXcHhzZXc4ZkRZYUIxRVVpRXB6Zm9BRUNMQlE5aGFySVUzR2RpVmpsV1A2UFNSLTRITEZNVG5BdUlZ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">CNN</span>
+    </div>
+    <div class="zh-title">Venezuela a ‘compliant security partner,’ Hegseth says as he announces military deal with Caracas - CNN</div>
+    
+    
+    <div class="en-snippet">Venezuela a ‘compliant security partner,’ Hegseth says as he announces military deal with Caracas CNN</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxOUE9iX19fb2Ewd1JMVDFON3FPZi0wSGFGeTNLWk9TdDI1TWFuUmQ3dEZnaFVmS2tpYktqcUxqVGxaZGNZa1FnUDNYQU5XS3RXSkpPZDUxNmRMZ2ZZUE5oNV8wSDZ5OHpRcmw0YjlQUnhKbWotcEROTnljY2p2OTdYdGhLYzF6SjdaY3hPY3JB?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">NBC News</span>
+    </div>
+    <div class="zh-title">Israeli tanks roll into central Gaza in first ground operation since ceasefire began - NBC News</div>
+    
+    
+    <div class="en-snippet">Israeli tanks roll into central Gaza in first ground operation since ceasefire began NBC News</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQMXNuV0liYTFjVTV5bnVKQ1huSnJYcDBPcklJMWd5enVtMWlGU244aGRMWkFlTkF6cWpHLXk3S0hmVl91d0YxRFVFaXQwdjRXZVZjOXFtUWFpVkhBSjc1dzNfUm9DbVFXTGFuNjNYdjdpWDBfd05IYUtiRmN5YlFzREl3R2Q5d1haOG9IQlJ5c2RBZW5qV3ZENkZOVmE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Al Jazeera</span>
+    </div>
+    <div class="zh-title">US Defence Secretary Hegseth reveals military partnership on Venezuela trip - Al Jazeera</div>
+    
+    
+    <div class="en-snippet">US Defence Secretary Hegseth reveals military partnership on Venezuela trip Al Jazeera</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxNOVpVT2JaUVctT0M1WllBRWVnMVFxQV9hVGxDQmltRkNnZ0c1NDJiaUwyeWwwMFBxUEdJM2lDOHlkSmRrOVU0SmNDSkY1RkcycjNRbzZNUjFLNTVWZWhVdjZQZ1lpVFU1SkxFTzJJQXlPdXh0bWo5X2VuWG1vQjVvbnY4U2VHMDIzMEIxd29XWndwc2pqa0VaMmVFeUZINlM3OHBITXhIdnFCUUZjaV9aQVhZQUHSAboBQVVfeXFMTzFBMld4VWhzLXVxRU9OV1N6Qy1QN0l5THVkWGxJYWhrWkNNa1QyX3ZQRVN4eHBfY2F6OGpCT2RFZzBvbl9CazR2bUI3NGRlYmpyYktXSFZrMjR5cy1STFlsNVE3dGswU2pxYjBKMnFJV3lubEw2dWcyRERxYlA5VEJkVU1hTDlHMjE2cms2NFFkTkl1LVZQRU11aEdLaThwQmY0b01ndThIS3ZKeVVhbGFBTWY2MWUtYmVR?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">TRICARE Newsroom (.mil)</span>
+    </div>
+    <div class="zh-title">15 military hospitals receive Leapfrog&#39;s highest Hospital Safety Grade - TRICARE Newsroom (.mil)</div>
+    
+    
+    <div class="en-snippet">15 military hospitals receive Leapfrog&#39;s highest Hospital Safety Grade TRICARE Newsroom (.mil)</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxNMjZuV1VNOGxEcHhDRjVPOExyWVBHeUhiR2NIYkwzV25STDVadDFnaEU5VUhqNFQ5MVN6YTc2Tl9MbnR3QnJKVWlGTUlWQUtuSkVaR2Q3SjVSQTdQeXZxOWdVSFJadmpRQklDYzV1WVlzcld0WGY4R2p2b2NOSEZVOENaRHc3M0xSWlZUSVlTZWVSREVyZkFKSjdiQVZQUmJyMGt2a1NGRzM2c0tDTXdHUmMtR1FlYjN0Zzd0Q3hGQW92WXl1SUJ1N3daQjk?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-tech">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#b91c1c">中国</span>
+      <span class="outlet">Global Times</span>
+    </div>
+    <div class="zh-title">分析人士称，美国联邦通信委员会禁止中国检测实验室的计划可能扰乱全球电子产品供应链并提高行业成本</div>
+    <div class="en-title">US FCC plan to bar Chinese testing labs could disrupt global electronics supply chains, raise industry costs: analysts</div>
+    
+    
+    <div class="meta">2026-10-09 · <a href="https://www.globaltimes.cn/page/202610/1371820.shtml" target="_blank" rel="noopener">阅读原文 globaltimes.cn ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">POLITICO.eu</span>
+    </div>
+    <div class="zh-title">Grand Theft Auto VI is here. The EU has 6 reasons to pay attention. - POLITICO.eu</div>
+    
+    
+    <div class="en-snippet">Grand Theft Auto VI is here. The EU has 6 reasons to pay attention. POLITICO.eu G.T.A. 6 Review: This Release Will Steal Your Heart The New York Times ‘Grand Theft Auto VI’ is a cultural and economic </div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxPSzVUdEJxeUdWcjNjVG9tQ0didFVFcnd4S0tvLXRiRHZmNXY3T3FGM2ZuNHR3Wnd0WGVkTGhwN2xaZHVKVTllckRmMC1iRktBNDN2ekhra25oaEtkVXFEMlg1ZGpvbkZNNXQzYUZrTElzVGY2ZlRReTF3Z1ZmekFfZVplRWtsYzJjd1lqQXlHNDE4LThUT0h6d1l1S0VneDFld1E?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The Verge</span>
+    </div>
+    <div class="zh-title">The first Nvidia RTX Spark mini PCs launch today from Asus, Dell, and MSI - The Verge</div>
+    
+    
+    <div class="en-snippet">The first Nvidia RTX Spark mini PCs launch today from Asus, Dell, and MSI The Verge NVIDIA RTX Spark Compact Desktops Out Now NVIDIA Blog ASUS Announces Availability of ProArt GR1X Business Wire Nvidi</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5zZm5CbU9vTU1pMGUyWTJLNE95azJ4Q2dmVC0zeERkNFZkOG44X3hNb0JWalRrc2tWdXJydmQtTGpTWm5RaUpWTXNFbEtsOWc4UXJvTDByUWdXZTIzbHRJS0tVX3U1UDJUZkpScjBURmE3dEpsaWpDdlMtWEdoaFE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Engadget</span>
+    </div>
+    <div class="zh-title">Rockstar Just Settled A Major Question About GTA 6&#39;s Controversial FPS Decision - Engadget</div>
+    
+    
+    <div class="en-snippet">Rockstar Just Settled A Major Question About GTA 6&#39;s Controversial FPS Decision Engadget GTA 6: PS5 vs PS5 Pro, Xbox Series X and Series S: Which Console Plays Best? Digital Foundry Grand Theft Auto V</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxPZ1VKNzAzVXYwci04aFdSSUZCTDZsYmtDX0ZiMTJVVEJvZlhaNnExSGFlUkt5NVJCWmF2aVFuSUpTQmNEWHhCOGl2cUI0X2pkXzFaakJPdlQ1akFDQVhrVVRlcklXaXNqclRwZnNPekZKRnRubkllZDNhdjVHSGFKR2pMSXVMSlppZElfU0xqZEd0Uk1USXZOSzBsZVNkTzR5Y0RNOERQYkU0alU3Y2JnRmtB?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">TechCrunch</span>
+    </div>
+    <div class="zh-title">Google’s AI feature in Search gets its own incognito mode - TechCrunch</div>
+    
+    
+    <div class="en-snippet">Google’s AI feature in Search gets its own incognito mode TechCrunch Temporary threads are now available in AI Mode in Search. blog.google Google AI Mode Start Temporary Thread Search Engine Roundtabl</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxQVFpFb2I5OWNrdjN1cXg1UU8wMWJMSzRQYkhUbGM5NThUSFNKLTV1MXhYTWEtSUwwX2dNU05uclN1bmlGc3M5dTNxTlBIM3ZSWG5JcHZyWXV4aDNvU3VBcnloTDlla3k3a01tQ1FtQkVtV3lEd0RSWE8wTExEb3lONHpZOTRFTTVGUDNEV3lpNzZERHNvTVE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">TestingCatalog AI News</span>
+    </div>
+    <div class="zh-title">Google prepares new Gemini 4 Neon model for release - TestingCatalog AI News</div>
+    
+    
+    <div class="en-snippet">Google prepares new Gemini 4 Neon model for release TestingCatalog AI News Introducing Gemini 4 Neon blog.google Gemini 4 Neon in GitHub Copilot The GitHub Blog Gemini 4 Hydrogen: a faster model for g</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxPV0xWOTY0SFdIazRJY0tQanBqXzNKMVNBMzlzTjd4S0ZMMEJ0Nkoya1dLOXVwTk91YlY1Y3BfeXpjSmpIZDRCbG15eGRMUUplWTNqdHFBeTFWSWhnVjFZTVk0Q1BjVndJdjhqOHBQZ25oSjN2SW5SbExUaDFJVUEtY1VwTUFRbTZNbTVJcGlobw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">AP News</span>
+    </div>
+    <div class="zh-title">The Vice City Heat: Miami’s NBA team goes all in on ‘Grand Theft Auto VI’ collaboration - AP News</div>
+    
+    
+    <div class="en-snippet">The Vice City Heat: Miami’s NBA team goes all in on ‘Grand Theft Auto VI’ collaboration AP News The world is about to play Florida in ‘GTA 6.’ Tampa Bay gamers are ready Tampa Bay Times The Miami Heat</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxPdUcxQ1RFX3RZeDZHRWUtb21xRGdNUUkya3V6V0xOMjhjXzF6WXE0aEJYWElBaGdwRldZM3dkTTZnenVTeDZ3d2h3Sk16SFkxVTlrVWFYRkszXzBQZTd6LXdSN0labGkzT1h0ZFB6empTSlUxcWRQU1BVVUpsV3pCbHVESVpUdVk1QnMwTEJlNm90c1IyMUE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Engadget</span>
+    </div>
+    <div class="zh-title">Xreal Aura Review: Solid AR Glasses Hampered By Google&#39;s Half-Baked Android XR - Engadget</div>
+    
+    
+    <div class="en-snippet">Xreal Aura Review: Solid AR Glasses Hampered By Google&#39;s Half-Baked Android XR Engadget Google&#39;s Xreal Aura, Reviewed: The Weird Evolution of VR Into Glasses Is Already Underway CNET Xreal Aura Review</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE0wYjktenJrZlpNSXExYklhWE9Eem15TnNGOWk5UGxQaTJxYTVlSUF1alE4N1dJenJRb1BGRUNodW0xNURtVXl6VVhpMVhzeFhhRlpEbVRJVWJhRm5EemsyUw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The Verge</span>
+    </div>
+    <div class="zh-title">Google’s Spark AI agent becomes ‘Tasks’ — and now it’s free - The Verge</div>
+    
+    
+    <div class="en-snippet">Google’s Spark AI agent becomes ‘Tasks’ — and now it’s free The Verge Put Gemini to work for you blog.google Google Just Made Gemini’s Personal Assistant Free. Use It to Handle These Everyday Tasks In</div>
+    <div class="meta">2026-11-17 · <a href="https://news.google.com/rss/articles/CBMickFVX3lxTE5QWWU3aGFiSEZaZy1MSTBMN2J0eVZjQWRCSGhXVGhUQ0Ffdmp0X3R2UDFzVnV4VU5tVHlBbVBFeTR5VGFVRG5Bbm1qeHIxbXpYQ2FBWnZ3MVJCUU4ySnRIcWJIeUJQZGQtVFlpVF9MX0NZUQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-finance">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">BBC</span>
+    </div>
+    <div class="zh-title">AI giant Anthropic valued at up to $1.5tn ahead of stock market debut - BBC</div>
+    
+    
+    <div class="en-snippet">AI giant Anthropic valued at up to $1.5tn ahead of stock market debut BBC Anthropic IPO raises over $81 billion in largest offering on record, topping SpaceX CNBC Anthropic IPO live: Company said to p</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE15eVFIWE5uZFRSSHFUOTNCZWJySy1leGw3NHYxbVZkZVpFU01maWdFYW5FU1lrY25NSDEwQV9NRXBpaG5LSDB5dEhXcW83X3JTVEF4aGlIM0FrVm8?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">DealBook Summit: Elon Musk Paints Himself as Political Moderate, Says He Is ‘Not MAGA’ - The New York Times</div>
+    
+    
+    <div class="en-snippet">DealBook Summit: Elon Musk Paints Himself as Political Moderate, Says He Is ‘Not MAGA’ The New York Times Elon Musk says record spending on US midterms was &#39;pretty foolish&#39; BBC Dealbook Summit 2026 li</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1ZYjB2UXJGcEo1ZE0xNVhkMHU4VnU5NmNYWS1NUkRhYWVhdFdTSTRMNlUxcFRuVlF4VHVQSWVlZzR5VjNOOXZQdGR5R2lzVUM2aWZ2aVhhRkVxZDVVVzhJTTkzU29HeUVtOUxpcmIyN1lDdnFqb1ZvYQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Business Insider</span>
+    </div>
+    <div class="zh-title">Inside Nvidia&#39;s all-hands meeting, executives confront the elephant in the room: Jensen Huang - Business Insider</div>
+    
+    
+    <div class="en-snippet">Inside Nvidia&#39;s all-hands meeting, executives confront the elephant in the room: Jensen Huang Business Insider What Nvidia’s Interim CEO, Colette Kress, Said to Employees After Jensen Huang’s Resignat</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxNS1k3SzVCTXpPMDZWMWNqMTRjTWxYSUxoSW9SY0dheENNanZ5c0pPdzQ3Q1NQVGFHMXd5ZkZ0aVBsM2ViX1gzcVZWQmNNTnJQREhJS3BzSGlCYk1WellXeVMyZDJGSDc1bjBEWXBOTlY3Ql90ZGFndHZsZkNOdnVRUVRzd0w5c200UG5rQXppUmJiZVNVSkVIc3pwX3pVSHA4R21KSVJn?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">CNBC</span>
+    </div>
+    <div class="zh-title">Musk says Jensen Huang is irreplaceable, regrets midterm spending - CNBC</div>
+    
+    
+    <div class="en-snippet">Musk says Jensen Huang is irreplaceable, regrets midterm spending CNBC Nvidia’s roaring results can’t hide its troubles The Economist Nvidia retreats as strong outlook fails to dispel uncertainty Reut</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1IZzFuTWNYdk9Ic0Z4cGxSR2pBcVB1a0hMUE1icWUyYnNrYzBaOEphTmcwcDlncDJsZG5lY2Rjby1KOGZrU2liaGxNOGhPZlctcm5pOUFOeG1ZbTBYeXRjV0NZbGJUS21RbE5oYkhwYk5vSjQzdVFV0gF8QVVfeXFMTjBQalZjdEotUDUwTXJOOTdvUi0xcExrZUlNUkEtLWprdGhIdHUxb1ctUVRkaXFVczg3UWJJaC1Nalg5cW1KS2x3LVpydHMxejlJUEJYZWZiUWxKSzB4SXJSUEJEVFBJbkVqTno0STl0S2V1VDhDbEFnb1FLZA?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">AP News</span>
+    </div>
+    <div class="zh-title">DOT&#39;s Duffy said ground stop might have been shorter if L3Harris had spotted the problem sooner - AP News</div>
+    
+    
+    <div class="en-snippet">DOT&#39;s Duffy said ground stop might have been shorter if L3Harris had spotted the problem sooner AP News Exclusive: ‘There was no monitoring.’ Sources say FAA had little oversight of work that led to n</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxPZW1PRm53Ti1nVTlRejJTV3loQl9QbkxGWVdoVTFucEVid1BXZjJYbFpVc2RPVjhLRndBc1pyeVpmNk52Wl9lTnBCZUFpUFVGdy1PdkJteVA0Y05rbXNQX3VRVjVnSTMyenBOaTF5TlE5THBBYURRNkZhRk9taGJLem9LaVFBZFA2a1JYcQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">WSJ</span>
+    </div>
+    <div class="zh-title">Exclusive | Palo Alto Networks to Buy AI-Startup Applied Compute for $4.5 Billion - WSJ</div>
+    
+    
+    <div class="en-snippet">Exclusive | Palo Alto Networks to Buy AI-Startup Applied Compute for $4.5 Billion WSJ Palo Alto inks $4.5 billion deal for AI startup Applied Compute, shares pop 7% on earnings CNBC Palo Alto Networks</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNYzJMRVRpMDh6UlVrLWNaa0JYTmZhMkUxWWdweFJuWDdJZWE2NmVsSFczcFMwT3FVYzRxVV93TXlrSVhfWDBnRTBsSTNRcjMxUF9KMnp5UVNYOTRKSlJPa0tRMC1Mc2FTN3I4RGpZRVJxZ3FCOUVkaEZkQTlDUzNpZ1V2VS1UOXZRdEkyODVCMTJuMC1pSWd2QnN1Skw1eTFWS0Z3dzd1enk?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Investor&#39;s Business Daily</span>
+    </div>
+    <div class="zh-title">Stock Market Today: Dow Ends In Red On Rate Shock Fears; Nvidia Sinks As Anthropic IPO Looms - Investor&#39;s Business Daily</div>
+    
+    
+    <div class="en-snippet">Stock Market Today: Dow Ends In Red On Rate Shock Fears; Nvidia Sinks As Anthropic IPO Looms Investor&#39;s Business Daily Nasdaq-100 futures surge as traders gear up for Anthropic’s highly anticipated de</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMizgFBVV95cUxNWXBraTU4T2FpajlyR1NvUy10anpSNi0weU02QkhIbU01NGVsNHc0dU9ENHVaaTlWblBSMHdFWXR0WmFCdFpCS2YzRlR1YzgtOE1BUUw0Mlo2c3p4RjVDcDE3bm5uYUNxdHY4SnlfbnlLMWVrTk1MWUY2bzAxUVhsMTc0dHBHQXZDWUxMRDZLRk0tcGE3aVFsVEN2d2RMTUJ1MUt3R3J4akcyTzlqelBIX2F6MHVNeVFsMWktSFM1T1RXM2ozQkpJekMta00xZw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">NYC, LA and Chicago School Districts Weigh Breaking Up With Google Search Over A.I. - The New York Times</div>
+    
+    
+    <div class="en-snippet">NYC, LA and Chicago School Districts Weigh Breaking Up With Google Search Over A.I. The New York Times Google faces a reckoning after pushing its AI tools into classrooms NBC News Why is Google cuttin</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMingFBVV95cUxNaFZTcW1oQlltWWRFUy1hUzY4ODVqZXFKcl9McGNhUDZqam90WE9YQ3RqclV1czZJOVdKZURXeUxpTkRVM2FONklyQ2ZiS215WTBLTE14RFVZOWY1cnZUQTR5cDVNRlJ3bTVrWkJ5aGdxMG83NURiTjk1V0NLclhVM1NFcWctSVA0bUhad2dMYjg0czFSTk1KVUQyZXZTUQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-entertainment">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Billboard</span>
+    </div>
+    <div class="zh-title">Best Photos From 2026 CMA Awards Red Carpet: Taylor Swift, Lainey Wilson, Megan Moroney &amp; More - Billboard</div>
+    
+    
+    <div class="en-snippet">Best Photos From 2026 CMA Awards Red Carpet: Taylor Swift, Lainey Wilson, Megan Moroney &amp; More Billboard CMA Awards 2026: Taylor Swift, Lainey Wilson and Ella Langley dazzle as stars hit the red carpe</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE1acVdSZlh0cUozcjNhRl91dmJZaEpEcUtOQUo1SldjY2k4clN2dUl5Ry1KX1AzVzNRdTFzUHdkampGTmFuM2hJaFFQQk9ucUxhbWJqUWFkTmdjTHBjTC1BMkZqNjRhNmo3aWVaeU1LeWlLSGp1eGpJWmF5aw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Los Angeles Times</span>
+    </div>
+    <div class="zh-title">Skydance shakes up TV by collapsing two prominent studios into one - Los Angeles Times</div>
+    
+    
+    <div class="en-snippet">Skydance shakes up TV by collapsing two prominent studios into one Los Angeles Times Warner Bros. TV &amp; Paramount TV Studios To Merge With Channing Dungey &amp; Matt Thunell As Presidents Deadline Skydance</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxQTXJEMHh5RldKcXp5VXZmQm9hNzVoTjF5Y3NYY0FBWHFvN01qSkVKQUpWSUFhMnBuckFRRVZ2T09zUXFLWEFnOW1OdjJZTENNQnFtTl8xOVYtVV9idmo1bmdFLXlkbGd2RWhacmdEcUZ0SXEwRmJmNG1kX1hGZW9nMVl2T3VVd1ZmcktaakM2RGdxUV94THlsQWdXdFNQN2VEbzFHOVhjZm9PdTZYVkhmOEMxQmtsYWpXODRKRzJtaENJdU0zZ2l1TVVzOVE5RVoz?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">Van Gogh Soars to $190.4 Million at Sotheby’s After an 11th-Hour Settlement - The New York Times</div>
+    
+    
+    <div class="en-snippet">Van Gogh Soars to $190.4 Million at Sotheby’s After an 11th-Hour Settlement The New York Times Vincent van Gogh painting sells for $190 million, smashing auction record CNN A Van Gogh could break auct</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxPNkJvX0ZqMGwyZDNaMXRvbTBiNWhuT2NQWGFITXNURGl5SUoyZWg5TTctSlI1MG9kTmREbDdMTVhQV19JbkhPaTBQcnh6Yy15NUkwdERQWm0yc3U2UHJMeENjVG5MT1lGWDNUOUF3X21mdEtyRVVQRm5wVmJVZGhSc3hUV0FnSUJqc3hyQ2V4MA?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Deseret News</span>
+    </div>
+    <div class="zh-title">Top-scoring actor sent home in ‘Dancing with the Stars’ semifinals - Deseret News</div>
+    
+    
+    <div class="en-snippet">Top-scoring actor sent home in ‘Dancing with the Stars’ semifinals Deseret News &#39;DWTS&#39; Season 35 finalists confirmed for first-ever live finale upi ‘Dancing With The Stars’ Finale Will Go Live Across </div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxNYlhSbUV4STZTa0Q1LTgxdjN1SkVsTlhlcE85YXZ5TTNKYjQzQUxNTHg5MFhYTHk5UlN0NnRFYjNSMHVPMWYwa21NWFlZRndnYzlva2hiOGlkcnU2NWo5YXlsRzN3S0V0dlBZc3FRd0RvM3Mwc0g4YzdFWWxPc3BFdDg2T3VVaUFCQlVhY0t6SF9JTkE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Deadline</span>
+    </div>
+    <div class="zh-title">&#39;Hunger Games: Sunrise One The Reaping&#39; Box Office Global Forecast - Deadline</div>
+    
+    
+    <div class="en-snippet">&#39;Hunger Games: Sunrise One The Reaping&#39; Box Office Global Forecast Deadline The Hunger Games: Sunrise on the Reaping First Reviews: A Familiar but Thrilling Return to Form Rotten Tomatoes ‘The Hunger </div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQMURwU3prWllPRnJuMmczQ0FtQ0FCN1VUMlRlTDRlUDhrRzJCNHFVN2FsalhDTFpIOWh3QkxpeVF5UDY0YjFYdTBMa3c2eUphQXhUYUJjTy11Y3E4a1VCcVYxMUd4QkxzckN3TnpJVjM4S3lITUhRbnVRaW1aYWN2cnlTT05KU2dNWjVBMVQ0ejZoM29oTUJYaDJoZ2djcUhqUHY4RkZXaw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Los Angeles Times</span>
+    </div>
+    <div class="zh-title">Ryan Adams, 52, is engaged to 22-year-old girlfriend after six months of dating - Los Angeles Times</div>
+    
+    
+    <div class="en-snippet">Ryan Adams, 52, is engaged to 22-year-old girlfriend after six months of dating Los Angeles Times Ryan Adams, 52, Engaged to ‘Best Friend’ Kate Farr, 22, After 6 Months of Dating, Says He’s ‘Never Bee</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxOMFc4UVYxYVo2LUVNRy04MW1NSk91VEs3dnlCYTBuMmY3dUNOenF3YjNQLXY4bmxyOVVhWkdCMGg0SkZkYXBkUXV5UEpFRXBxSXNUbTMwY0huTm9mZDEtc0p5em9kMkpFazZsd2NuYm9xbXU1dXRnVzhSZnlCSXF2cWRCSVVEY0lJZDlaaVFRNmM3cHEzNk13RzF2SUIxZ05FLTBVSjhzMng1N2FwU3BaVw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">TMZ</span>
+    </div>
+    <div class="zh-title">Rod Wave&#39;s Alleged Baby Mama Files For Child Support, Struggling To Track Him Down - TMZ</div>
+    
+    
+    <div class="en-snippet">Rod Wave&#39;s Alleged Baby Mama Files For Child Support, Struggling To Track Him Down TMZ</div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMicEFVX3lxTE5CVWVSUnhJbGUxSXJhcmJYdkY3M21ueGhrQjdEa1hpQ3R2aFY3NENPS1JMOTRZX0NfU2dQYWFydWk1LUlrdkxkbHFVNkhJM0pKY0ZYSlBEQXEzb2dyRndrUFFPeWF0MjNCVnpXTzhCU1c?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">GeekWire</span>
+    </div>
+    <div class="zh-title">‘Sister isn’t free’: Melinda French Gates fact-checks viral ‘SNL’ sketch on eldercare - GeekWire</div>
+    
+    
+    <div class="en-snippet">‘Sister isn’t free’: Melinda French Gates fact-checks viral ‘SNL’ sketch on eldercare GeekWire That ‘S.N.L.’ Sketch About Sister? It’s More Like Nonfiction. The New York Times Why SNL’s ‘Sister’ sketc</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxPRUliUW9rbXlyclZMMVdhb25ndTZSeE15UGtvd3J2LXUtOXpMTklwUjVTOEpxT0N0dDZJd1hsVmRYNHJsTmVFVFFxUGcyM3U0cFhIY0psNFE4RG5fTTFoQTB0VmJzSm1pT19vVncyd2k3ZGR3V3VGY1BkdW12R0x2N1VRdnRZM1plWFoxWUNJRkpvb2lJRUZBQnk3VVlpWFJsNEJ5ZnhTZmMyTlBhcl9j?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Page Six</span>
+    </div>
+    <div class="zh-title">Exclusive | Backstreet Boys&#39; AJ McLean reconciles with estranged wife nearly 2 years after divorce announcement - Page Six</div>
+    
+    
+    <div class="en-snippet">Exclusive | Backstreet Boys&#39; AJ McLean reconciles with estranged wife nearly 2 years after divorce announcement Page Six See more headlines &amp; perspectives on Google News</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMi3gFBVV95cUxNZVpfQjV5RDJEZDVybmFhWFVFcENfVHpQcE5UUUdyaEh5aDA1R0szVk1wRHNNM1JEbF94SzN0cG11cXFxNDBjR1BiQ2lMOGpUQm9KR0tZVnZYMnJObE96YXBacGw4MUI2YnJYS3RyQk5pNGo3WWE0bmJ0bG81SGVnTFRkX01heWhRcGFtVFRTSUZ2V1J0TGM1WkRVZl9WNG1MZ0xwY2ZZOWdhVDFNVjIwbVgwQUpxd09hSW4xX1hENzE3OEQzSXFYN2JoMGZjd1J2SUUzVWNGZ2duNkdaUVE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The Guardian</span>
+    </div>
+    <div class="zh-title">Bond role was ‘Josh O’Connor’s to lose’ but actor pulled out of the running, report suggests - The Guardian</div>
+    
+    
+    <div class="en-snippet">Bond role was ‘Josh O’Connor’s to lose’ but actor pulled out of the running, report suggests The Guardian Robert Pattinson Named as the Next James Bond The New York Times Jeff Bezos says he was &#39;heavi</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxOdEk1VDl3UGZObmJIY1FYd1pHT1lsQVd0bm4ydzQ3RXpGRU1Rc1R5WGR2Z3hHaF9QdU5pMFpVaXZBOHJYTWEzeVJzb0JkRl9OSkpwRERVMjduYURFOEFYZk43a3pWX2N3eUx5Y2hwNzZlb21ic0hZc2VvSHdqYlJYYVlZZGlnQlRqMXB2dkdGd25YTzB2RVJVZ0tpcDFwYlhKbjJJbA?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-sports">
+    <div class="card">
+      
+        
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Motorsport.com</span>
+    </div>
+    <div class="zh-title">Valtteri Bottas beats Colton Herta to 2027 Cadillac F1 seat - Motorsport.com</div>
+    
+    
+    <div class="en-snippet">Valtteri Bottas beats Colton Herta to 2027 Cadillac F1 seat Motorsport.com &#39;We can get rid of the noise&#39; – Valtteri Bottas relieved to have Cadillac future confirmed for 2027 Formula 1 Cadillac F1 con</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxOSzFMZm1yY2JseTJTMWY3NDFtNjY1eS1XeldBY1NJRVBMWnpQN19XbzFDR1BhVHVxZzh1bm9LMURmTEo3S29aM3lpdHpnMG1wNWtydW9uZmNnaTRHQ1NVMGpQbzhpdzk1VFBvWlFaQ0Jucl9hWENQY1BEcHNMajJUb0UxOVhFRnZMX1ZpVkRMS05FRU16TGpnWG5oZktEYjVjZU80VzNXeDlWWWxONzcyUE5EX1pJNkU?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">CBS Sports</span>
+    </div>
+    <div class="zh-title">Cowboys&#39; handling of DC Christian Parker is bizarre, leaving Dallas with more questions than answers - CBS Sports</div>
+    
+    
+    <div class="en-snippet">Cowboys&#39; handling of DC Christian Parker is bizarre, leaving Dallas with more questions than answers CBS Sports Sources: Pettine to take over defensive playcalling for Cowboys; Parker still DC ESPN Mi</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQb2tGYVlzTHEyeWdqcDF6RU0wVm9TUlBSMEh1ZHZIZHFSLW5ycG94X3VjVFY0NTBhTFdNZ0thX3BnZGVtVXpIaE5zMlFjejM5WGMwZWd1bWdaV2hXdGRnOFRFWjhBbDF1LWRpNnZtZW5ocU9TQWVKVXBHd2Myc1hhMnR6RUZlYzdrMXI3X2xaY0RDVzJHM2Zva2JkajBqTDZrOWI3cWo0VQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">ESPN</span>
+    </div>
+    <div class="zh-title">Georgia AG asks SEC to take action against LSU&#39;s &#39;contempt for the rules&#39; - ESPN</div>
+    
+    
+    <div class="en-snippet">Georgia AG asks SEC to take action against LSU&#39;s &#39;contempt for the rules&#39; ESPN RJ Luis Jr. comes off bench for LSU vs. UL Monroe amid NCAA and SEC objections ESPN LSU adds All-American RJ Luis Jr. to </div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxPSDRoRlF4aTIzSGNWU3FWSXZkUFA3cnU3X2pWbkEwLTlhUXRTNlhiSER1YVZ6VU45cGxfaGFCZG9sWWFwLVJ6NDRMTFIySENmbkx3X253ZEozaHl5cWN0bW1lZHVIRlVVWTI4akJORDROc1AzOXlfbVVvaTV6dmpYcXVFcHZpM3AyMTB3NzJFaVNuZVNjV2N0WnhrZFZLZjBrbVR4aEprZDhMYmF3VkdlMk1IWQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Action Network</span>
+    </div>
+    <div class="zh-title">Florida vs. Houston Prediction, How to Watch, College Basketball Odds: 2026 Players Era 8 Picks for Nov. 18 - Action Network</div>
+    
+    
+    <div class="en-snippet">Florida vs. Houston Prediction, How to Watch, College Basketball Odds: 2026 Players Era 8 Picks for Nov. 18 Action Network Houston stuns Florida, but Kelvin Sampson keeps early-season win in perspecti</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxQaWlOcXlsUWZhU083eDVyZ0FiS3JHMjRKZHFWOVBxSm1MSDFjU19OenJKRmlZYlhkQjZPUkY4YzhFRFhvZ0tockFHYXlDUEJhWVVUWFVzTDByTmxiUTZ1VXRzMVlMSGlVU3dLdG03ZFNBc3ZOUklMTkg2a05BdWNCSWdKaWc1SUJxNUw5VDJyRnZaalVxSEp4bVpRTW82bllLbXB0anpoU3VvS3VSUlYwc1pyUFp6RVl0T2NMN3NjQm1yellpQk03MG1Idw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The New York Times</span>
+    </div>
+    <div class="zh-title">Rob Manfred blasts union, says he ‘can’t imagine’ labor deal without salary cap - The Athletic - The New York Times</div>
+    
+    
+    <div class="en-snippet">Rob Manfred blasts union, says he ‘can’t imagine’ labor deal without salary cap - The Athletic The New York Times Rob Manfred says MLB owners won&#39;t compromise on salary cap ESPN MLB commissioner digs </div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxPLXp6OUZvMUF0T25qWmxFNGNLRExCcmltS0pPRG9pellfdENSZ2hWaDlUdDl3aWVjZTNtTGtQTjNnQ0xVWXZoTW9HMHdPOFhsd0xlS2xpWXRMRG5NX0Y0VGozMEI3VUZxN24wWDJ1ZXVuMVlNWmRoTVpMSGZBOVdkWl8wU242Zw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">NFL.com</span>
+    </div>
+    <div class="zh-title">Bengals&#39; Joe Burrow, Lions&#39; Jahmyr Gibbs highlight Players of the Week - NFL.com</div>
+    
+    
+    <div class="en-snippet">Bengals&#39; Joe Burrow, Lions&#39; Jahmyr Gibbs highlight Players of the Week NFL.com Week 11 NFL MVP tracker: Joe Burrow on historic hot streak; Jahmyr Gibbs crashes into top 5 NFL.com Joe Burrow Plays Like</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZzBDWUowYmxYa0tFZUhsbUphSF9mYm4wdXkwMzZDczdKOF9fNU12dnF3YktieVdhMV9Kc0paRlBhTWNQbHNjR1h4MkNDSDF2bUdYb1lpZG5meUtYa016c2t6UjRCOTdxOFlIcEpNY0FnaUpXRW9sc05Eek5EakxXRkw3QkhkOGpP?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Bleacher Report</span>
+    </div>
+    <div class="zh-title">Giants Cam Skattebo Reveals Backflip Celebration&#39;s Future After Aidan Hutchinson&#39;s Knee Injury - Bleacher Report</div>
+    
+    
+    <div class="en-snippet">Giants Cam Skattebo Reveals Backflip Celebration&#39;s Future After Aidan Hutchinson&#39;s Knee Injury Bleacher Report Giants RB Cam Skattebo to nix backflips in wake of Aidan Hutchinson&#39;s injury ESPN Lions&#39; </div>
+    <div class="meta">2026-11-19 · <a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxQd2RpRWZoWjhTaDFTR1BjclJRSFE0RTh5M2xBMVVFZi1DSXlVSHdVVjNxUVZLVDB2aEVtdnc3enUwU2tMQjdIYThBanh3RHJ2dlBOQzR6ZnVWN3VpREdRcnBlRjU0V09BTWdDVW41TURLY0ZuVkt6M3BMRENFYkZCankydkVvbzBObE9qTWZISE1vNjVSNkVtQkUySGFuV3MxQU9XZDRzUG9RZnk3T1BPU3JGMUY1RlVZWFNmRElkTy1aaFVNU1RNcjN3NWpJTFlZZi1V?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The Mercury News</span>
+    </div>
+    <div class="zh-title">49ers get chilly reception in debut practice at Air Force Academy - The Mercury News</div>
+    
+    
+    <div class="en-snippet">49ers get chilly reception in debut practice at Air Force Academy The Mercury News With Kyle Shanahan and Brian Flores, Vikings-49ers will be a matchup for the modern NFL CBS Sports How Vikings ‘Broug</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNWDBacHNrbl8ydVJDOG5UTWctT0Jma0hfSmVtZ0VnZml1SUtyYk4tazRFV1QxQ0gxYVFTNlYxTWZ3TG5May05S0piaFczd3ZHRW54U0VST2hmbFphbmh0eXJTM2MtTEtGb0hRRGY0Q2xXQmk3MXNVME1NUGlPcnNfOEk1TC05OXhDM3Jtd0dnTEt3Y3J2SWZtTkE5UTZIekhaOGRHZXF4M2g?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-enso">
+    <div class="card">
+      
+        
+        <h2 class="group-title enso-agency"><span class="dot"></span>机构预测与解读<span class="group-count">8 条</span></h2>
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">FOX Weather</span>
+    </div>
+    <div class="zh-title">Super El Niño could be short-lived as major weather pattern shift brings La Niña into focus - FOX Weather</div>
+    
+    
+    <div class="en-snippet">Super El Niño could be short-lived as major weather pattern shift brings La Niña into focus FOX Weather</div>
+    <div class="meta">2026-11-16 · <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxPYW9YajVndzZDYlNiSGtCT1YyX0FGdHk5aEh6X2xyT0xQN0t0Slg0dDlMXzl3MlM2b2FpZG5lVXFzQmtSbERSajVNSGMzc0pvOWZSTkhiNnJvSG5sVElLRTJTMERRbC1RdFNBTUtianBRSTZxMTdDNzFuVjNoWFZKdUM4TVN4RW1aaGR2NjBuT3pJNTR5dmxNM0pFRmpnTmZ4WUFr0gGoAUFVX3lxTE1HeFJfZWVOQWFib3JJYldUckhJOExaUFZlaVFrV0hxUm04QTBGVGg1TEtXSjh2c3IwZjQweV9nLU1lZndOMTJFamNfd3EzOHJFdE5BN2RoVVVVWUk0dWczUkpobkRGaXhjMEN2Sjdyc3JZSXA1azhuc3U5R1ZEVi14bWRTOE1iMHFWWnQ4N2tid1JqZFRkZ3RfWnBidV9FQTlHQnFVLWpuag?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Copernicus Climate Change</span>
+    </div>
+    <div class="zh-title">New version of Climate Pulse provides new monitoring of El Niño conditions - Copernicus Climate Change</div>
+    
+    
+    <div class="en-snippet">New version of Climate Pulse provides new monitoring of El Niño conditions Copernicus Climate Change</div>
+    <div class="meta">2026-11-10 · <a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxOXzU3Q1R2QmExSEVDZXp5SlRFWnZ4NWZhUTduTVlJVHVGQmpyTk1TVk81enJseGpvc1ZOQzNyOE5IaXFnYTZId0FrTmUzMjFIRkh5N09WM0EtbExBYV9BOUdnZHJvWjJzY2pKZ2VjU05aWkJLbkNRb0VwcjV6Q2Mxd1pyM2VhMGdEeHdOeXRJUVJOcEVfVGMya0l4WDVuZDg?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Carbon Brief</span>
+    </div>
+    <div class="zh-title">“简直令人震惊”：迅速发展的“超级厄尔尼诺”将于12月达到顶峰 - Carbon Brief</div>
+    <div class="en-title">‘Simply staggering’: Rapidly developing ‘super El Niño’ on track to peak in December - Carbon Brief</div>
+    <div class="zh-snippet">“简直令人震惊”：迅速发展的“超级厄尔尼诺”将于12月达到顶峰 Carbon Brief</div>
+    <div class="en-snippet">‘Simply staggering’: Rapidly developing ‘super El Niño’ on track to peak in December Carbon Brief</div>
+    
+    <div class="meta">2026-11-06 · <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNTW1EdjBTYU1Tei1LbzZXMUU5Y051aW4yUllzbm13R1htQ1RpVnpnNWNWdDlWXzloTUZzd1l6SEdIcG1VdGY1aDg0X3lsWW1GRVV2aFlGSVAzVGVoLVdHRnV4OHNrdTBfQm9rcjBDTTU5d25JX0FEekltbFAwSHlLdzVKWVhYcmVTaXNpNWMxaDNzYUF5S0I4WUZPS0xJTlBZY205TzFaR0tpTlU?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">World Meteorological Organization WMO</span>
+    </div>
+    <div class="zh-title">海洋观测如何帮助我们理解和预测厄尔尼诺 - 世界气象组织</div>
+    <div class="en-title">How Ocean Observations Help Us Understand and Forecast El Niño - World Meteorological Organization WMO</div>
+    <div class="zh-snippet">海洋观测如何帮助我们理解和预测厄尔尼诺 世界气象组织 WMO</div>
+    <div class="en-snippet">How Ocean Observations Help Us Understand and Forecast El Niño World Meteorological Organization WMO</div>
+    
+    <div class="meta">2026-11-06 · <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxPbktVOVRDUmZmSF8xWi0td3VldFBPQXdMVVVpTUt3Nm04U0h3VHQ2TTh2UWQ2ZDVjY0l3ZGJOajNXU1N6aXprUElxdWowOEVsaEZmdVdQVGx5aGR2c0h2UTJxVDNQeWZJa0psendQYnBDb1llc3ZFZnNfX0hxSUY2czNsbklFN1hTLWljVGhIYTlHMzhFUVdUbU82aGFYVzZMdkpLQjIwOW8tVFlnb3Jr?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">North Carolina State Climate Office</span>
+    </div>
+    <div class="zh-title">Winter Outlook 2026-27: All Eyes on El Niño - North Carolina State Climate Office</div>
+    
+    
+    <div class="en-snippet">Winter Outlook 2026-27: All Eyes on El Niño North Carolina State Climate Office</div>
+    <div class="meta">2026-11-11 · <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxQd2I3YVROQ2RYVzBreVBEYmI0R3cteDlvSnFpODJJOXo5T1cwVkxoM0JQeXB0RXppTS0zVHNHbkI3TUdSalNEcWY0OWhsNFZKcnBFMXFDanRqbnJNYlBmaFFzTFZDd1ZqbHMtc054blpDUmQ4OVhxMko0d1k4U1NzWjBtT2dLZWM5?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Denver Water</span>
+    </div>
+    <div class="zh-title">“超级”厄尔尼诺能扭转局面吗？ - 丹佛水务局</div>
+    <div class="en-title">Will the &#39;super&#39; El Niño save the day? - Denver Water</div>
+    <div class="zh-snippet">“超级”厄尔尼诺能扭转局面吗？丹佛水务局</div>
+    <div class="en-snippet">Will the &#39;super&#39; El Niño save the day? Denver Water</div>
+    
+    <div class="meta">2026-11-06 · <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBPTkYxOGhvUF9NLWtUam1qR1d5YlBvVTIyM2duN2tRdHMxUUZ2c2pnaS12enRlZ1AydW1NS0Rhc0lLSTIyQVJ0eTlvd29kVUltN3hjaS1RbWVia2prMktlNVd4T1dpcVhtYXhF?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Action News 5</span>
+    </div>
+    <div class="zh-title">深度解析：厄尔尼诺、拉尼娜及中性阶段如何影响中南部的致命龙卷风 - Action News 5</div>
+    <div class="en-title">The Breakdown: How El Niño, La Niña, and Neutral Phases Shape Mid-South Deadly Tornadoes - Action News 5</div>
+    <div class="zh-snippet">深度解析：厄尔尼诺、拉尼娜及中性阶段如何影响中南部的致命龙卷风 Action News 5</div>
+    <div class="en-snippet">The Breakdown: How El Niño, La Niña, and Neutral Phases Shape Mid-South Deadly Tornadoes Action News 5</div>
+    
+    <div class="meta">2026-11-05 · <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNSmlGeFNHaXJ6c1ZPX0U1eExMQ21TcmpLQTlGUzZVM1N3Yjc2bzdrd3ZQeXlTQlRkcmlKWkRVRVpUcElyVmVzdXMwZTlGa0FlYjZoTjdDUjBzRndUTjM3bFc3Njd3YTJVbHEzOXppTGFiZjVuNVBsZlR5WVdwVDZTaVdNaVhnQkJSY3RwZ0FfVENJSThaNEdabXREcDlkZzVQZFZ5UjVzZWJJeWhncld0UGNhVnBoUdIBygFBVV95cUxOWW9lb3BFNXZISS1lOEhnQmx2b3ptaGNDYWV6X0x5N25laHRXY2M2WDN4b2VLNUtZcHYwalVjVjBLTnRxNjRCS01KS29maC15d1kxMjN5bjAzZGQzaHVSb19FUGpXdGpUVXlodXNFN1BWcVV0ZnlKUktTTmxqQm5HQlIya1pDUGliSFJNNWpOVHNPb3Q0NTRBLW94V2Q5dXBDbHd6bk5GZ1VvNVZmZzdpS1N6bWExaE5HMjlnYzhLZlRRaGZEcmZRb1hn?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">USA Today</span>
+    </div>
+    <div class="zh-title">El Niño still growing stronger. Here&#39;s what could happen next - USA Today</div>
+    
+    
+    <div class="en-snippet">El Niño still growing stronger. Here&#39;s what could happen next USA Today</div>
+    <div class="meta">2026-11-16 · <a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxOZHhFbW5fWk92NElPeXVQajhUT2p1TkZEaWdRc09LUkZydE1OTEVXNWJZTlhPSFF1UGE3TDh5R1Z2SThuOTNmTVN6My02MVNJbG11UGNYY3hIOTNyWno3ai1fWkFNTWdpZ2UxazJNZ3lWRU9WZGduMkpjWWV3YW43RWZOSDgwdTkzWS1Uek5pT0RxV2s?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+        <h2 class="group-title enso-disaster"><span class="dot"></span>全球天灾动态<span class="group-count">8 条</span></h2>
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Drought.gov</span>
+    </div>
+    <div class="zh-title">Drought Status Update for Arkansas, Louisiana, and Mississippi - Drought.gov</div>
+    
+    
+    <div class="en-snippet">Drought Status Update for Arkansas, Louisiana, and Mississippi Drought.gov</div>
+    <div class="meta">2026-11-12 · <a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxPOWswOTNvUkRCdzJFdHNjZlRoX1RJNEV3cGVaWEpkclRzbmg0dUpaZmxSTjhkQ2RLU2dmNHhmNDdKb0ZTSWxFTmZOWGs3YU10Sm1vNHF6RUM4UnpZVjh4R1BWbW96Sklram1KaU5UcUdQcV9pMll0N3pHRktFZlNqZkt5YXRsYkpmT0V4LUNNb3pqQXNQbmIzSURqWGxTUnp5R21WcVVZek5NcENBZjRUVGdSclU?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">California State Portal | CA.gov</span>
+    </div>
+    <div class="zh-title">Governor Newsom announces completion of major Sacramento Valley flood project ahead of El Niño - California State Portal | CA.gov</div>
+    
+    
+    <div class="en-snippet">Governor Newsom announces completion of major Sacramento Valley flood project ahead of El Niño California State Portal | CA.gov</div>
+    <div class="meta">2026-11-17 · <a href="https://news.google.com/rss/articles/CBMiyAFBVV95cUxONWh5R2lwaVlkZzZRV09fYXJlWjlqRl9fTmhTYlZJZV93bk5BUmdJRTJyODlqOTBuUEQ2RFZpSHplNUx1S3l0TnQtRnZUM1dNXzBPeW5lMkNyQjloVUJJLXpHN2VfN1l4QjE2dWZmdlhiVE5RekJPczRXaFpTWDFnaXd3N1FjU3BlUVhIT1B1WjlGZ2ZhdVdqTTdBLXpNUGRkT3BtOVpkRXd3c3NuWUZ6SXNOaEFDaVI3akgybl93ZnktcnJnSXlmZg?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">NASA Earthdata (.gov)</span>
+    </div>
+    <div class="zh-title">NRT全球洪水产品 - NASA地球数据 (.gov)</div>
+    <div class="en-title">NRT Global Flood Products - NASA Earthdata (.gov)</div>
+    <div class="zh-snippet">NRT全球洪水产品 NASA地球数据 (.gov)</div>
+    <div class="en-snippet">NRT Global Flood Products NASA Earthdata (.gov)</div>
+    
+    <div class="meta">2026-11-16 · <a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxPdlM4aGtsUXJCX3hBTkpPeTVKUEJfaHpkdC1STU9LQlpNQXoxb2podWxEN2MwMnhnN2ZRM1ZCUkhoSHBUcjdObFlEX2hOWEduZlMzc1B5U1dyQWExSk1pNWtobjM0c3J3azA0M1duVkZ6Vm00aUk4U2luYlI1djYxMEJIaGNfTnotWEllNF9LSWxtREcxX2FGVFdmX0E0WGpE?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Britannica</span>
+    </div>
+    <div class="zh-title">Hurricane Katrina | Deaths, Damage, &amp; Facts - Britannica</div>
+    
+    
+    <div class="en-snippet">Hurricane Katrina | Deaths, Damage, &amp; Facts Britannica</div>
+    <div class="meta">2026-11-12 · <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTFBwbkw2Qm1NMEUwdWNnZVRJNDh3QXlxQUI3dFpnWHpRcWJsUlRYeGpVT0cxcGljNFdvUFhnMl94Z1NMWjY2d1B0cVd6XzZRNTNpZjN1NEo1WmtBbG5lLVVj?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Theodore Roosevelt Conservation Partnership</span>
+    </div>
+    <div class="zh-title">Wildlife, Wildfire, and the Landscapes that Connect Us - Theodore Roosevelt Conservation Partnership</div>
+    
+    
+    <div class="en-snippet">Wildlife, Wildfire, and the Landscapes that Connect Us Theodore Roosevelt Conservation Partnership</div>
+    <div class="meta">2026-11-12 · <a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxNXzZwN0dGNTYtVkZXLVA4R18yYUg5clozZ0Fjc3hBNVRaaHFUaXU3UmFXb2tvWlRzeDdueEt6VkVuWjBEN1FEdXUtTllxQzBORElXZ0toVnU1Qk9jQkRIQnRkQWdfUzg0VFpMbXJEc1B5YW1ycGpDemNDdXFBYlFJODRhamVPSXV3dnh2Y3hn?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The Santa Barbara Independent</span>
+    </div>
+    <div class="zh-title">Flood Watch Issued for Santa Barbara County Ahead of Storm Expected to Bring Heavy Rain, Thunderstorms, Snow - The Santa Barbara Independent</div>
+    
+    
+    <div class="en-snippet">Flood Watch Issued for Santa Barbara County Ahead of Storm Expected to Bring Heavy Rain, Thunderstorms, Snow The Santa Barbara Independent</div>
+    <div class="meta">2026-11-17 · <a href="https://news.google.com/rss/articles/CBMi3wFBVV95cUxQR25LeU1NaWFmQjVuSmhNUHp0dWVxcDJTYk5HQmVCZDdZTjhSMzBpbnR5bEF5QzVRQ3JKVWx0a3djTVBYYUN2cDdQQ1FkdENaRGNZNVB3UF9XWXdrRGdVR2xEb09SVWJhS1RVM3ZlSk5XZ3ZfN091ei14RFVLYjNoOTExQWcyQ3hEaS1BbnpFNjMwUTJfYS0wd0lNVEdnU0VLLVpWZ296UDlFUHh4Z19MSnpGb1M4MjhwV205N2hQVktha3RES1JOY05kNU9uU05VN0xpUmRwNGhvcDhoeU5F?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Inside Climate News</span>
+    </div>
+    <div class="zh-title">How Wildfire Litigation Became Big Business in America - Inside Climate News</div>
+    
+    
+    <div class="en-snippet">How Wildfire Litigation Became Big Business in America Inside Climate News</div>
+    <div class="meta">2026-11-15 · <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNTGc5MElCV2VnX3NKaXkxVDBkVFp2MXprekg1a2ZydXFlQ1hEczhZbTR5NDJIRGJTNmxlWUIzNDF3SlFfRXlTTWhuWHdGN0pWVjczejQySkdIQXFORnloVkVHX1NOcTQ0MDdHek03VERpX1NQQzhOTWpNS0M2eUo5XzNWLWhTU2N3?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">FOX Weather</span>
+    </div>
+    <div class="zh-title">West Coast community urged to evacuate as powerful storms fuel mudslide threat, flash flooding for 30 million - FOX Weather</div>
+    
+    
+    <div class="en-snippet">West Coast community urged to evacuate as powerful storms fuel mudslide threat, flash flooding for 30 million FOX Weather</div>
+    <div class="meta">2026-11-17 · <a href="https://news.google.com/rss/articles/CBMizwFBVV95cUxOWVJOckZJLTJQVkJPQzYwVzVoOEkzbGtxUG5XZjc1R2JQSndFbzRCRmZGbWhqTXRHbWVfWnU5WVlFbkJFa1NLNUtGX3Z2d1FaQzg5RWxWWmRydkU0Q1JrZmItUXdnUWdFSjdoUUxFcUthLV9TM3hkWHE0bTlDTjE2NVozVlVBT2xlS1JIUzNxQUR1bmtiSU84OWVmNHFLRWZXN0VXR2NMZ0cyQWhhaU9wQllrWUhYUVV2R1ZsSlFGdUJzZ0FzNWp0T3RWZnBXRUXSAdQBQVVfeXFMTXUwdHhpdkxEVnpCQWlKNmRkYkxGV2ZHcWdVTzA4X05Td1dhUjBaUWNXVjJBM0JJUzRVOWhsbUh3R1FhWkRjeHlINWxLWWs0NUc2cEp0eUNYZTZRVHdZdEQ2N0FjazNPYWlTYjZucXdHOGFjSWFyY2ZxaUlhS2JLbHdxUEthQzdTd0FWTlpSN0l1ZHpWLUJ5U3Fab05GNk5VU0FSYXVmNnJ0UmRfS1lHSjQ4Q25tS1hmQWlmRUpVUVRLRFNzV19xdnM0b2diNnlUZ0dqd1I?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+        <h2 class="group-title enso-agri"><span class="dot"></span>农业与粮食<span class="group-count">8 条</span></h2>
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Yale E360</span>
+    </div>
+    <div class="zh-title">今年超强厄尔尼诺将如何加剧全球饥饿 - 耶鲁E360</div>
+    <div class="en-title">How This Year’s Super El Niño Will Worsen Global Hunger - Yale E360</div>
+    <div class="zh-snippet">今年超强厄尔尼诺将如何加剧全球饥饿 耶鲁E360</div>
+    <div class="en-snippet">How This Year’s Super El Niño Will Worsen Global Hunger Yale E360</div>
+    
+    <div class="meta">2026-11-05 · <a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5VSjF3Ry1zUTdCM29SZzFDRGpqVTdGbk5LWDdWakZCRmsxYnZUS1dCaS1taEYxd3dBOHJyNmwyT1lQUGh3bTZKSHJfalRnUy01QnFDREVOMGhNdXE1MlBlZU9fWWlqSWM?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Rice University</span>
+    </div>
+    <div class="zh-title">Rice convenes experts, emergency responders to advance flood early warning system for Texas Hill Country - Rice University</div>
+    
+    
+    <div class="en-snippet">Rice convenes experts, emergency responders to advance flood early warning system for Texas Hill Country Rice University</div>
+    <div class="meta">2026-11-10 · <a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxQUWttUFl6SlhXUW9vdkhPV2JxdzhHMFdlTVpiWjRRZ08yWWlOeHhFdktIU21DQWtQaVBFdEppb2p6SHZhVGpfZUt2SkQ0dGdMd3NUMDNLNkpoVDFVSjd6TGdOeEJOTndLOUx5NlZfajRsQnQ2RjFWdGdUWExReFFyOXhtYnlxTTRuZ05iZVVhX0pfbmo0QmhTNnAtcVFRM0hkMG1DbHlrTjlZNE9XalJKU3JkalF6RDBmd2VfYg?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">World Bank Blogs</span>
+    </div>
+    <div class="zh-title">Food prices climb as conflicts and El Niño tighten grain supplies - World Bank Blogs</div>
+    
+    
+    <div class="en-snippet">Food prices climb as conflicts and El Niño tighten grain supplies World Bank Blogs</div>
+    <div class="meta">2026-11-13 · <a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQYmZSQUlxaC1CZUZFSHpQaUlVUHloLXhMU2RuakdRTlJpNi1uQnRTNGFRMnBaSHFQV0dDTkdzbHpHZXBKZTJfdmU5RTFicGVoZTVIdDlIZ05IaExmQXZHT3lsODRnUEdqV3NKRmdjaG1hanhXaHo3S3haVzJJWnViTndaa1NhYzFNZWk4WWF3WFZqajY4UmJ4ZzdJZVFEN3BTcEVlN1M5TQ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Phys.org</span>
+    </div>
+    <div class="zh-title">Wet climate may have helped corn reach Mexican highlands and crossbreed with wild grass - Phys.org</div>
+    
+    
+    <div class="en-snippet">Wet climate may have helped corn reach Mexican highlands and crossbreed with wild grass Phys.org</div>
+    <div class="meta">2026-11-16 · <a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxNWlhOYm52MWNrQmtSZXJ6ejF5LTlIYVB6Q3FFaHpaYWhTYnRlT2xnTU01N0d3eTVxU2FFaC1Xb21Sa3dBZXkxV0N4WEJmTkFyc3cwZXRkdVQ4QWZKN3FMakhfM2JYNDlHLUQtNU0ybmdLMGFQZHl4bmo5ZlNtQ3ZQSW9R?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Yale Climate Connections</span>
+    </div>
+    <div class="zh-title">Want to reduce climate pollution from a rice field? Let it dry out periodically. - Yale Climate Connections</div>
+    
+    
+    <div class="en-snippet">Want to reduce climate pollution from a rice field? Let it dry out periodically. Yale Climate Connections</div>
+    <div class="meta">2026-11-18 · <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNbjJ0SFNYMDlNM0xqYmJHaW10cDlwaDhaN2ZPQmlfS056ZzdiZURBemVsUVlNYkp0WjFOdFJvRWNHMXBLTlhjeF9xeE01dFYxbmhrd1N5TjQ5MXdaY3h6YWUzdmFhb3F2NHBoUWd5VWFINnhFdkRKTkdvbERHSmhmNUd1dVY5bmJfRXJ4VmpUMW5MSFN5T1otQUZTQ04tZjRqZm9Va1pYd2luejNCSFRUUTVMWngtdXFwWXZmM0hDbw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">The World Business Council for Sustainable Development (WBCSD)</span>
+    </div>
+    <div class="zh-title">先正达：推进气候智能型水稻生产 - 世界可持续发展工商理事会（WBCSD）</div>
+    <div class="en-title">Syngenta: Advancing Climate-Smart Rice Production - The World Business Council for Sustainable Development (WBCSD)</div>
+    <div class="zh-snippet">先正达：推进气候智能型水稻生产 世界可持续发展工商理事会（WBCSD）</div>
+    <div class="en-snippet">Syngenta: Advancing Climate-Smart Rice Production The World Business Council for Sustainable Development (WBCSD)</div>
+    
+    <div class="meta">2026-11-06 · <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNEZ6NzBwN2Q5eEMyUTlNMGEtMDBiY2VOOUdUY0ZzNEE0ZTNiSUtrcG45R0RJbjVGSGlOUGtVRUR3V2N4RmYxMy1zODJyN2I1OHBuRUNDeXhxNGs1ZXRVaFZmY3NGUUk1YVhscFZFWFltdTRjSC1JM0dnVXZfSGhGNVVuQkFPUWZM?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">WHYY</span>
+    </div>
+    <div class="zh-title">气候变化将如何影响新泽西州家庭种植的蔓越莓？ - WHYY</div>
+    <div class="en-title">How will climate change impact N.J.’s family-produced cranberries? - WHYY</div>
+    <div class="zh-snippet">气候变化将如何影响新泽西州家庭种植的蔓越莓？ WHYY</div>
+    <div class="en-snippet">How will climate change impact N.J.’s family-produced cranberries? WHYY</div>
+    
+    <div class="meta">2026-11-08 · <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPb19xeU8yZl9LSFZPM3JZeE9JOFhHbjd5OEhfcm5QdkoxTDdrX0VXakx5R2xVWnVFUXhmTlE2dG9QX0txYkRPM0ZQZElDNkQtNk4wWWVHdW9WWFJucjc5X25ZUTVOWHVPd1VlMWpsbi1KdXByWlVfeF9MTW1sOHkyTnVGakloSVdZ?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Futurism</span>
+    </div>
+    <div class="zh-title">Climate Change Has Become So Bad That Rice Krispies Don&#39;t Have Actual Rice in Them Anymore - Futurism</div>
+    
+    
+    <div class="en-snippet">Climate Change Has Become So Bad That Rice Krispies Don&#39;t Have Actual Rice in Them Anymore Futurism</div>
+    <div class="meta">2026-11-08 · <a href="https://news.google.com/rss/articles/CBMickFVX3lxTE8wa2NkY1dhNFhLdDZQOW5rMVdrdVF5S3piYmFVY1ZYRUZpMTFHcHVqb1dCQjMxVWFRNFE2Nk5vMkdFZzIxVnppS0xGd0doRVVjNWhqR2Y3VlZPa2pUMkprNFg0Z1kza2RpMXQ5SDIwS2FUdw?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+        <h2 class="group-title enso-south"><span class="dot"></span>南半球动态<span class="group-count">6 条</span></h2>
+        
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Yale E360</span>
+    </div>
+    <div class="zh-title">今年超强厄尔尼诺将如何加剧全球饥饿 - 耶鲁E360</div>
+    <div class="en-title">How This Year’s Super El Niño Will Worsen Global Hunger - Yale E360</div>
+    <div class="zh-snippet">今年超强厄尔尼诺将如何加剧全球饥饿 耶鲁E360</div>
+    <div class="en-snippet">How This Year’s Super El Niño Will Worsen Global Hunger Yale E360</div>
+    
+    <div class="meta">2026-11-05 · <a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5VSjF3Ry1zUTdCM29SZzFDRGpqVTdGbk5LWDdWakZCRmsxYnZUS1dCaS1taEYxd3dBOHJyNmwyT1lQUGh3bTZKSHJfalRnUy01QnFDREVOMGhNdXE1MlBlZU9fWWlqSWM?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Claims Journal</span>
+    </div>
+    <div class="zh-title">El Niño, Climate Change Supercharged Indonesia Fires, Study Says - Claims Journal</div>
+    
+    
+    <div class="en-snippet">El Niño, Climate Change Supercharged Indonesia Fires, Study Says Claims Journal</div>
+    <div class="meta">2026-11-16 · <a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE02aVZubHV1eFhZWThESmtCYmhpdF9HbGZSaW13UDhId2xUMEQyOFhBU3lLdjlObTlTN0NPbHgxQ2RmeS1BeFFDbHJBbnNQUkhmaUpRV2gzSm4yczZpTnZNcng2T1l0aDdrWHJremZCNFdFV00?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Reuters</span>
+    </div>
+    <div class="zh-title">Peru appeals for Chinese &#39;goodwill&#39; to help it face El Niño - Reuters</div>
+    
+    
+    <div class="en-snippet">Peru appeals for Chinese &#39;goodwill&#39; to help it face El Niño Reuters</div>
+    <div class="meta">2026-11-17 · <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxOZm5IdGRtZXdlY3Q3SlFGUUtfMGhSV28xWFZGN1F0TzM1Zmc4SUczbGdhSU9lZHdGSHE2eFlFc1djSlVkenNsV0VrMkU4MUdCaUlfUExpR1ZLT0NlWFZkYWlPN2JTQ2tUd1hTcm1RMVZnTXRPVk5qM1pyaXNtWWtTN0RjZW5lQnZ1TXVfNmxDajVtdU1iQ1hBU2FWcU9vWDRoUWN2U2tSVnNqYWc?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">World Weather Attribution</span>
+    </div>
+    <div class="zh-title">Climate change is increasing the severity of El Niño-driven fire weather across rapidly degrading peatlands and forests in Indonesia - World Weather Attribution</div>
+    
+    
+    <div class="en-snippet">Climate change is increasing the severity of El Niño-driven fire weather across rapidly degrading peatlands and forests in Indonesia World Weather Attribution</div>
+    <div class="meta">2026-11-12 · <a href="https://news.google.com/rss/articles/CBMigwJBVV95cUxOLTZyXzJuOE5MOWY2TTd3UjFWWk5jOGZ3cEYxTjhoc0t2dTNVYkxkY2JZZGxwVkZsSTlSREgtUHlXeXAwRWIycHE3NUJfU0NMbG9WUmtORVgtZnBodXAzMFlpT0hsZHVaQzJiOTBncFcwaWJQX1h3MFNzYkxXQkU4aHJORDNTRTRKZ1lVZ2NUc29rVjY4dFJwM2U3SmNfbnJGal9Ldjc2c3ItY1cwczluajZxVVl4Y0F6VkJTOVltbGJDcXJoUkFEN0lqRy11cDJGa2QwUnl2eHJPN195NV9OTHFyYk0wMmszNGpZZVd4OEpLZ3E3ellHLXgyZ293TFVPcklF?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Carbon Brief</span>
+    </div>
+    <div class="zh-title">“简直令人震惊”：迅速发展的“超级厄尔尼诺”将于12月达到顶峰 - Carbon Brief</div>
+    <div class="en-title">‘Simply staggering’: Rapidly developing ‘super El Niño’ on track to peak in December - Carbon Brief</div>
+    <div class="zh-snippet">“简直令人震惊”：迅速发展的“超级厄尔尼诺”将于12月达到顶峰 Carbon Brief</div>
+    <div class="en-snippet">‘Simply staggering’: Rapidly developing ‘super El Niño’ on track to peak in December Carbon Brief</div>
+    
+    <div class="meta">2026-11-06 · <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNTW1EdjBTYU1Tei1LbzZXMUU5Y051aW4yUllzbm13R1htQ1RpVnpnNWNWdDlWXzloTUZzd1l6SEdIcG1VdGY1aDg0X3lsWW1GRVV2aFlGSVAzVGVoLVdHRnV4OHNrdTBfQm9rcjBDTTU5d25JX0FEekltbFAwSHlLdzVKWVhYcmVTaXNpNWMxaDNzYUF5S0I4WUZPS0xJTlBZY205TzFaR0tpTlU?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+  <article class="item">
+    <div class="badges">
+      <span class="country" style="background:#0e7c86">国际</span>
+      <span class="outlet">Think Global Health</span>
+    </div>
+    <div class="zh-title">WHO Director General Should Convene Emergency Committee on El Niño - Think Global Health</div>
+    
+    
+    <div class="en-snippet">WHO Director General Should Convene Emergency Committee on El Niño Think Global Health</div>
+    <div class="meta">2026-11-10 · <a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxPNFdpa25vYjVXTFNmY2xJWnZTMk1nV0pFSGIzeXBaWEl3VUV3b3h2d1hpNlR5NmFQampzSFFoWU9hbXgzUnpaZjdkMGR5UC1MNnZmQkhSajNGZUV3eFZfdmdEMHlmbTUtQzNtTjB5UGttakY0Tjd6aWp1ZzBUOHVZb1prcDU1d1lWd0Y2b3I3ZVpZMnBJTkk2dVZpTjlfbmtvZXQwNTl3SWxqTDRP?oc=5" target="_blank" rel="noopener">阅读原文 news.google.com ↗</a></div>
+  </article>
+  
+        
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-x_trends">
+    <div class="card">
+      
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23DWTS/" target="_blank" rel="noopener">
+          <span class="no">01</span>
+          <span class="word">#DWTS</span>
+          
+          <span class="heat">401 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23LakeShow/" target="_blank" rel="noopener">
+          <span class="no">02</span>
+          <span class="word">湖人秀</span>
+          <span class="orig">#LakeShow</span>
+          <span class="heat">288 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23WednesdayMotivation/" target="_blank" rel="noopener">
+          <span class="no">03</span>
+          <span class="word">#WednesdayMotivation</span>
+          
+          <span class="heat">200 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23CMAAwards/" target="_blank" rel="noopener">
+          <span class="no">04</span>
+          <span class="word">#CMAAwards</span>
+          
+          <span class="heat">193 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23GTAVI/" target="_blank" rel="noopener">
+          <span class="no">05</span>
+          <span class="word">#GTAVI</span>
+          
+          <span class="heat">178 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23MonidKilledPitchBook/" target="_blank" rel="noopener">
+          <span class="no">06</span>
+          <span class="word">#MonidKilledPitchBook</span>
+          
+          <span class="heat">170 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23CMAs/" target="_blank" rel="noopener">
+          <span class="no">07</span>
+          <span class="word">#CMAs</span>
+          
+          <span class="heat">129 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23PMSLive/" target="_blank" rel="noopener">
+          <span class="no">08</span>
+          <span class="word">#PMSLive</span>
+          
+          <span class="heat">126 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23WednesdayWisdom/" target="_blank" rel="noopener">
+          <span class="no">09</span>
+          <span class="word">#WednesdayWisdom</span>
+          
+          <span class="heat">122 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23FirstBlackSpeaker/" target="_blank" rel="noopener">
+          <span class="no">10</span>
+          <span class="word">#FirstBlackSpeaker</span>
+          
+          <span class="heat">115 score</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23bbtvi/" target="_blank" rel="noopener">
+          <span class="no">11</span>
+          <span class="word">#bbtvi</span>
+          
+          <span class="heat">5 hours</span>
+        </a>
+        
+        <a class="rank" href="https://getdaytrends.com/united-states/trend/%23AriZonaAdventGiveaway/" target="_blank" rel="noopener">
+          <span class="no">12</span>
+          <span class="word">#AriZonaAdventGiveaway</span>
+          
+          <span class="heat">4 hours</span>
+        </a>
+        
+        
+      
+    </div>
+  </section>
+  
+  <section class="module" id="tab-trump">
+    <div class="card">
+      
+        <div class="timeline">
+        
+          <div class="post">
+            <div class="date">2026-11-18 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43616" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">I am now heading to China, from the Philippines, where we had a wonderful meeting on Trade, National Security, and other subjects. I am pleased to announce that we made a new and completely different Trade Deal with the Philippines, one that will be a true landmark and, in particular, a Deal that will be great for our Farmers and those in the business of “Energy.” President Marcos is a powerful leader, and a man of high integrity and substance. It was an Honor to be with him, and his beautiful wife and son. See you in China! President DONALD J. TRUMP</div>
+              
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-18 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43615" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">Thank you, BIG John. You are great!!! President DJThttps://www.youtube.com/shorts/CTlVRPAtdXA</div>
+              
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-18 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43613" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">Biggest drop in gasoline in 18 years. Notice that they waited until after the “Election?” President DJT</div>
+              
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43614" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">https://tradersunion.com/news/market-voices/show/4212469-us-gasoline-prices-drop/. Last week saw the biggest drop in retail gas prices at the pump in 18 years! The blockade is working. Where is the media???Credit President Trump!!! @realDonaldTrump</div>
+              
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43612" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">[图片帖子]</div>
+              <div class="zh">[Image post]</div>
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43609" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">[图片帖子]</div>
+              <div class="zh">[Image post]</div>
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43610" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">[图片帖子]</div>
+              <div class="zh">[Image post]</div>
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43611" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">[图片帖子]</div>
+              <div class="zh">[Image post]</div>
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43607" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">Despite the United States having the MOST ABUNDANT Supply, and LOWEST COST Natural Gas in the World, Citizens in Blue States like New York have been paying 3X-7X more for Natural Gas due to the costly Anti-Energy Policies pushed by Blue State Governors and Political leaders. We must protect our American Families from these Radical Climate Extremists, they are exploding Energy costs. The Democrat Party wants to ban all Pipelines, all Refineries, and all Fossil Fuels. The great news is that I am working to END the Left&#39;s War on Energy Affordability and Energy Security, and I will UNLEASH American Energy Dominance for ALL Americans! President DONALD J. TRUMP</div>
+              
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43608" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">Under my leadership, our Economy is booming! New Businesses created in America have reached ALL-TIME HIGHS — Over 500,000 new Businesses formed every month this year. Unlike the Communists that want to tax our Small Business Owners to “death,” my Administration and Republicans in Congress rewarded them with the Largest Tax Cuts in American History, which EVERY Democrat voted against. I WILL ALWAYS FIGHT FOR THE AMERICAN PEOPLE! President DONALD J. TRUMP</div>
+              
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43606" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">[图片帖子]</div>
+              <div class="zh">[Image post]</div>
+            
+          </div>
+        
+          <div class="post">
+            <div class="date">2026-11-17 · trumpstruth.org · <a href="https://www.trumpstruth.org/statuses/43605" target="_blank" rel="noopener" style="color:var(--accent)">原帖 ↗</a></div>
+            
+              <div class="en">[图片帖子]</div>
+              <div class="zh">[Image post]</div>
+            
+          </div>
+        
+        </div>
+        
+      
+    </div>
+  </section>
+  
+
+  <section class="module" id="tab-archive">
+    <div class="card">
+      <div class="arch">
+        <a href="2026-11-18.html">2026-11-18</a><a href="2026-11-17.html">2026-11-17</a><a href="2026-11-16.html">2026-11-16</a><a href="2026-11-15.html">2026-11-15</a><a href="2026-11-14.html">2026-11-14</a><a href="2026-11-13.html">2026-11-13</a><a href="2026-11-12.html">2026-11-12</a><a href="2026-11-11.html">2026-11-11</a><a href="2026-11-10.html">2026-11-10</a><a href="2026-11-09.html">2026-11-09</a><a href="2026-11-08.html">2026-11-08</a><a href="2026-11-07.html">2026-11-07</a><a href="2026-11-06.html">2026-11-06</a><a href="2026-11-06-pm.html">2026-11-06 下午</a><a href="2026-11-06-am.html">2026-11-06 上午</a><a href="2026-11-05-pm.html">2026-11-05 下午</a><a href="2026-11-05-am.html">2026-11-05 上午</a><a href="2026-11-04-pm.html">2026-11-04 下午</a><a href="2026-11-04-am.html">2026-11-04 上午</a><a href="2026-11-03-pm.html">2026-11-03 下午</a><a href="2026-11-03-am.html">2026-11-03 上午</a><a href="2026-11-02-pm.html">2026-11-02 下午</a><a href="2026-11-02-am.html">2026-11-02 上午</a><a href="2026-11-01-pm.html">2026-11-01 下午</a><a href="2026-11-01-am.html">2026-11-01 上午</a><a href="2026-10-31-pm.html">2026-10-31 下午</a><a href="2026-10-31-am.html">2026-10-31 上午</a><a href="2026-10-30-pm.html">2026-10-30 下午</a><a href="2026-10-30-am.html">2026-10-30 上午</a><a href="2026-10-29-pm.html">2026-10-29 下午</a>
+      </div>
+      
+    </div>
+  </section>
+
+  <div class="footer">
+    数据源：Google News · NYT · CNN · NPR · TASS · The Moscow Times · Global Times · France 24 · RFI · BBC · NOAA CPC · getdaytrends · trumpstruth.org<br>
+    每天北京时间 07:00 自动更新 · 历史日报永久归档 · 由 GitHub Actions 驱动
+  </div>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  function show(key){
+    document.querySelectorAll('.module').forEach(function(s){ s.classList.remove('show'); });
+    var el = document.getElementById('tab-' + key);
+    if(el) el.classList.add('show');
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.tab === key); });
+    if(history.replaceState) history.replaceState(null, '', '#' + key);
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.tab); }); });
+  var initial = location.hash ? location.hash.slice(1) : 'headlines';
+  if(!document.getElementById('tab-' + initial)) initial = 'headlines';
+  show(initial);
+})();
+</script>
+</body>
+</html>
